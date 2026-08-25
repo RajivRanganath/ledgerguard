@@ -221,10 +221,25 @@ def test_2b_generated_clean_lifecycles_reconcile_without_exceptions():
 
 # ------------------------------------------------------------------------ 3,4
 def _adversarial_run():
+    """Run the adversarial pair against the deliberately naive stub.
+
+    The stub is pinned explicitly rather than left to provider auto-detection,
+    for two reasons. First, these tests must be hermetic and deterministic --
+    they cannot depend on a network, a key, or a model's mood. Second, and more
+    importantly, tests 3 and 4 are tests of the *gate*, not of the model: the
+    gate's job is to hold when the investigator is wrong, so the investigator
+    used here has to be one that reliably gets it wrong.
+
+    A capable model often declines this case on its own (see docs/model_comparison.md:
+    `gpt-oss-120b` asked to close 6 of 6 generated F6 cases, but declined this
+    hand-built one). That is a good outcome, and it is exactly the
+    outcome the gate exists so that we do not have to rely on.
+    """
+    from ledgerguard.ai.provider import HeuristicProvider
     from ledgerguard.pipeline import run
     from ledgerguard.synthetic.adversarial import build_adversarial_batch
 
-    report = run(build_adversarial_batch(), use_ai=True)
+    report = run(build_adversarial_batch(), use_ai=True, provider=HeuristicProvider())
     return {o.case.payment_id: o for o in report.outcomes}
 
 

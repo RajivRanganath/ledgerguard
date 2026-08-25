@@ -266,6 +266,24 @@ function adversarial(s) {
       <div class="neutral" style="margin-top:8px;font-size:12px">${esc(d.decision_reason)}</div>
     </div>`;
   };
+  const n = a.naive && a.naive.victim;
+  const naivePanel = !n ? '' : `<div class="card" style="padding:16px 18px;margin-top:14px">
+      <h3 style="margin:0 0 4px;font-size:13px">Payment A again, with a naive investigator
+        <span class="neutral">(heuristic_stub)</span></h3>
+      <div class="neutral" style="font-size:12px;margin-bottom:11px">
+        The live investigator is <code>${esc(a.investigator)}</code>. A capable model sometimes
+        declines this case on its own — a good outcome, and exactly the outcome the gate exists
+        so the system does not have to depend on. Here is the same case handed to an
+        investigator that reliably gets it wrong.</div>
+      <div><code>${esc(n.hypothesis)}</code> → asks to <code>${esc(n.recommended_action)}</code></div>
+      <div style="margin:10px 0"><span class="tag ${esc(n.verdict)}">${esc(n.verdict)}</span>
+        <span class="neutral" style="margin-left:8px">${esc(n.verification_score)}</span></div>
+      <div>${n.checks.map(c => `<div class="check ${c.passed ? 'pass' : 'fail'}">
+        <span class="mark">${c.passed ? 'PASS' : 'FAIL'}</span>
+        <span class="name">${esc(c.name)}</span>
+        <span class="why">${esc(c.detail)}</span></div>`).join('')}</div>
+      <div style="margin-top:12px"><span class="tag ${esc(n.state)}">${esc(n.state)}</span></div>
+    </div>`;
   return `<section><h2>The adversarial case</h2>
     <p class="lede">Two payments are short by exactly the same amount. One refund exists that
       could explain either of them, and applying it makes the shadow ledger balance in
@@ -274,9 +292,12 @@ function adversarial(s) {
       ${panel('donor', 'Payment B — genuinely explained', 'Its own refund lost its linkage during ingestion.')}
       ${panel('victim', 'Payment A — plausible but wrong', 'Nothing in the system actually explains this deduction.')}
     </div>
+    ${naivePanel}
     <p class="lede" style="margin-top:14px">For Payment A the amount matches exactly and the
       ledger balances — both checks pass — and the case is still refused, because the refund
-      belongs to a different customer. The gate rejects on linkage, not on amount.</p>
+      belongs to a different customer. <strong>The gate rejects on linkage, not on amount.</strong>
+      On the six generated wrong-linkage cases in the benchmark, the live model asked to resolve
+      <em>all six</em>, and the gate rejected all six.</p>
   </section>`;
 }
 
@@ -310,6 +331,12 @@ function benchmark(s) {
     <p class="lede" style="margin-top:12px">The hybrid closes the ambiguous refund cases the
       baseline had to escalate, and gives up none of the baseline's safety: false auto
       resolutions stay at zero and every wrong-linkage case stays escalated.</p>
+    ${s.provider_is_model ? `<p class="lede">These figures come from <em>this server's own run</em>
+      at startup. Model output is not reproducible — repeated runs on the identical frozen holdout
+      resolve different numbers of ambiguous cases, so this table will not match
+      <code>evaluation/outputs/benchmark.md</code> figure for figure. What does not move between
+      runs: false auto resolutions stay at zero, and every wrong-linkage case stays escalated. The
+      deterministic layer is the reproducible part; the model only moves recall.</p>` : ''}
   </section>`;
 }
 

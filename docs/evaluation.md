@@ -6,8 +6,14 @@
 .venv/bin/python -m ledgerguard.evaluation.benchmark
 ```
 
-Options: `--seed`, `--count`, `--split {holdout,dev,all}`,
-`--provider {anthropic,stub,none}`.
+Options: `--seed`, `--count`, `--split {holdout,dev,all}`, and
+`--provider {anthropic,groq,cerebras,gemini,nvidia,openai_compatible,stub,none}`.
+
+To compare investigators on the same holdout:
+
+```bash
+.venv/bin/python -m ledgerguard.evaluation.model_comparison --providers groq,gemini,stub
+```
 
 ## Dataset and split
 
@@ -55,6 +61,14 @@ Verified, not assumed:
   fields (`wall_seconds`, `throughput_per_second`, `latency_p50_ms`,
   `latency_p95_ms`), which vary by machine and by run and are not decisions.
 
+These guarantees cover the **dataset and the deterministic layer**, and they
+hold with `--provider stub` or `--provider none`. They do **not** extend to a
+model run: three `groq` runs on the identical holdout resolved 5, 6 and 7 of the
+9 F3 cases at `temperature: 0`. The safety figures were stable across all three
+(0 false auto resolutions, INR 0.00 falsely closed, all 6 F6 escalated); the
+variance is confined to how much is safely closed. Report the range, not the
+best run.
+
 ## Metrics
 
 Defined in `evaluation/metrics.py`. Every figure in every artifact is rendered
@@ -81,26 +95,34 @@ opportunity. Neither is an error in the way a false auto resolution is.
 
 ## Reading the result
 
-The headline is not "100% vs 89.4%". The headline is the per-fault-class table:
+The headline is not "95.3% vs 89.4%". The headline is the per-fault-class table
+(`groq:openai/gpt-oss-120b`, canonical run):
 
 | Fault class | n | Rules only correct | LedgerGuard correct | LG auto resolved | LG false auto |
 |---|---|---|---|---|---|
 | Clean | 54 | 54 | 54 | 0 | 0 |
 | F1 missing settlement | 4 | 4 | 4 | 0 | 0 |
 | F2 duplicate record | 4 | 4 | 4 | 4 | 0 |
-| F3 unlinked partial refund | 9 | 0 | 9 | 9 | 0 |
+| F3 unlinked partial refund | 9 | 0 | 5 | 5 | 0 |
 | F4 fee or tax mismatch | 4 | 4 | 4 | 4 | 0 |
 | F5 delayed settlement | 4 | 4 | 4 | 4 | 0 |
 | F6 incorrect linkage | 6 | 6 | 6 | 0 | 0 |
 
 Every point of difference between the two systems is in the F3 row. That is the
 entire contribution of the AI layer, and it is exactly what it should be: F1,
-F2, F4 and F5 are provable without a model, and F6 is not provable at all.
+F2, F4 and F5 are provable without a model, and F6 is not provable at all. The
+four F3 cases the model left open are *unnecessary abstentions* — safe, but a
+missed opportunity, counted separately from correct abstentions so the cost of
+caution stays visible.
 
-The F6 row is where the architecture is actually tested. The stub investigator
-proposed `unlinked_partial_refund` with `recommended_action: resolve` for all six
-of those cases. All six were rejected by the gate on linkage. Without the gate,
-that column would read six false auto resolutions.
+The F6 row is where the architecture is actually tested. `gpt-oss-120b` proposed
+a resolvable hypothesis and asked to resolve on **6 of 6** of those cases. All
+six were rejected by the gate on linkage. Without the gate, that column reads six
+false auto resolutions. The deliberately naive offline stub also asked to resolve
+6 of 6, and was also rejected 6 of 6 — the gate's behaviour did not depend on
+which investigator was wrong.
+
+See `docs/model_comparison.md` for the four-investigator table.
 
 ## Artifacts
 
@@ -110,4 +132,6 @@ that column would read six false auto resolutions.
 | `outputs/benchmark.json` | every metric for both systems, plus dataset provenance |
 | `outputs/cases.json` | full per-case detail: invariants, investigation, verification, decision |
 | `outputs/unresolved_exceptions.csv` | every case not closed, with exposure and blocking reason |
+| `outputs/model_comparison.md` | four investigators on the same holdout |
+| `outputs/model_comparison.json` | the same, machine readable |
 | `frozen/holdout_20260905_320.json` | the frozen holdout manifest |

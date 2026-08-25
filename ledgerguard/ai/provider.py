@@ -16,9 +16,25 @@ from __future__ import annotations
 
 import json
 import os
+from pathlib import Path
 from typing import Protocol
 
 from .schemas import InvestigationResult, InvestigatorOutput, RequiredEvidence
+
+def _load_dotenv() -> None:
+    """Read .env from the repo root if present. Never overrides a real env var."""
+    path = Path(__file__).resolve().parent.parent.parent / ".env"
+    if not path.exists():
+        return
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip())
+
+
+_load_dotenv()
 
 DEFAULT_MODEL = "claude-opus-5"
 DEFAULT_TIMEOUT_SECONDS = 45.0
@@ -199,22 +215,54 @@ class UnavailableProvider:
         return InvestigationResult.unavailable(self.error)
 
 
-def get_provider(kind: str | None = None) -> InvestigatorProvider:
-    """Select a provider.
+#: Auto-detection order. Anthropic first because that is the reference
+#: implementation; the rest are ordinary OpenAI-compatible or Gemini hosts.
+AUTO_ORDER = ["anthropic", "groq", "cerebras", "gemini", "nvidia"]
 
-    LEDGERGUARD_PROVIDER = anthropic | stub | none  overrides auto-detection.
-    Auto: use Claude if ANTHROPIC_API_KEY is set, otherwise the offline stub.
+
+def _build(kind: str) -> InvestigatorProvider:
+    if kind == "anthropic":
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            raise ValueError("ANTHROPIC_API_KEY is not set")
+        return AnthropicProvider(model=os.environ.get("LEDGERGUARD_MODEL", DEFAULT_MODEL))
+    if kind == "gemini":
+        from .openai_compatible import GeminiProvider
+
+        return GeminiProvider(model=os.environ.get("LEDGERGUARD_MODEL", "gemini-2.5-flash"))
+    from .openai_compatible import PRESETS, OpenAICompatibleProvider
+
+    if kind in PRESETS:
+        return OpenAICompatibleProvider(
+            preset=kind, model=os.environ.get("LEDGERGUARD_MODEL") or None
+        )
+    raise ValueError(f"unknown provider {kind!r}")
+
+
+def get_provider(kind: str | None = None) -> InvestigatorProvider:
+    """Select an investigator provider.
+
+    ``kind`` (or LEDGERGUARD_PROVIDER) may be:
+      anthropic | groq | cerebras | gemini | nvidia | openai_compatible
+      stub  -- the offline stand-in
+      none  -- a dead provider, for testing degradation
+      auto  -- first configured provider in AUTO_ORDER, else the stub
+
+    A provider that is named explicitly but cannot be configured is an error,
+    not a silent downgrade: a run that was meant to measure a model must never
+    quietly report stub numbers instead.
     """
     kind = (kind or os.environ.get("LEDGERGUARD_PROVIDER") or "auto").lower()
     if kind == "none":
         return UnavailableProvider()
     if kind == "stub":
         return HeuristicProvider()
-    if kind == "anthropic" or (kind == "auto" and os.environ.get("ANTHROPIC_API_KEY")):
+
+    if kind != "auto":
+        return _build(kind)
+
+    for candidate in AUTO_ORDER:
         try:
-            return AnthropicProvider(
-                model=os.environ.get("LEDGERGUARD_MODEL", DEFAULT_MODEL)
-            )
+            return _build(candidate)
         except Exception:
-            return HeuristicProvider()
+            continue
     return HeuristicProvider()

@@ -371,14 +371,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_01952574 is for 698810 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The settlement shows a refund_adjustments amount of 698,810 paise, which exactly equals the shortfall between the shadow ledger expected net (7,610,745) and the provider reported net (6,911,935). An unlinked refund record (rfnd_01952574) of the same amount exists, suggesting the missing net is due to a refund that has not been linked to the payment.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_01952574"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.02
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 2854.72
     },
     "verification": {
       "case_id": "pay_00121298",
@@ -434,16 +434,12 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+          "type": "relationship",
+          "expected_relationship": "refund.payment_id == pay_00121298"
         },
         {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "amount_match",
+          "expected_relationship": "refund.amount == discrepancy.difference_paise"
         }
       ],
       "note": "linkage disproved; amount agreement is not evidence of ownership"
@@ -1030,14 +1026,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_003431D5 is for 1272670 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The settlement net shortfall (1272670 paise) exactly matches an unlinked refund record (rfnd_003431D5) of the same amount. If this refund is linked to the payment, the shadow ledger's net amount would be reduced accordingly, reconciling the discrepancy.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_003431D5"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.02
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 1885.51
     },
     "verification": {
       "case_id": "pay_003478CC",
@@ -1094,15 +1090,7 @@
       "ai_required_evidence": [
         {
           "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "expected_relationship": "refund.refund_id rfnd_003431D5 must be linked to payment.pay_003478CC (e.g., payment_id field equals pay_003478CC or reference ties the refund to the order/payment)."
         }
       ],
       "note": ""
@@ -1358,14 +1346,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_003431D5 is for 1272670 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The settlement shows a refund_adjustments amount of 1,272,670 paise, which exactly matches the amount of an unlinked refund record (rfnd_003431D5). If this refund were linked to payment pay_0048CBEF, the net amount would reconcile with the shadow ledger expectation.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_003431D5"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 2220.4
     },
     "verification": {
       "case_id": "pay_0048CBEF",
@@ -1421,16 +1409,8 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund rfnd_003431D5.payment_id == 'pay_0048CBEF'"
         }
       ],
       "note": "linkage disproved; amount agreement is not evidence of ownership"
@@ -1527,14 +1507,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0245935A is for 230710 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The observed net amount is lower than the shadow ledger expectation by exactly 230,710 paise, which matches the amount of an unlinked refund record (rfnd_0245935A). If this refund were linked to payment pay_00526F48, the net would reconcile.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_0245935A"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 19675.32
     },
     "verification": {
       "case_id": "pay_00526F48",
@@ -1590,16 +1570,8 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund rfnd_0245935A amount 230710 is linked to payment pay_00526F48"
         }
       ],
       "note": "linkage disproved; amount agreement is not evidence of ownership"
@@ -2564,14 +2536,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0108D9BC is for 65395 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The settlement net amount is lower than the shadow ledger expectation by exactly 65,395 paise, which matches the amount of an unlinked refund record (rfnd_0108D9BC). If this refund can be proven to belong to payment pay_0108B5A2, it would explain the shortfall.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_0108D9BC"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 9160.05
     },
     "verification": {
       "case_id": "pay_0108B5A2",
@@ -2627,16 +2599,8 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund.amount == 65395 && refund.payment_id == 'pay_0108B5A2'"
         }
       ],
       "note": ""
@@ -3159,7 +3123,7 @@
     "lifecycle_id": "LC0142",
     "payment_id": "pay_014252C5",
     "order_id": "ord_0142EE57",
-    "state": "AUTO_RESOLVED",
+    "state": "HUMAN_REVIEW_REQUIRED",
     "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
     "expected": {
       "payment_id": "pay_014252C5",
@@ -3233,91 +3197,33 @@
       }
     ],
     "investigation": {
-      "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0142A640 is for 180290 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
-      "recommended_action": "resolve",
-      "candidate_evidence_ids": [
-        "rfnd_0142A640"
-      ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "hypothesis": "insufficient_evidence",
+      "reason": "The only record that could explain the 180,290 paise shortfall is a refund (rfnd_0142A640) of exactly that amount. However, the refund record does not contain a payment_id linking it to payment pay_014252C5, and no other records establish such a relationship. Without verifiable linkage, the evidence is incomplete.",
+      "recommended_action": "review",
+      "candidate_evidence_ids": [],
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 21094.51
     },
     "verification": {
       "case_id": "pay_014252C5",
-      "hypothesis": "unlinked_partial_refund",
-      "verdict": "VERIFIED",
-      "verification_score": "7 of 7 evidence checks passed",
-      "checks": [
-        {
-          "name": "E1_evidence_records_exist",
-          "kind": "existence",
-          "passed": true,
-          "detail": "proposed refund ids ['rfnd_0142A640']; resolved ['rfnd_0142A640'] against the record store"
-        },
-        {
-          "name": "E2_refund_is_processed",
-          "kind": "existence",
-          "passed": true,
-          "detail": "refund rfnd_0142A640 status is processed"
-        },
-        {
-          "name": "E3_refund_not_linked_elsewhere",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund rfnd_0142A640 payment_id is None; this case is payment pay_014252C5"
-        },
-        {
-          "name": "E4_reference_identifies_this_customer",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund reference 'CUST-0065/refund posted' vs order customer 'CUST-0065' -> match"
-        },
-        {
-          "name": "E5_amount_equals_shortfall",
-          "kind": "amount",
-          "passed": true,
-          "detail": "refund amount 180290 vs shortfall 180290"
-        },
-        {
-          "name": "E6_timing_is_plausible",
-          "kind": "timing",
-          "passed": true,
-          "detail": "refund 2026-06-06 must fall between capture 2026-06-05 and settlement+1d 2026-06-08"
-        },
-        {
-          "name": "E7_invariant_restored",
-          "kind": "invariant",
-          "passed": true,
-          "detail": "shadow ledger net with refund applied = 355363, observed settlement net = 355363"
-        }
-      ],
-      "claimed_evidence_ids": [
-        "rfnd_0142A640"
-      ],
-      "ai_required_evidence": [
-        {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
-        }
-      ],
-      "note": ""
+      "hypothesis": "insufficient_evidence",
+      "verdict": "UNVERIFIED",
+      "verification_score": "0 of 0 evidence checks passed",
+      "checks": [],
+      "claimed_evidence_ids": [],
+      "ai_required_evidence": [],
+      "note": "hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive"
     },
     "decision": {
       "case_id": "pay_014252C5",
-      "state": "AUTO_RESOLVED",
-      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
-      "resolution": "unlinked_partial_refund",
-      "missing_evidence": [],
-      "suggested_action": "No action; evidence-backed classification closed automatically."
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "reason": "Insufficient evidence to prove 'insufficient_evidence': 0 of 0 evidence checks passed. hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive",
+      "resolution": null,
+      "missing_evidence": [
+        "no supporting evidence produced"
+      ],
+      "suggested_action": "Obtain the missing record from the provider, or confirm the deduction manually before closing."
     }
   },
   {
@@ -3473,14 +3379,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_027971A8 is for 127565 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The net amount shortfall (127,565\u202fpaise) exactly matches the amount of an unlinked refund record (rfnd_027971A8). If this refund can be proven to belong to payment pay_01452BE5, the observed net amount would align with the shadow ledger expectation.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_027971A8"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 1444.48
     },
     "verification": {
       "case_id": "pay_01452BE5",
@@ -3536,16 +3442,8 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund.amount == 127565 && refund.payment_id == 'pay_01452BE5'"
         }
       ],
       "note": "linkage disproved; amount agreement is not evidence of ownership"
@@ -4155,14 +4053,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0166F085 is for 411830 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The observed net amount is lower than the shadow ledger's expected net by exactly 411,830 paise, which matches the amount of an unlinked refund record (rfnd_0166F085). If this refund can be linked to the original payment/order, it fully explains the shortfall.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_0166F085"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 10785.3
     },
     "verification": {
       "case_id": "pay_0166A046",
@@ -4218,16 +4116,8 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund.amount == discrepancy.amount (411830) AND refund.reference or note ties the refund to the same order/customer (e.g., CUST-0043 or ord_0166AF8C) so that the refund is a legitimate adjustment to payment pay_0166A046"
         }
       ],
       "note": ""
@@ -4393,94 +4283,40 @@
       }
     ],
     "investigation": {
-      "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0108D9BC is for 65395 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
-      "recommended_action": "resolve",
+      "hypothesis": "insufficient_evidence",
+      "reason": "The settlement shows a refund adjustment of 65,395 paise, which exactly matches the shortfall, and there is an unlinked refund record of the same amount. However, the refund record does not contain a payment_id linking it to pay_0170BEB1, so we cannot prove that this refund explains the discrepancy.",
+      "recommended_action": "review",
       "candidate_evidence_ids": [
         "rfnd_0108D9BC"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 13645.63
     },
     "verification": {
       "case_id": "pay_0170BEB1",
-      "hypothesis": "unlinked_partial_refund",
-      "verdict": "REJECTED",
-      "verification_score": "5 of 7 evidence checks passed",
-      "checks": [
-        {
-          "name": "E1_evidence_records_exist",
-          "kind": "existence",
-          "passed": true,
-          "detail": "proposed refund ids ['rfnd_0108D9BC']; resolved ['rfnd_0108D9BC'] against the record store"
-        },
-        {
-          "name": "E2_refund_is_processed",
-          "kind": "existence",
-          "passed": true,
-          "detail": "refund rfnd_0108D9BC status is processed"
-        },
-        {
-          "name": "E3_refund_not_linked_elsewhere",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund rfnd_0108D9BC payment_id is None; this case is payment pay_0170BEB1"
-        },
-        {
-          "name": "E4_reference_identifies_this_customer",
-          "kind": "linkage",
-          "passed": false,
-          "detail": "refund reference 'REF CUST-0080 - cust adj' vs order customer 'CUST-0066' -> NO MATCH"
-        },
-        {
-          "name": "E5_amount_equals_shortfall",
-          "kind": "amount",
-          "passed": true,
-          "detail": "refund amount 65395 vs shortfall 65395"
-        },
-        {
-          "name": "E6_timing_is_plausible",
-          "kind": "timing",
-          "passed": false,
-          "detail": "refund 2026-06-20 must fall between capture 2026-06-28 and settlement+1d 2026-07-01"
-        },
-        {
-          "name": "E7_invariant_restored",
-          "kind": "invariant",
-          "passed": true,
-          "detail": "shadow ledger net with refund applied = 263359, observed settlement net = 263359"
-        }
-      ],
-      "claimed_evidence_ids": [
-        "rfnd_0108D9BC"
-      ],
+      "hypothesis": "insufficient_evidence",
+      "verdict": "UNVERIFIED",
+      "verification_score": "0 of 0 evidence checks passed",
+      "checks": [],
+      "claimed_evidence_ids": [],
       "ai_required_evidence": [
         {
           "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "expected_relationship": "refund.payment_id == 'pay_0170BEB1'"
         }
       ],
-      "note": "linkage disproved; amount agreement is not evidence of ownership"
+      "note": "hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive"
     },
     "decision": {
       "case_id": "pay_0170BEB1",
       "state": "HUMAN_REVIEW_REQUIRED",
-      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'REF CUST-0080 - cust adj' vs order customer 'CUST-0066' -> NO MATCH",
+      "reason": "Insufficient evidence to prove 'insufficient_evidence': 0 of 0 evidence checks passed. hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive",
       "resolution": null,
       "missing_evidence": [
-        "E4_reference_identifies_this_customer",
-        "E6_timing_is_plausible"
+        "no supporting evidence produced"
       ],
-      "suggested_action": "Do not net this against the proposed refund. Identify the true counterparty of the deduction with the provider before closing."
+      "suggested_action": "Obtain the missing record from the provider, or confirm the deduction manually before closing."
     }
   },
   {
@@ -4907,14 +4743,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0142A640 is for 180290 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The net amount reported by the provider is 180,290 paise lower than the shadow ledger expectation, which exactly matches the amount of an unlinked refund (rfnd_0142A640). The discrepancy can be explained if this refund should be associated with payment pay_0190477E but the linkage was not recorded.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_0142A640"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 11591.62
     },
     "verification": {
       "case_id": "pay_0190477E",
@@ -4970,16 +4806,8 @@
       ],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund.rfnd_0142A640 must be linked to payment.pay_0190477E (e.g., via a payment_id field or an external reconciliation note confirming the refund applies to this payment)"
         }
       ],
       "note": "linkage disproved; amount agreement is not evidence of ownership"
@@ -5076,14 +4904,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_01952574 is for 698810 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The settlement net amount is lower than the shadow ledger expectation by exactly 698,810 paise, which matches the amount of an unlinked refund record (rfnd_01952574). If this refund were linked to payment pay_01952C76, it would explain the shortfall.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_01952574"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 15390.08
     },
     "verification": {
       "case_id": "pay_01952C76",
@@ -5140,15 +4968,7 @@
       "ai_required_evidence": [
         {
           "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "expected_relationship": "refund.payment_id == 'pay_01952C76' AND refund.amount == 698810"
         }
       ],
       "note": ""
@@ -5404,14 +5224,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0216DB0A is for 2837070 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "reason": "The settlement shows a refund_adjustments amount of 2,837,070 paise, which exactly matches the observed shortfall. An unlinked refund record (rfnd_0216DB0A) of the same amount exists, but its payment_id is null, so the deterministic matcher could not associate it with payment pay_02164433. If this refund were linked to the payment, the net amount would reconcile to the shadow ledger expectation.",
       "recommended_action": "resolve",
       "candidate_evidence_ids": [
         "rfnd_0216DB0A"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 9281.57
     },
     "verification": {
       "case_id": "pay_02164433",
@@ -5468,15 +5288,7 @@
       "ai_required_evidence": [
         {
           "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "expected_relationship": "refund.amount == settlement.refund_adjustments && refund.payment_id == payment.payment_id"
         }
       ],
       "note": ""
@@ -6002,7 +5814,7 @@
     "lifecycle_id": "LC0245",
     "payment_id": "pay_02456E14",
     "order_id": "ord_02451272",
-    "state": "AUTO_RESOLVED",
+    "state": "HUMAN_REVIEW_REQUIRED",
     "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
     "expected": {
       "payment_id": "pay_02456E14",
@@ -6076,91 +5888,33 @@
       }
     ],
     "investigation": {
-      "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0245935A is for 230710 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
-      "recommended_action": "resolve",
-      "candidate_evidence_ids": [
-        "rfnd_0245935A"
-      ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "hypothesis": "insufficient_evidence",
+      "reason": "The settlement record shows a refund adjustment of 230710 paise, which exactly matches the amount of an unlinked refund candidate (rfnd_0245935A). However, there is no record linking this refund to payment pay_02456E14 (payment_id is null) and no other evidence confirming that the settlement's refund_adjustments originate from this refund. Without a verifiable relationship between the refund and the payment, the exception cannot be conclusively explained.",
+      "recommended_action": "review",
+      "candidate_evidence_ids": [],
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 11280.48
     },
     "verification": {
       "case_id": "pay_02456E14",
-      "hypothesis": "unlinked_partial_refund",
-      "verdict": "VERIFIED",
-      "verification_score": "7 of 7 evidence checks passed",
-      "checks": [
-        {
-          "name": "E1_evidence_records_exist",
-          "kind": "existence",
-          "passed": true,
-          "detail": "proposed refund ids ['rfnd_0245935A']; resolved ['rfnd_0245935A'] against the record store"
-        },
-        {
-          "name": "E2_refund_is_processed",
-          "kind": "existence",
-          "passed": true,
-          "detail": "refund rfnd_0245935A status is processed"
-        },
-        {
-          "name": "E3_refund_not_linked_elsewhere",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund rfnd_0245935A payment_id is None; this case is payment pay_02456E14"
-        },
-        {
-          "name": "E4_reference_identifies_this_customer",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund reference 'ADJ/CUST-0068/partial' vs order customer 'CUST-0068' -> match"
-        },
-        {
-          "name": "E5_amount_equals_shortfall",
-          "kind": "amount",
-          "passed": true,
-          "detail": "refund amount 230710 vs shortfall 230710"
-        },
-        {
-          "name": "E6_timing_is_plausible",
-          "kind": "timing",
-          "passed": true,
-          "detail": "refund 2026-06-14 must fall between capture 2026-06-13 and settlement+1d 2026-06-16"
-        },
-        {
-          "name": "E7_invariant_restored",
-          "kind": "invariant",
-          "passed": true,
-          "detail": "shadow ledger net with refund applied = 149500, observed settlement net = 149500"
-        }
-      ],
-      "claimed_evidence_ids": [
-        "rfnd_0245935A"
-      ],
-      "ai_required_evidence": [
-        {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
-        }
-      ],
-      "note": ""
+      "hypothesis": "insufficient_evidence",
+      "verdict": "UNVERIFIED",
+      "verification_score": "0 of 0 evidence checks passed",
+      "checks": [],
+      "claimed_evidence_ids": [],
+      "ai_required_evidence": [],
+      "note": "hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive"
     },
     "decision": {
       "case_id": "pay_02456E14",
-      "state": "AUTO_RESOLVED",
-      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
-      "resolution": "unlinked_partial_refund",
-      "missing_evidence": [],
-      "suggested_action": "No action; evidence-backed classification closed automatically."
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "reason": "Insufficient evidence to prove 'insufficient_evidence': 0 of 0 evidence checks passed. hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive",
+      "resolution": null,
+      "missing_evidence": [
+        "no supporting evidence produced"
+      ],
+      "suggested_action": "Obtain the missing record from the provider, or confirm the deduction manually before closing."
     }
   },
   {
@@ -6168,7 +5922,7 @@
     "lifecycle_id": "LC0248",
     "payment_id": "pay_02489632",
     "order_id": "ord_02483FE6",
-    "state": "AUTO_RESOLVED",
+    "state": "RECOMMEND_REVIEW",
     "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
     "expected": {
       "payment_id": "pay_02489632",
@@ -6243,14 +5997,14 @@
     ],
     "investigation": {
       "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_0248B238 is for 1163765 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
-      "recommended_action": "resolve",
+      "reason": "The settlement shows a refund_adjustments amount of 1,163,765 paise, which exactly matches the difference between the expected net (2,408,876) and the observed net (1,245,111). A refund record (rfnd_0248B238) of the same amount exists, but its linkage to payment pay_02489632 is not established in the provided data.",
+      "recommended_action": "review",
       "candidate_evidence_ids": [
         "rfnd_0248B238"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 13750.81
     },
     "verification": {
       "case_id": "pay_02489632",
@@ -6307,26 +6061,18 @@
       "ai_required_evidence": [
         {
           "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "expected_relationship": "refund.payment_id == payment.payment_id"
         }
       ],
       "note": ""
     },
     "decision": {
       "case_id": "pay_02489632",
-      "state": "AUTO_RESOLVED",
-      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "state": "RECOMMEND_REVIEW",
+      "reason": "Evidence verified (7 of 7 evidence checks passed) but the investigator did not request resolution.",
       "resolution": "unlinked_partial_refund",
       "missing_evidence": [],
-      "suggested_action": "No action; evidence-backed classification closed automatically."
+      "suggested_action": "Confirm the classification and close."
     }
   },
   {
@@ -6936,7 +6682,7 @@
     "lifecycle_id": "LC0279",
     "payment_id": "pay_0279F905",
     "order_id": "ord_0279DC3C",
-    "state": "AUTO_RESOLVED",
+    "state": "HUMAN_REVIEW_REQUIRED",
     "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
     "expected": {
       "payment_id": "pay_0279F905",
@@ -7010,91 +6756,40 @@
       }
     ],
     "investigation": {
-      "hypothesis": "unlinked_partial_refund",
-      "reason": "Refund rfnd_027971A8 is for 127565 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
-      "recommended_action": "resolve",
+      "hypothesis": "insufficient_evidence",
+      "reason": "The observed net shortfall (127,565\u202fpaise) exactly matches the amount of an unlinked refund record (rfnd_027971A8). However, the refund record does not contain any field establishing a linkage to payment pay_0279F905 (payment_id is null and no reference ties it to the order or customer). Without verifiable evidence that this refund should be applied to the payment, the exception cannot be conclusively explained.",
+      "recommended_action": "review",
       "candidate_evidence_ids": [
         "rfnd_027971A8"
       ],
-      "source": "heuristic_stub",
-      "model_name": null,
-      "latency_ms": 0.01
+      "source": "model",
+      "model_name": "openai/gpt-oss-120b",
+      "latency_ms": 7667.94
     },
     "verification": {
       "case_id": "pay_0279F905",
-      "hypothesis": "unlinked_partial_refund",
-      "verdict": "VERIFIED",
-      "verification_score": "7 of 7 evidence checks passed",
-      "checks": [
-        {
-          "name": "E1_evidence_records_exist",
-          "kind": "existence",
-          "passed": true,
-          "detail": "proposed refund ids ['rfnd_027971A8']; resolved ['rfnd_027971A8'] against the record store"
-        },
-        {
-          "name": "E2_refund_is_processed",
-          "kind": "existence",
-          "passed": true,
-          "detail": "refund rfnd_027971A8 status is processed"
-        },
-        {
-          "name": "E3_refund_not_linked_elsewhere",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund rfnd_027971A8 payment_id is None; this case is payment pay_0279F905"
-        },
-        {
-          "name": "E4_reference_identifies_this_customer",
-          "kind": "linkage",
-          "passed": true,
-          "detail": "refund reference 'REF CUST-0010 - cust adj' vs order customer 'CUST-0010' -> match"
-        },
-        {
-          "name": "E5_amount_equals_shortfall",
-          "kind": "amount",
-          "passed": true,
-          "detail": "refund amount 127565 vs shortfall 127565"
-        },
-        {
-          "name": "E6_timing_is_plausible",
-          "kind": "timing",
-          "passed": true,
-          "detail": "refund 2026-06-21 must fall between capture 2026-06-20 and settlement+1d 2026-06-23"
-        },
-        {
-          "name": "E7_invariant_restored",
-          "kind": "invariant",
-          "passed": true,
-          "detail": "shadow ledger net with refund applied = 234777, observed settlement net = 234777"
-        }
-      ],
-      "claimed_evidence_ids": [
-        "rfnd_027971A8"
-      ],
+      "hypothesis": "insufficient_evidence",
+      "verdict": "UNVERIFIED",
+      "verification_score": "0 of 0 evidence checks passed",
+      "checks": [],
+      "claimed_evidence_ids": [],
       "ai_required_evidence": [
         {
-          "type": "refund",
-          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.amount == shadow ledger shortfall"
-        },
-        {
-          "type": "refund",
-          "expected_relationship": "refund.created_at is after capture and before settlement"
+          "type": "refund_linkage",
+          "expected_relationship": "refund.payment_id == 'pay_0279F905' OR refund.reference references order_id 'ord_0279DC3C' or customer_reference 'CUST-0010'"
         }
       ],
-      "note": ""
+      "note": "hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive"
     },
     "decision": {
       "case_id": "pay_0279F905",
-      "state": "AUTO_RESOLVED",
-      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
-      "resolution": "unlinked_partial_refund",
-      "missing_evidence": [],
-      "suggested_action": "No action; evidence-backed classification closed automatically."
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "reason": "Insufficient evidence to prove 'insufficient_evidence': 0 of 0 evidence checks passed. hypothesis 'insufficient_evidence' has no deterministic evidence battery; the gate will not accept an explanation it cannot re-derive",
+      "resolution": null,
+      "missing_evidence": [
+        "no supporting evidence produced"
+      ],
+      "suggested_action": "Obtain the missing record from the provider, or confirm the deduction manually before closing."
     }
   },
   {

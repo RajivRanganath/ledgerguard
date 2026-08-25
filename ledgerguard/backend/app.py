@@ -15,7 +15,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse
 
-from ..ai.provider import get_provider
+from ..ai.provider import HeuristicProvider, get_provider
 from ..evaluation.benchmark import batch_digest
 from ..evaluation.metrics import compute
 from ..evidence.safety import AUTO_RESOLVED
@@ -161,7 +161,16 @@ def _state() -> dict:
 
     # The hand-built adversarial pair is run separately so the demo can show it
     # in isolation, with both halves side by side.
+    #
+    # It is run twice: once with the configured investigator, and once with the
+    # deliberately naive offline stub. A capable model sometimes declines this
+    # case on its own, which is a good outcome -- but the gate exists so that
+    # the system does not have to depend on that, and the only way to show that
+    # honestly is to show both investigators on the same records.
     adv_report = run(build_adversarial_batch(), use_ai=True, provider=provider)
+    naive_report = run(
+        build_adversarial_batch(), use_ai=True, provider=HeuristicProvider()
+    )
     adv = {}
     for outcome in adv_report.outcomes:
         key = "victim" if outcome.case.payment_id == VICTIM_PAYMENT_ID else "donor"
@@ -181,6 +190,21 @@ def _state() -> dict:
             "decision_reason": outcome.decision.reason,
             "suggested_action": outcome.decision.suggested_action,
         }
+
+    naive = {}
+    for outcome in naive_report.outcomes:
+        key = "victim" if outcome.case.payment_id == VICTIM_PAYMENT_ID else "donor"
+        naive[key] = {
+            "hypothesis": outcome.investigation.result.hypothesis,
+            "recommended_action": outcome.investigation.result.recommended_action,
+            "verdict": outcome.verification.verdict,
+            "verification_score": outcome.verification.verification_score,
+            "checks": [c.as_dict() for c in outcome.verification.checks],
+            "state": outcome.decision.state,
+            "decision_reason": outcome.decision.reason,
+        }
+    adv["naive"] = naive
+    adv["investigator"] = hyb_metrics.provider
 
     unresolved = [
         {
@@ -205,7 +229,7 @@ def _state() -> dict:
             "batch_sha256": batch_digest(holdout)[:16],
         },
         "provider": hyb_metrics.provider,
-        "provider_is_model": hyb_metrics.provider.startswith("anthropic:"),
+        "provider_is_model": hyb_metrics.provider not in ("heuristic_stub", "unavailable", "none"),
         "overview": {
             "records_processed": hyb_metrics.total_cases,
             "value_inr": to_rupees_str(hyb_metrics.total_value_paise),
@@ -234,20 +258,29 @@ def _state() -> dict:
 
 
 def _pick_demo_cases(cases: list[dict]) -> list[str]:
-    """Five prepared cases that carry the demo story, chosen from real output."""
+    """Five prepared cases that carry the demo story, chosen from real output.
+
+    Each entry gives a preferred state and a fallback. The F3 beat wants a case
+    the Evidence Gate actually verified, because the story is "ambiguous, then
+    proved" -- but a live model does not resolve the same cases on every run, so
+    it falls back to any F3 case rather than dropping the beat entirely.
+    """
     wanted = [
         (FaultClass.NONE, "MATCHED"),
         (FaultClass.F4_FEE_TAX_MISMATCH, None),
-        (FaultClass.F3_UNLINKED_PARTIAL_REFUND, None),
+        (FaultClass.F3_UNLINKED_PARTIAL_REFUND, AUTO_RESOLVED),
         (FaultClass.F6_INCORRECT_LINKAGE, None),
         (FaultClass.F1_MISSING_SETTLEMENT, None),
     ]
     picked: list[str] = []
-    for fault_class, state in wanted:
-        for c in cases:
-            if c["fault_class"] == fault_class and (state is None or c["state"] == state):
-                picked.append(c["case_id"])
-                break
+    for fault_class, preferred in wanted:
+        candidates = [c for c in cases if c["fault_class"] == fault_class]
+        chosen = next(
+            (c for c in candidates if preferred and c["state"] == preferred),
+            next(iter(candidates), None),
+        )
+        if chosen:
+            picked.append(chosen["case_id"])
     return picked
 
 

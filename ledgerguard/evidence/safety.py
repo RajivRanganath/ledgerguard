@@ -136,6 +136,33 @@ def decide(
 
     # UNVERIFIED
     missing = [c.name for c in verification.failed()] or ["no supporting evidence produced"]
+
+    if investigation.hypothesis == "insufficient_evidence":
+        # The investigator declined to propose an explanation. That is a
+        # permitted, and often correct, answer -- report it as the investigator
+        # abstaining, not as the gate failing to verify a hypothesis that was
+        # never offered.
+        if investigation.source in ("unavailable", "invalid_response"):
+            reason = (
+                "No investigation was available for this case "
+                f"({investigation.error}). Escalated without one."
+            )
+        else:
+            reason = (
+                "The investigator found no explanation it could support from the "
+                f"available records: {investigation.reason}"
+            )
+        return Decision(
+            case_id=case.case_id,
+            state=HUMAN_REVIEW_REQUIRED,
+            reason=reason,
+            missing_evidence=["no hypothesis was proposed"],
+            suggested_action=(
+                "Obtain the missing record from the provider, or confirm the "
+                "deduction manually before closing."
+            ),
+        )
+
     return Decision(
         case_id=case.case_id,
         state=HUMAN_REVIEW_REQUIRED,

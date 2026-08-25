@@ -73,8 +73,9 @@ suggested human action.
 ## What the benchmark actually showed
 
 Frozen holdout, 85 lifecycles, seed `20260905`, batch SHA-256 `3e28d4572d4cfc95`.
-Both systems share the same deterministic engine, the same Shadow Ledger and the
-same safety gate; the only difference is whether the investigation step runs.
+Investigator: `groq:openai/gpt-oss-120b`. Both systems share the same
+deterministic engine, the same Shadow Ledger and the same safety gate; the only
+difference is whether the investigation step runs.
 
 | Metric | Rules only | LedgerGuard |
 |---|---|---|
@@ -83,34 +84,47 @@ same safety gate; the only difference is whether the investigation step runs.
 | Exceptions raised | 31 | 31 |
 | False exceptions (clean case flagged) | 0 | 0 |
 | Missed faults (fault case matched) | 0 | 0 |
-| Disposition accuracy | 89.4% | **100.0%** |
-| Exceptions correctly resolved | 12 | **21** |
+| Disposition accuracy | 89.4% | **95.3%** |
+| Exceptions correctly resolved | 12 | **17** |
 | Exceptions incorrectly resolved | 0 | 0 |
 | Correct abstentions | 10 | 10 |
-| Unnecessary abstentions | 9 | **0** |
-| Value left unresolved | INR 191,780.59 | INR 121,899.54 |
+| Unnecessary abstentions | 9 | **4** |
+| Value left unresolved | INR 191,780.59 | INR 138,922.84 |
 | **False auto resolutions** | **0** | **0** |
 | **Value falsely auto resolved** | **INR 0.00** | **INR 0.00** |
+| Investigations run | 0 | 15 |
+| Investigation latency p50 / p95 | — | 10.8s / 19.7s |
 
-**What this actually says:** the hybrid closes the nine ambiguous-but-provable
-refund cases the rules-only system had to escalate, and gives up none of the
-baseline's safety — all six wrong-linkage cases stay escalated and the value
-falsely auto resolved stays at zero. The gain is recall on ambiguous exceptions,
-nothing more. The hybrid does not beat the baseline on anything the baseline
-could already prove, and it is not supposed to.
+**What this actually says:** the hybrid closes 5 of the 9 ambiguous refund cases
+the rules-only system had to escalate, and gives up none of the baseline's
+safety — all six wrong-linkage cases stay escalated and the value falsely auto
+resolved stays at zero. The gain is recall on ambiguous exceptions, nothing
+more. The hybrid does not beat the baseline on anything the baseline could
+already prove, and it is not supposed to.
 
-**Important caveat, stated up front:** these numbers were produced by the
-offline `heuristic_stub` investigator, not by Claude, because no
-`ANTHROPIC_API_KEY` was available in the build environment. The stub is
-deliberately naive — it matches on amount and asks to resolve — so it is a hard
-case for the Evidence Gate rather than a flattering one. Every run report and
-the dashboard both name the provider that produced them. See
-[`docs/limitations.md`](docs/limitations.md).
+**The result that matters most is not in that table.** On the six wrong-linkage
+cases, `gpt-oss-120b` proposed a resolvable hypothesis and asked to resolve
+**6 times out of 6**. Its reasoning was fluent and specific, and it was wrong
+every time. The Evidence Gate rejected all six on linkage. Without the gate,
+that is six silent false closures.
+
+**Model output is not reproducible.** Three `groq` runs on the identical frozen
+holdout resolved 5, 6 and 7 of the 9 F3 cases (95.3%, 96.5%, 97.7% accuracy) at
+`temperature: 0`. What did *not* vary: false auto resolutions stayed 0, value
+falsely closed stayed INR 0.00, and all six F6 cases were escalated every time.
+The variance lands entirely in how much is safely closed, never in whether
+something wrong gets closed.
+
+Four investigators were run against the same holdout — see
+[`docs/model_comparison.md`](docs/model_comparison.md). Across a strong model, a
+rate-limited one, a deliberately naive offline heuristic and no investigator at
+all, the value falsely auto resolved was INR 0.00 in every case.
 
 Regenerate every figure above with:
 
 ```bash
-python -m ledgerguard.evaluation.benchmark
+python -m ledgerguard.evaluation.benchmark --provider groq
+python -m ledgerguard.evaluation.model_comparison --providers groq,gemini,stub
 ```
 
 ---
@@ -123,9 +137,24 @@ python3 -m venv .venv
 cp .env.example .env      # optional; the system runs without a key
 ```
 
-The only secret is `ANTHROPIC_API_KEY`. Without it the AI investigation step
-degrades to "cannot resolve" and everything else — rules, ledger, Evidence Gate,
-benchmark, dashboard — works unchanged.
+One API key is needed, and the system runs without any. Auto-detection order is
+`anthropic` → `groq` → `cerebras` → `gemini` → `nvidia` → offline stub:
+
+| Env var | Provider | Default model |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Anthropic SDK | `claude-opus-5` |
+| `GROQ_API_KEY` | OpenAI-compatible | `openai/gpt-oss-120b` |
+| `CEREBRAS_API_KEY` | OpenAI-compatible | `gpt-oss-120b` |
+| `GEMINI_API_KEY` | `generateContent` | `gemini-2.5-flash` |
+| `NVIDIA_API_KEY` | OpenAI-compatible | `meta/llama-3.3-70b-instruct` |
+
+Any other OpenAI-compatible host works via `LEDGERGUARD_PROVIDER=openai_compatible`
+plus `LEDGERGUARD_BASE_URL`, `LEDGERGUARD_API_KEY` and `LEDGERGUARD_MODEL`.
+
+With no key at all the AI investigation step degrades to "cannot resolve" and
+everything else — rules, ledger, Evidence Gate, benchmark, dashboard — works
+unchanged. Every artifact and the dashboard name the provider that produced
+them, so a stub run can never be mistaken for a model run.
 
 ## Demo
 
@@ -231,8 +260,10 @@ Handled without crashing the batch, each covered by a test:
 | Provider unavailable / times out / returns an error | That case → `HUMAN_REVIEW_REQUIRED`, batch continues |
 | Provider raises instead of returning | Caught in the pipeline, same degradation |
 | Malformed or unparseable model JSON | `InvestigationResult.invalid` → abstain |
+| Rate limit (429) or transient 5xx | Retried up to 4x honouring `Retry-After`, then abstains |
+| Truncated response (reasoning tokens ate the budget) | Fails JSON validation → abstain |
 | Hypothesis outside the permitted taxonomy | Rejected at schema validation |
-| Model invents an evidence id | Stripped before the gate sees it, and recorded |
+| Model returns an inadmissible evidence id | Dropped before the gate sees it, and recorded |
 | Two cases claim the same evidence record | Both downgraded, order-independently |
 | Missing transaction fields | Pydantic `extra="forbid"` models fail loudly at ingestion |
 | Duplicate ingestion | Detected in a pre-pass, collapsed into one case |

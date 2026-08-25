@@ -104,14 +104,41 @@ The wire schema (`InvestigatorOutput`) is separate from the runtime type
 There is no confidence field anywhere; adding one would create something the rest
 of the system could be tempted to trust.
 
-`AnthropicProvider` calls `claude-opus-5` through `messages.parse` with a
-structured output schema, a 45s timeout and one retry. `HeuristicProvider` is the
-offline stand-in and is deliberately naive. `UnavailableProvider` models a dead
-provider. All three return the same type.
+Providers, all returning the same type:
 
-After the call, `investigate_case` drops any evidence id that does not appear
-verbatim in the context it supplied, and records that it did. A hallucinated
-identifier never reaches the gate.
+| Provider | Transport | Default model | Structured output |
+|---|---|---|---|
+| `AnthropicProvider` | `anthropic` SDK, `messages.parse` | `claude-opus-5` | native schema |
+| `OpenAICompatibleProvider` | chat completions over httpx | Groq `openai/gpt-oss-120b`, Cerebras `gpt-oss-120b`, NVIDIA `meta/llama-3.3-70b-instruct` | strict `json_schema`, falling back to `json_object` |
+| `GeminiProvider` | `generateContent` over httpx | `gemini-2.5-flash` | `responseSchema` |
+| `HeuristicProvider` | none | — | offline stand-in, deliberately naive |
+| `UnavailableProvider` | none | — | models a dead provider |
+
+Adding the second and third of these touched no other module, which is the
+interface doing its job. The JSON schema is hand-written rather than derived
+from Pydantic, because strict-mode support varies between hosts and several
+reject `$ref`/`$defs`; the hypothesis enum is pulled from the taxonomy so the
+two cannot drift.
+
+Two operational details that came out of running against real hosts rather than
+being anticipated:
+
+- **Rate limits are a normal condition, not a failure.** Free tiers on these
+  hosts are tight (Groq is 8000 tokens/minute), so 429 and transient 5xx are
+  retried up to four times honouring the server's `Retry-After` before being
+  allowed to degrade to abstention.
+- **Reasoning tokens bill against the output ceiling.** Gemini truncated every
+  response mid-string until thinking was disabled, and Groq's reasoning model
+  exhausted the token-per-minute budget until `max_completion_tokens` was cut to
+  1200 and reasoning effort lowered. Both failures surfaced as
+  `invalid_response` / `unavailable` and abstained correctly — the system was
+  never wrong, only unproductive, which is the intended failure direction.
+
+After the call, `investigate_case` drops any evidence id that was not offered as
+candidate evidence, and records the drop. That covers invented identifiers and
+also real identifiers of the wrong kind — Gemini repeatedly included the
+payment's own id alongside the refund id, and it was dropped before the gate saw
+it.
 
 ### `evidence/verifier.py` — the Evidence Gate
 For each permitted hypothesis there is a fixed battery of deterministic checks.

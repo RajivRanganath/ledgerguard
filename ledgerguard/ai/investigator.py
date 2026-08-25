@@ -125,18 +125,23 @@ def investigate_case(
         result = InvestigationResult.unavailable(f"{type(exc).__name__}: {exc}")
     latency_ms = (time.perf_counter() - started) * 1000
 
-    # An id the investigator invented is not evidence. Drop it before the gate
-    # ever sees it, and record that we did.
+    # Only records that were offered as candidate evidence (or are already
+    # linked refunds) are admissible here. Anything else -- an invented id, or
+    # a real id of the wrong kind, such as the payment's own id -- is dropped
+    # before the gate ever sees it, and the drop is recorded.
     known_ids = {c["refund_id"] for c in context["candidate_evidence"]}
     known_ids |= {r["refund_id"] for r in context["records"]["linked_refunds"]}
-    hallucinated = [i for i in result.candidate_evidence_ids if i not in known_ids]
-    if hallucinated:
+    inadmissible = [i for i in result.candidate_evidence_ids if i not in known_ids]
+    if inadmissible:
         result = result.model_copy(
             update={
                 "candidate_evidence_ids": [
                     i for i in result.candidate_evidence_ids if i in known_ids
                 ],
-                "error": f"dropped unknown evidence ids: {hallucinated}",
+                "error": (
+                    "dropped ids that were not supplied as candidate evidence: "
+                    f"{inadmissible}"
+                ),
             }
         )
 

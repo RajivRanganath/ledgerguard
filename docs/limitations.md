@@ -3,34 +3,39 @@
 Stated plainly, because a controller that cannot describe its own boundaries is
 not a controller.
 
-## The AI investigator was never run against a real model
+## What the model results do and do not establish
 
-**This is the most important limitation on this page.** No `ANTHROPIC_API_KEY`
-and no `ant` credential profile existed in the environment this was built in, so
-every measured number in the README, `BUILD_STATUS.md` and
-`evaluation/outputs/` was produced by `HeuristicProvider` — an offline
-stand-in, not Claude.
+The hybrid column is now a real measurement — `groq:openai/gpt-oss-120b`, 15
+live investigations, 15 of 15 completed. Four separate limitations apply to it.
 
-What that does and does not invalidate:
+**Model output is not reproducible.** Three runs on the identical frozen holdout
+gave 95.3%, 96.5% and 97.7% disposition accuracy at `temperature: 0`. Any single
+accuracy figure from a model run is a sample, not a measurement, and I report the
+range rather than the best one. The deterministic layer *is* reproducible, and
+the safety figures (0 false auto resolutions, INR 0.00 falsely closed, 6/6 F6
+escalated) held across all three runs.
 
-- **Not affected:** the deterministic engine, the Shadow Ledger, the invariants,
-  the Evidence Gate, the safety gate, the fault taxonomy, the holdout freeze, and
-  the rules-only baseline. None of these involve a model.
-- **Affected:** the hybrid column's claim about what *an LLM* contributes. What
-  was measured is what a naive amount-matching investigator contributes when
-  every proposal is passed through the Evidence Gate.
-- **Direction of the bias:** the stub is deliberately worse than a competent
-  model on selection — it proposes `unlinked_partial_refund` with
-  `recommended_action: resolve` for every amount match, including all twelve
-  wrong-linkage cases. So it stresses the gate harder than a careful model
-  would. It is not a flattering substitute, but it is also not a model, and the
-  latency and cost figures from a stub run are meaningless.
+**One model on one dataset is thin evidence.** `docs/model_comparison.md` widens
+it to four investigators, but Gemini's row is a rate limit rather than a
+capability measurement (13 of 15 calls returned 429 on an exhausted free-tier
+quota), NVIDIA was excluded for wall-clock reasons, and Cerebras returned HTTP
+402 on the available key. So the honest statement is: one model measured
+properly, one measured badly, one heuristic, and a baseline.
 
-`AnthropicProvider` implements the same interface against `claude-opus-5` with
-structured outputs. Set `ANTHROPIC_API_KEY` and rerun
-`python -m ledgerguard.evaluation.benchmark`; every artifact and the dashboard
-both name the provider that produced them, so a stub run can never be mistaken
-for a model run.
+**The offline stub scores highest, and that is a caution about the dataset.**
+It reaches 100% because this fixture's ambiguity is exactly the shape its single
+heuristic assumes. It is well-matched, not competent. If a naive amount-matcher
+tops the table, headline accuracy on this data is close to meaningless — which is
+why false auto resolutions and rupee exposure are the reported headline instead.
+
+**Cost was not measured.** All providers used here were free tiers, which is
+also why the latency figures (p50 10.8s, p95 19.7s, with rate-limit retries
+included) are not representative of a paid tier. No cost-per-100-records figure
+is claimed.
+
+`AnthropicProvider` (`claude-opus-5`, `messages.parse`) is implemented and is
+first in the auto-detection order, but no Anthropic key was available, so Claude
+was never measured here.
 
 ## Data
 
@@ -67,9 +72,11 @@ for a model run.
   passed, not a probability. It is not calibrated and is never displayed as one.
 - **No LLM-only baseline.** Only rules-only vs hybrid. An LLM-only arm would be
   informative but was P2 and was not built, so no claim is made about it.
-- **Throughput figures come from a run with no network call.** They measure the
-  deterministic engine, and will drop by orders of magnitude with a real model in
-  the loop. Latency p50/p95 from a stub run are not meaningful.
+- **The two throughput figures measure different things.** The rules-only column
+  (~25,000 cases/s) is the deterministic engine with no network call. The hybrid
+  column (0.6 cases/s) is dominated entirely by 15 sequential model calls on a
+  rate-limited free tier. Neither is a production throughput number, and the
+  investigations are not batched or parallelised.
 
 ## Integration
 

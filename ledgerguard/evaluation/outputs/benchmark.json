@@ -126,7 +126,7 @@
     "exception_value_paise": 36426731,
     "unresolved_value_paise": 19178059,
     "wall_seconds": 0.003,
-    "throughput_per_second": 30354.9,
+    "throughput_per_second": 25437.4,
     "investigations": 0,
     "model_calls": 0,
     "model_calls_per_100_records": 0.0,
@@ -190,7 +190,7 @@
   },
   "hybrid": {
     "system": "LedgerGuard (hybrid)",
-    "provider": "heuristic_stub",
+    "provider": "groq:openai/gpt-oss-120b",
     "false_auto_resolutions": 0,
     "false_auto_resolved_value_paise": 0,
     "total_cases": 85,
@@ -201,26 +201,26 @@
     "false_exceptions": 0,
     "missed_faults": 0,
     "exception_type_correct": 31,
-    "disposition_correct": 85,
-    "accuracy": 1.0,
-    "auto_resolved": 21,
-    "exceptions_correctly_resolved": 21,
+    "disposition_correct": 81,
+    "accuracy": 0.9529,
+    "auto_resolved": 17,
+    "exceptions_correctly_resolved": 17,
     "exceptions_incorrectly_resolved": 0,
-    "recommend_review": 0,
-    "human_review_required": 10,
+    "recommend_review": 1,
+    "human_review_required": 13,
     "unresolved": 0,
     "correct_abstentions": 10,
-    "unnecessary_abstentions": 0,
+    "unnecessary_abstentions": 4,
     "exception_value_paise": 36426731,
-    "unresolved_value_paise": 12189954,
-    "wall_seconds": 0.004,
-    "throughput_per_second": 23630.0,
+    "unresolved_value_paise": 13892284,
+    "wall_seconds": 151.735,
+    "throughput_per_second": 0.6,
     "investigations": 15,
-    "model_calls": 0,
-    "model_calls_per_100_records": 0.0,
+    "model_calls": 15,
+    "model_calls_per_100_records": 17.65,
     "investigations_per_100_records": 17.65,
-    "latency_p50_ms": 0.01,
-    "latency_p95_ms": 0.02,
+    "latency_p50_ms": 10785.3,
+    "latency_p95_ms": 19675.32,
     "per_fault_class": {
       "F1_MISSING_SETTLEMENT": {
         "n": 4,
@@ -238,10 +238,10 @@
       },
       "F3_UNLINKED_PARTIAL_REFUND": {
         "n": 9,
-        "auto_resolved": 9,
-        "correct": 9,
+        "auto_resolved": 5,
+        "correct": 5,
         "false_auto": 0,
-        "abstained": 0
+        "abstained": 4
       },
       "F4_FEE_TAX_MISMATCH": {
         "n": 4,
@@ -273,7 +273,7 @@
       }
     },
     "false_auto_resolved_value_inr": "0.00",
-    "unresolved_value_inr": "121899.54",
+    "unresolved_value_inr": "138922.84",
     "total_value_inr": "2493357.00"
   }
 }
