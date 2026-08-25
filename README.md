@@ -133,6 +133,15 @@ benchmark, dashboard — works unchanged.
 ./run_demo.sh          # tests, then benchmark, then http://127.0.0.1:8137
 ```
 
+With the server up, verify every beat of the demo before presenting:
+
+```bash
+.venv/bin/python -m ledgerguard.tests.rehearsal_check
+```
+
+It walks all five beats of [`docs/demo_script.md`](docs/demo_script.md) three
+times and fails if any of them regressed — including the adversarial case.
+
 Or the pieces individually:
 
 ```bash
@@ -266,6 +275,8 @@ docs/           architecture.md  evaluation.md  limitations.md
 BUILD_STATUS.md
 ```
 
+`docs/demo_script.md` is the timed five minute walkthrough;
+`docs/panel_defense.md` is the written defense of the design decisions.
 `BUILD_STATUS.md` records every checkpoint with the evidence that backs it,
 including two bugs found and fixed during evaluation.
 
