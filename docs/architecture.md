@@ -1,0 +1,170 @@
+# Architecture
+
+## The one-sentence version
+
+Deterministic accounting decides what is true; the AI only proposes candidate
+explanations for what the accounting could not decide; an independent gate
+re-derives every proposal from records before it can change any state.
+
+## Data flow
+
+```
+                         Batch (orders, payments, refunds, settlements, bank)
+                                            |
+                              +-------------+-------------+
+                              |                           |
+                      ShadowLedger                   deterministic
+                  (expected movement)                  matcher
+                              |                           |
+                              +------------+--------------+
+                                           |
+                                  6 invariants I1..I6
+                                           |
+                             +-------------+--------------+
+                             |                            |
+                     provable outcome              genuinely ambiguous
+                (MATCHED / typed exception)       (UNEXPLAINED_SHORTFALL,
+                             |                     BANK_MISMATCH, ...)
+                             |                            |
+                             |                    AI investigator
+                             |                  (structured JSON only)
+                             |                            |
+                             |                     Evidence Gate
+                             |               (7 deterministic checks)
+                             |                            |
+                             |                  uniqueness pass
+                             +-------------+--------------+
+                                           |
+                                  safety / action gate
+                       AUTO_RESOLVED | RECOMMEND_REVIEW
+                       HUMAN_REVIEW_REQUIRED | UNRESOLVED
+```
+
+## Components
+
+### `ledger/money.py`
+Every monetary value is an `int` count of paise. `Decimal` appears only inside
+rate application, and the result is quantised back to an integer with
+`ROUND_HALF_UP` at the paise boundary — the single place a derived money value
+is allowed to round. `apply_rate` raises on a non-`int` input, so a float can
+never enter the money path by accident.
+
+Fee model: 2% platform fee on the captured amount, 18% GST on that fee.
+
+### `ledger/shadow_ledger.py`
+Indexes a batch and reconstructs, per captured payment:
+
+```
+expected_net = gross − fees − tax − valid_refunds + valid_adjustments
+```
+
+A refund counts as *valid* only if it is `PROCESSED` **and** carries an explicit
+`payment_id` linking it to this payment. Refunds with no linkage are held
+separately as `orphan_refunds` and are never silently absorbed.
+
+`expected_for_payment(payment, extra_refunds=[...])` is the hypothetical form:
+"if this refund really did belong to this payment, would the ledger balance?"
+It mutates nothing. This is the mechanism the Evidence Gate uses for its
+decisive check, and the reason the AI can influence *which* record is tested
+without influencing *how* the test is computed.
+
+### `ledger/invariants.py`
+Six named predicates, each independently testable:
+
+| | Invariant | Catches |
+|---|---|---|
+| I1 | settlement arithmetic is internally consistent | corrupted settlement rows |
+| I2 | fees and tax match the independent fee schedule | fee/tax overcharge (F4) |
+| I3 | observed net equals the Shadow Ledger's net | any unexplained shortfall (F3, F6) |
+| I4 | settlement gross equals the captured amount | capture/settlement mismatch |
+| I5 | settlement date falls inside T+2 ±1d | delayed settlement (F5) |
+| I6 | one bank credit equals the settlement net | missing/duplicated bank credit (F2) |
+
+I2 is what catches a settlement that is internally consistent but wrong — a fee
+overcharge keeps I1 holding, so only an independently computed fee schedule
+finds it.
+
+### `reconciliation/matcher.py`
+Runs before the model, always. Duplicate pre-pass over the whole batch, then one
+case per captured payment: no settlement → `MISSING_SETTLEMENT`; more than one →
+`DUPLICATE_RECORD`; otherwise run all six invariants and map the failures to a
+specific exception type, most severe first.
+
+`exceptions.py` splits the taxonomy into `DETERMINISTICALLY_PROVEN` (never
+reaches the model) and `NEEDS_INVESTIGATION`. On the frozen holdout, 16 of the
+31 exceptions are proven outright and never cost a model call.
+
+### `ai/`
+`investigate_exception(context) -> InvestigationResult` is the entire surface the
+rest of the system depends on, so the controller is model independent.
+
+The wire schema (`InvestigatorOutput`) is separate from the runtime type
+(`InvestigationResult`) so the runtime-only fields — `source`, `model_name`,
+`error` — cannot be written by the model. `hypothesis` is a closed `Literal` set.
+There is no confidence field anywhere; adding one would create something the rest
+of the system could be tempted to trust.
+
+`AnthropicProvider` calls `claude-opus-5` through `messages.parse` with a
+structured output schema, a 45s timeout and one retry. `HeuristicProvider` is the
+offline stand-in and is deliberately naive. `UnavailableProvider` models a dead
+provider. All three return the same type.
+
+After the call, `investigate_case` drops any evidence id that does not appear
+verbatim in the context it supplied, and records that it did. A hallucinated
+identifier never reaches the gate.
+
+### `evidence/verifier.py` — the Evidence Gate
+For each permitted hypothesis there is a fixed battery of deterministic checks.
+For `unlinked_partial_refund`:
+
+| Check | Kind | Question |
+|---|---|---|
+| E1 | existence | do the proposed records actually exist? |
+| E2 | existence | is the refund `PROCESSED`? |
+| E3 | **linkage** | is it already owned by a different payment? |
+| E4 | **linkage** | does its reference identify *this* order's customer? |
+| E5 | amount | does it equal the shortfall? |
+| E6 | timing | is it after capture and before settlement +1d? |
+| E7 | invariant | re-running the Shadow Ledger with it applied, does I3 hold exactly? |
+
+A failure of a **linkage** check produces `REJECTED` — positive disproof.
+Anything else produces `UNVERIFIED` — absence of proof. That distinction is the
+whole design: a refund whose amount matches but whose customer does not is not
+weak evidence, it is counter-evidence.
+
+E4 compares *normalised* strings (non-alphanumerics stripped, uppercased), which
+is why the deterministic matcher cannot do this job itself: the matcher does
+exact identifier matching, and the reference names a **customer**, not an order.
+A customer has several orders in this dataset, so even a parsed reference does
+not identify the payment. Selecting the payment is the investigator's job;
+proving the selection is the gate's.
+
+`resolve_evidence_conflicts` then runs across all cases: if two would-be
+`VERIFIED` cases claim the same record, both are downgraded. It is a separate
+pass precisely so the result cannot depend on the order cases were investigated
+in.
+
+### `evidence/safety.py`
+Maps a verification outcome onto four states. `AUTO_RESOLVED` requires every
+check to pass, the ledger to balance, and the investigator to have asked for
+resolution. `REJECTED` and `UNVERIFIED` both escalate.
+
+Note that `MISSING_SETTLEMENT` escalates even though it is fully proven: the
+cause is known, but closing it is not within the system's authority. Proof and
+authority are separate questions.
+
+### `pipeline.py`
+`run(batch, use_ai=True|False)`. The baseline is the same call with the
+investigation step switched off — not a different code path — which is what
+makes the comparison fair.
+
+## Deliberate omissions
+
+- **No planner, manager, supervisor, critic or verification *agent*.** One
+  investigator, one deterministic engine, one independent gate. A verification
+  agent would be a second model asked to grade the first; the gate re-derives
+  from records instead, which is strictly stronger.
+- **No calibrated confidence.** A Verification Score is a count of named checks.
+  Empirical calibration was out of scope and is listed as such.
+- **No database.** SQLite would add a persistence layer nothing in the demo
+  needs; the controller is a pure function of a batch.

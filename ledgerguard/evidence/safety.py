@@ -1,0 +1,152 @@
+"""Safety and action gate.
+
+Turns a verification outcome into one of four states. The bias is deliberate:
+abstention is a correct answer, and the gate is not scored on how many
+exceptions it closes.
+
+"Auto resolved" here means the reconciliation exception is classified and
+closed inside LedgerGuard. It never means money moves.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from ..ai.schemas import InvestigationResult
+from ..ledger.models import ExceptionStatus, ExceptionType
+from ..reconciliation.matcher import CaseResult
+from .verifier import REJECTED, UNVERIFIED, VERIFIED, VerificationOutcome
+
+AUTO_RESOLVED = ExceptionStatus.AUTO_RESOLVED.value
+RECOMMEND_REVIEW = ExceptionStatus.RECOMMEND_REVIEW.value
+HUMAN_REVIEW_REQUIRED = ExceptionStatus.HUMAN_REVIEW_REQUIRED.value
+UNRESOLVED = ExceptionStatus.UNRESOLVED.value
+
+#: Exception types the deterministic layer proves outright: the cause is known
+#: exactly, so the exception can be classified and closed without a human.
+_DETERMINISTIC_AUTO_CLOSE = {
+    ExceptionType.DUPLICATE_RECORD: "Duplicate ingestion proven by identifier and content match; the duplicate is suppressed, not paid.",
+    ExceptionType.FEE_MISMATCH: "Fee and tax reconciled against the independent fee schedule; the exact variance is quantified.",
+    ExceptionType.DELAYED_SETTLEMENT: "All amounts reconcile exactly; the only discrepancy is timing against the expected settlement window.",
+}
+
+#: Proven, but the resolution is outside the system's authority to close.
+_DETERMINISTIC_ESCALATE = {
+    ExceptionType.MISSING_SETTLEMENT: "Captured funds have no settlement record. The money is outstanding; LedgerGuard cannot close this, it can only report it.",
+}
+
+
+@dataclass
+class Decision:
+    case_id: str
+    state: str
+    reason: str
+    resolution: str | None = None
+    missing_evidence: list[str] = None            # type: ignore[assignment]
+    suggested_action: str = ""
+
+    def __post_init__(self) -> None:
+        if self.missing_evidence is None:
+            self.missing_evidence = []
+
+    @property
+    def is_auto_resolved(self) -> bool:
+        return self.state == AUTO_RESOLVED
+
+    @property
+    def needs_human(self) -> bool:
+        return self.state in (HUMAN_REVIEW_REQUIRED, RECOMMEND_REVIEW, UNRESOLVED)
+
+
+def decide(
+    case: CaseResult,
+    investigation: InvestigationResult | None = None,
+    verification: VerificationOutcome | None = None,
+) -> Decision:
+    exc = case.exception
+    assert exc is not None, "decide() is only called for exceptions"
+    exc_type = exc.exception_type
+
+    if exc_type in _DETERMINISTIC_AUTO_CLOSE:
+        return Decision(
+            case_id=case.case_id,
+            state=AUTO_RESOLVED,
+            reason=_DETERMINISTIC_AUTO_CLOSE[exc_type],
+            resolution=exc_type.value,
+            suggested_action="No action; classified and closed by the deterministic engine.",
+        )
+
+    if exc_type in _DETERMINISTIC_ESCALATE:
+        return Decision(
+            case_id=case.case_id,
+            state=HUMAN_REVIEW_REQUIRED,
+            reason=_DETERMINISTIC_ESCALATE[exc_type],
+            missing_evidence=["settlement record", "bank credit"],
+            suggested_action="Raise a settlement query with the provider for this payment.",
+        )
+
+    # ---- ambiguous: an investigation was attempted -------------------------
+    if verification is None or investigation is None:
+        return Decision(
+            case_id=case.case_id,
+            state=UNRESOLVED,
+            reason=f"No handler exists for exception type {exc_type.value}.",
+            suggested_action="Extend the reconciliation taxonomy or review manually.",
+        )
+
+    if verification.verdict == REJECTED:
+        failed = [c for c in verification.failed() if c.kind == "linkage"]
+        return Decision(
+            case_id=case.case_id,
+            state=HUMAN_REVIEW_REQUIRED,
+            reason=(
+                f"Evidence Gate rejected the hypothesis {investigation.hypothesis!r}: "
+                + "; ".join(c.detail for c in failed)
+            ),
+            missing_evidence=[c.name for c in verification.failed()],
+            suggested_action=(
+                "Do not net this against the proposed refund. Identify the true "
+                "counterparty of the deduction with the provider before closing."
+            ),
+        )
+
+    if verification.verdict == VERIFIED:
+        if investigation.recommended_action == "resolve":
+            return Decision(
+                case_id=case.case_id,
+                state=AUTO_RESOLVED,
+                reason=(
+                    f"Hypothesis {investigation.hypothesis!r} verified independently: "
+                    f"{verification.verification_score}, and the shadow ledger balances "
+                    f"once the evidence is applied."
+                ),
+                resolution=investigation.hypothesis,
+                suggested_action="No action; evidence-backed classification closed automatically.",
+            )
+        return Decision(
+            case_id=case.case_id,
+            state=RECOMMEND_REVIEW,
+            reason=(
+                f"Evidence verified ({verification.verification_score}) but the "
+                f"investigator did not request resolution."
+            ),
+            resolution=investigation.hypothesis,
+            suggested_action="Confirm the classification and close.",
+        )
+
+    # UNVERIFIED
+    missing = [c.name for c in verification.failed()] or ["no supporting evidence produced"]
+    return Decision(
+        case_id=case.case_id,
+        state=HUMAN_REVIEW_REQUIRED,
+        reason=(
+            f"Insufficient evidence to prove {investigation.hypothesis!r}: "
+            f"{verification.verification_score or 'no checks were possible'}. "
+            + (verification.note or "")
+        ).strip(),
+        missing_evidence=missing,
+        suggested_action=(
+            "Obtain the missing record from the provider, or confirm the deduction "
+            "manually before closing."
+        ),
+    )
