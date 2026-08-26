@@ -73,7 +73,8 @@ suggested human action.
 ## What the benchmark actually showed
 
 Frozen holdout, 85 lifecycles, seed `20260905`, batch SHA-256 `3e28d4572d4cfc95`.
-Investigator: `groq:openai/gpt-oss-120b`. Both systems share the same
+Investigator: the default chain `fallback(groq->gemini->nvidia->omniroute)`, run
+uncached — Groq served all 15 investigations. Both systems share the same
 deterministic engine, the same Shadow Ledger and the same safety gate; the only
 difference is whether the investigation step runs.
 
@@ -84,18 +85,18 @@ difference is whether the investigation step runs.
 | Exceptions raised | 31 | 31 |
 | False exceptions (clean case flagged) | 0 | 0 |
 | Missed faults (fault case matched) | 0 | 0 |
-| Disposition accuracy | 89.4% | **95.3%** |
-| Exceptions correctly resolved | 12 | **17** |
+| Disposition accuracy | 89.4% | **97.7%** |
+| Exceptions correctly resolved | 12 | **19** |
 | Exceptions incorrectly resolved | 0 | 0 |
 | Correct abstentions | 10 | 10 |
-| Unnecessary abstentions | 9 | **4** |
-| Value left unresolved | INR 191,780.59 | INR 155,054.89 |
+| Unnecessary abstentions | 9 | **2** |
+| Value left unresolved | INR 191,780.59 | INR 135,901.89 |
 | **False auto resolutions** | **0** | **0** |
 | **Value falsely auto resolved** | **INR 0.00** | **INR 0.00** |
 | Investigations run | 0 | 15 |
-| Investigation latency p50 / p95 | — | 8.4s / 12.9s |
+| Investigation latency p50 / p95 | — | 10.8s / 12.8s |
 
-**What this actually says:** the hybrid closes 5 of the 9 ambiguous refund cases
+**What this actually says:** the hybrid closes 7 of the 9 ambiguous refund cases
 the rules-only system had to escalate, and gives up none of the baseline's
 safety — all six wrong-linkage cases stay escalated and the value falsely auto
 resolved stays at zero. The gain is recall on ambiguous exceptions, nothing
@@ -157,9 +158,9 @@ One API key is needed, and the system runs without any. Auto-detection order is
 
 | Env var | Provider | Default model |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Anthropic SDK | `claude-opus-5` |
+| `ANTHROPIC_API_KEY` | Anthropic SDK | `claude-opus-5` (explicit only) |
 | `GROQ_API_KEY` | OpenAI-compatible | `openai/gpt-oss-120b` |
-| `CEREBRAS_API_KEY` | OpenAI-compatible | `gpt-oss-120b` |
+| `CEREBRAS_API_KEY` | OpenAI-compatible | `gpt-oss-120b` (explicit only) |
 | `GEMINI_API_KEY` | `generateContent` | `gemini-2.5-flash` |
 | `NVIDIA_API_KEY` | OpenAI-compatible | `meta/llama-3.3-70b-instruct` |
 
@@ -170,14 +171,21 @@ endpoint. Any other OpenAI-compatible host works via
 `LEDGERGUARD_API_KEY` and `LEDGERGUARD_MODEL`.
 
 **Failover is automatic.** With more than one key configured, the default
-`auto` provider builds a chain across every configured provider and fails over
-when one runs out — and *within* a provider it rotates between model routes.
-Free tiers die mid-run constantly, and neither failure should turn a resolvable
-case into an abstention:
+`auto` provider builds a chain and fails over when one runs out — and *within* a
+provider it rotates between model routes. Free tiers die mid-run constantly, and
+neither failure should turn a resolvable case into an abstention:
 
 ```
-fallback(omniroute -> groq -> gemini -> cerebras -> nvidia)     # 5 providers, 16 routes
+fallback(groq -> gemini -> nvidia -> omniroute)        # 4 providers, 12 routes
 ```
+
+OmniRoute is deliberately last and is the deepest link: it fronts Mistral,
+NVIDIA and Groq under *its own* credentials, separate from the direct keys, so
+it survives those running out. Every route in the chain was individually
+verified to answer with a strict JSON schema before being listed — dead ones
+(Claude via OmniRoute, end-of-life NVIDIA endpoints, models that answer in prose)
+are not carried, since a dead route only buys latency before the rotation gives
+up on it.
 
 - A route that is rate limited past its retries, out of quota, or emitting
   unparseable output is **retired for the run**, not retried per case.

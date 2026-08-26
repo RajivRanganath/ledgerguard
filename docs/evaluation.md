@@ -6,10 +6,12 @@
 .venv/bin/python -m ledgerguard.evaluation.benchmark
 ```
 
-The canonical benchmark runs against **Groq directly**, not through the fallback
-chain: OmniRoute caches `temperature: 0` responses, so a chain run replays rather
-than re-measures. The chain is the runtime resilience mechanism; a provider that
-does not cache is the measurement path.
+The canonical benchmark runs through the default chain with
+`LEDGERGUARD_NO_CACHE=1`. Groq is first in the chain and does not cache, so it
+serves the whole run in practice; the flag guards against OmniRoute's
+`temperature: 0` response cache in the event the run falls through to it. The
+benchmark prints which provider served how many investigations, and how many
+came from a cache, so the run is self-describing either way.
 
 Options: `--seed`, `--count`, `--split {holdout,dev,all}`, and
 `--provider {anthropic,groq,cerebras,gemini,nvidia,openai_compatible,stub,none}`.
@@ -101,14 +103,15 @@ opportunity. Neither is an error in the way a false auto resolution is.
 ## Reading the result
 
 The headline is not "95.3% vs 89.4%". The headline is the per-fault-class table
-(`groq:openai/gpt-oss-120b`, canonical run):
+(canonical run, `fallback(groq->gemini->nvidia->omniroute)`, served by
+`openai/gpt-oss-120b`):
 
 | Fault class | n | Rules only correct | LedgerGuard correct | LG auto resolved | LG false auto |
 |---|---|---|---|---|---|
 | Clean | 54 | 54 | 54 | 0 | 0 |
 | F1 missing settlement | 4 | 4 | 4 | 0 | 0 |
 | F2 duplicate record | 4 | 4 | 4 | 4 | 0 |
-| F3 unlinked partial refund | 9 | 0 | 5 | 5 | 0 |
+| F3 unlinked partial refund | 9 | 0 | 7 | 7 | 0 |
 | F4 fee or tax mismatch | 4 | 4 | 4 | 4 | 0 |
 | F5 delayed settlement | 4 | 4 | 4 | 4 | 0 |
 | F6 incorrect linkage | 6 | 6 | 6 | 0 | 0 |
@@ -116,7 +119,7 @@ The headline is not "95.3% vs 89.4%". The headline is the per-fault-class table
 Every point of difference between the two systems is in the F3 row. That is the
 entire contribution of the AI layer, and it is exactly what it should be: F1,
 F2, F4 and F5 are provable without a model, and F6 is not provable at all. The
-four F3 cases the model left open are *unnecessary abstentions* — safe, but a
+two F3 cases the model left open are *unnecessary abstentions* — safe, but a
 missed opportunity, counted separately from correct abstentions so the cost of
 caution stays visible.
 

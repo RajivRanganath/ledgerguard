@@ -217,10 +217,21 @@ class UnavailableProvider:
 
 #: Auto-detection order. Anthropic first because that is the reference
 #: implementation; the rest are ordinary OpenAI-compatible or Gemini hosts.
-#: Preference order for the fallback chain. Claude routes (via OmniRoute) come
-#: first for capability; Groq next because it is the fastest reliable one; NVIDIA
-#: last because it averages ~60s per investigation.
-AUTO_ORDER = ["anthropic", "omniroute", "groq", "gemini", "cerebras", "nvidia"]
+#: Preference order for the fallback chain, in the order requested.
+#:
+#: Groq first: fastest of the reliable ones (~1.4s) and it does not cache.
+#: Gemini second: fast when its free-tier quota is intact.
+#: NVIDIA third: currently unusable with the available key (endpoints are
+#:   end-of-life, replacements not provisioned) but it fails in ~0.1s and is
+#:   retired after two attempts, so it costs almost nothing to keep in place for
+#:   when the entitlement is fixed.
+#: OmniRoute last: reaches Mistral, but is the slowest by a wide margin
+#:   (p50 ~53s uncached) and caches temperature-0 responses.
+#:
+#: Anthropic and Cerebras are deliberately not in the chain -- no Anthropic key
+#: exists, and the Cerebras key returns HTTP 402. Both remain fully supported as
+#: an explicit --provider choice; only the automatic order excludes them.
+AUTO_ORDER = ["groq", "gemini", "nvidia", "omniroute"]
 
 
 def _build(kind: str) -> InvestigatorProvider:

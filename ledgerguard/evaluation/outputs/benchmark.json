@@ -125,8 +125,8 @@
     "unnecessary_abstentions": 9,
     "exception_value_paise": 36426731,
     "unresolved_value_paise": 19178059,
-    "wall_seconds": 0.003,
-    "throughput_per_second": 26232.5,
+    "wall_seconds": 0.004,
+    "throughput_per_second": 22395.4,
     "investigations": 0,
     "model_calls": 0,
     "model_calls_per_100_records": 0.0,
@@ -190,7 +190,7 @@
   },
   "hybrid": {
     "system": "LedgerGuard (hybrid)",
-    "provider": "groq:openai/gpt-oss-120b",
+    "provider": "fallback(groq->gemini->nvidia->omniroute)",
     "false_auto_resolutions": 0,
     "false_auto_resolved_value_paise": 0,
     "total_cases": 85,
@@ -201,26 +201,26 @@
     "false_exceptions": 0,
     "missed_faults": 0,
     "exception_type_correct": 31,
-    "disposition_correct": 81,
-    "accuracy": 0.9529,
-    "auto_resolved": 17,
-    "exceptions_correctly_resolved": 17,
+    "disposition_correct": 83,
+    "accuracy": 0.9765,
+    "auto_resolved": 19,
+    "exceptions_correctly_resolved": 19,
     "exceptions_incorrectly_resolved": 0,
-    "recommend_review": 2,
+    "recommend_review": 0,
     "human_review_required": 12,
     "unresolved": 0,
     "correct_abstentions": 10,
-    "unnecessary_abstentions": 4,
+    "unnecessary_abstentions": 2,
     "exception_value_paise": 36426731,
-    "unresolved_value_paise": 15505489,
-    "wall_seconds": 110.063,
-    "throughput_per_second": 0.8,
+    "unresolved_value_paise": 13590189,
+    "wall_seconds": 121.704,
+    "throughput_per_second": 0.7,
     "investigations": 15,
     "model_calls": 15,
     "model_calls_per_100_records": 17.65,
     "investigations_per_100_records": 17.65,
-    "latency_p50_ms": 8382.3,
-    "latency_p95_ms": 12886.78,
+    "latency_p50_ms": 10775.36,
+    "latency_p95_ms": 12804.67,
     "per_fault_class": {
       "F1_MISSING_SETTLEMENT": {
         "n": 4,
@@ -238,10 +238,10 @@
       },
       "F3_UNLINKED_PARTIAL_REFUND": {
         "n": 9,
-        "auto_resolved": 5,
-        "correct": 5,
+        "auto_resolved": 7,
+        "correct": 7,
         "false_auto": 0,
-        "abstained": 4
+        "abstained": 2
       },
       "F4_FEE_TAX_MISMATCH": {
         "n": 4,
@@ -273,8 +273,21 @@
       }
     },
     "false_auto_resolved_value_inr": "0.00",
-    "unresolved_value_inr": "155054.89",
+    "unresolved_value_inr": "135901.89",
     "total_value_inr": "2493357.00"
   },
-  "investigator_chain": null
+  "investigator_chain": {
+    "chain": [
+      "groq:openai/gpt-oss-120b",
+      "gemini:gemini-2.5-flash",
+      "nvidia:nvidia/llama-3.1-nemotron-70b-instruct",
+      "omniroute:mistral/mistral-large-latest"
+    ],
+    "served_by": {
+      "groq:openai/gpt-oss-120b": 15
+    },
+    "retired": {},
+    "cache_hits": {},
+    "routes_exhausted": {}
+  }
 }

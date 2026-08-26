@@ -176,17 +176,25 @@ PRESETS: dict[str, dict] = {
         # LEDGERGUARD_MODEL at a concrete route (e.g.
         # `openrouter/anthropic/claude-opus-5`) when the matching upstream
         # credential is active in OmniRoute.
-        # Mistral only. The Claude routes this install exposes (oc/*,
-        # openrouter/anthropic/*) are not usable -- oc/* returns 401 despite the
-        # upstream showing connected, and openrouter/* reports "No active
-        # credentials" -- and the auto/* aliases resolve to slow free models that
-        # rarely return parseable JSON. Carrying dead routes only buys latency
-        # before the rotation gives up on them, so the list is restricted to
-        # routes verified to answer with strict json_schema. Groq, Gemini and
-        # NVIDIA are reachable here too but are already in the chain directly.
+        # OmniRoute fronts several upstreams under its own credentials, which
+        # are separate from the direct keys above -- so its Groq and NVIDIA
+        # routes are genuine fallbacks, not duplicates. The list interleaves
+        # upstreams deliberately: one dead upstream then costs one hop, not the
+        # whole link.
+        #
+        # Every route below was individually verified to answer with strict
+        # json_schema. Excluded after testing: all Claude routes (oc/* 401,
+        # openrouter/anthropic/* "No active credentials"), nvidia/deepseek-v4-pro
+        # and nvidia/z-ai/glm-5.2 (410 Gone), groq/llama-3.3-70b-versatile and
+        # gemini/gemini-2.5-flash (404, retired upstream), gemini/gemini-3.5-flash
+        # (ignores the schema and answers in prose), and the auto/* aliases
+        # (slow free models, rarely parseable).
         "models": [
             "mistral/mistral-large-latest",
+            "nvidia/nvidia/nemotron-3-super-120b-a12b",
+            "groq/openai/gpt-oss-120b",
             "mistral/mistral-medium-3-5",
+            "nvidia/openai/gpt-oss-120b",
             "mistral/mistral-small-latest",
         ],
         "json_schema": True,
