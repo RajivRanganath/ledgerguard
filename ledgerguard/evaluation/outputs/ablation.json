@@ -1,0 +1,234 @@
+{
+  "provider": "fallback(groq->gemini->nvidia->omniroute)",
+  "arms": [
+    {
+      "name": "rules_only",
+      "description": "No AI at all",
+      "total": 85,
+      "matched": 54,
+      "auto_resolved": 12,
+      "escalated": 19,
+      "correct": 76,
+      "accuracy": 0.8941,
+      "false_auto": 0,
+      "false_auto_value_paise": 0,
+      "missed_faults": 0,
+      "false_exceptions": 0,
+      "unavailable": 0,
+      "per_fault_class": {
+        "F1_MISSING_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F2_DUPLICATE_RECORD": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F3_UNLINKED_PARTIAL_REFUND": {
+          "n": 9,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F4_FEE_TAX_MISMATCH": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F5_DELAYED_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F6_INCORRECT_LINKAGE": {
+          "n": 6,
+          "correct": 6,
+          "false_auto": 0
+        },
+        "NONE": {
+          "n": 54,
+          "correct": 54,
+          "false_auto": 0
+        }
+      },
+      "note": "Anything the arithmetic cannot prove is escalated."
+    },
+    {
+      "name": "no_shadow_ledger",
+      "description": "No independent expectation; trust the provider's own arithmetic",
+      "total": 85,
+      "matched": 80,
+      "auto_resolved": 0,
+      "escalated": 5,
+      "correct": 58,
+      "accuracy": 0.6824,
+      "false_auto": 0,
+      "false_auto_value_paise": 0,
+      "missed_faults": 26,
+      "false_exceptions": 0,
+      "unavailable": 0,
+      "per_fault_class": {
+        "F1_MISSING_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F2_DUPLICATE_RECORD": {
+          "n": 4,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F3_UNLINKED_PARTIAL_REFUND": {
+          "n": 9,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F4_FEE_TAX_MISMATCH": {
+          "n": 4,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F5_DELAYED_SETTLEMENT": {
+          "n": 4,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F6_INCORRECT_LINKAGE": {
+          "n": 6,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "NONE": {
+          "n": 54,
+          "correct": 54,
+          "false_auto": 0
+        }
+      },
+      "note": "Only settlement-internal consistency and bank agreement remain. Both hold for a settlement that is internally tidy and simply wrong."
+    },
+    {
+      "name": "llm_only",
+      "description": "No deterministic engine; the model decides every case",
+      "total": 0,
+      "matched": 0,
+      "auto_resolved": 0,
+      "escalated": 0,
+      "correct": 0,
+      "accuracy": 0.0,
+      "false_auto": 0,
+      "false_auto_value_paise": 0,
+      "missed_faults": 0,
+      "false_exceptions": 0,
+      "unavailable": 0,
+      "per_fault_class": {},
+      "note": "skipped: the configured provider does not support raw JSON completion"
+    },
+    {
+      "name": "hybrid_no_gate",
+      "description": "AI investigates, but its conclusions are taken on trust",
+      "total": 85,
+      "matched": 54,
+      "auto_resolved": 26,
+      "escalated": 5,
+      "correct": 78,
+      "accuracy": 0.9176,
+      "false_auto": 6,
+      "false_auto_value_paise": 2575440,
+      "missed_faults": 0,
+      "false_exceptions": 0,
+      "unavailable": 0,
+      "per_fault_class": {
+        "F1_MISSING_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F2_DUPLICATE_RECORD": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F3_UNLINKED_PARTIAL_REFUND": {
+          "n": 9,
+          "correct": 8,
+          "false_auto": 0
+        },
+        "F4_FEE_TAX_MISMATCH": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F5_DELAYED_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F6_INCORRECT_LINKAGE": {
+          "n": 6,
+          "correct": 0,
+          "false_auto": 6
+        },
+        "NONE": {
+          "n": 54,
+          "correct": 54,
+          "false_auto": 0
+        }
+      },
+      "note": "Identical to the full system except that nothing is re-derived from records."
+    },
+    {
+      "name": "hybrid",
+      "description": "The full system",
+      "total": 85,
+      "matched": 54,
+      "auto_resolved": 18,
+      "escalated": 13,
+      "correct": 82,
+      "accuracy": 0.9647,
+      "false_auto": 0,
+      "false_auto_value_paise": 0,
+      "missed_faults": 0,
+      "false_exceptions": 0,
+      "unavailable": 0,
+      "per_fault_class": {
+        "F1_MISSING_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F2_DUPLICATE_RECORD": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F3_UNLINKED_PARTIAL_REFUND": {
+          "n": 9,
+          "correct": 6,
+          "false_auto": 0
+        },
+        "F4_FEE_TAX_MISMATCH": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F5_DELAYED_SETTLEMENT": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "F6_INCORRECT_LINKAGE": {
+          "n": 6,
+          "correct": 6,
+          "false_auto": 0
+        },
+        "NONE": {
+          "n": 54,
+          "correct": 54,
+          "false_auto": 0
+        }
+      },
+      "note": ""
+    }
+  ]
+}

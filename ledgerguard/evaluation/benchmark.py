@@ -25,6 +25,7 @@ from ..ledger.money import to_rupees_str
 from ..pipeline import RunReport, run
 from ..synthetic.fault_injector import build_dataset, split
 from ..synthetic.generator import Dataset
+from .cost import estimate
 from .metrics import Metrics, compute
 
 OUTPUT_DIR = Path(__file__).parent / "outputs"
@@ -257,6 +258,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # Which providers actually answered, and which dropped out mid-run.
     fallback_report = provider.report() if hasattr(provider, "report") else None
+    costs = estimate(provider, hyb_metrics.investigations, hyb_metrics.total_cases)
 
     md = render_markdown(base_metrics, hyb_metrics, manifest)
     (OUTPUT_DIR / "benchmark.md").write_text(md)
@@ -275,6 +277,7 @@ def main(argv: list[str] | None = None) -> int:
                 "baseline": base_metrics.as_dict(),
                 "hybrid": hyb_metrics.as_dict(),
                 "investigator_chain": fallback_report,
+                "cost_estimate": [c.as_dict() for c in costs],
             },
             indent=2,
             default=str,
@@ -303,6 +306,16 @@ def main(argv: list[str] | None = None) -> int:
         for name, routes in fallback_report["routes_exhausted"].items():
             for route, why in routes.items():
                 print(f"  route spent {name} / {route}: {why[:100]}")
+    if costs:
+        print("\n## Estimated cost (list prices, nothing was actually charged)\n")
+        for c in costs:
+            d = c.as_dict()
+            print(
+                f"  {d['model']}: {d['prompt_tokens']:,} in + {d['completion_tokens']:,} out "
+                f"= {d['tokens_per_investigation']:,} tokens/investigation, "
+                f"${d['estimated_usd']} total, "
+                f"${d['estimated_usd_per_100_records']} per 100 records"
+            )
     print(f"\nArtifacts written to {OUTPUT_DIR}")
     print(f"  benchmark.md, benchmark.json, cases.json")
     print(f"  unresolved_exceptions.csv ({n_unresolved} rows)")

@@ -14,6 +14,7 @@ from dataclasses import dataclass
 
 from ..ai.schemas import InvestigationResult
 from ..ledger.models import ExceptionStatus, ExceptionType
+from ..ledger.money import to_rupees_str
 from ..reconciliation.matcher import CaseResult
 from .verifier import REJECTED, UNVERIFIED, VERIFIED, VerificationOutcome
 
@@ -67,11 +68,58 @@ def decide(
     assert exc is not None, "decide() is only called for exceptions"
     exc_type = exc.exception_type
 
+    if (
+        exc_type is ExceptionType.DELAYED_SETTLEMENT
+        and exc.evidence.get("window_undecidable")
+    ):
+        # Amounts reconcile, but the expected settlement window could not be
+        # computed at all, so the timing check never ran. Closing this as a
+        # routine delay would assert a verification that did not happen.
+        return Decision(
+            case_id=case.case_id,
+            state=HUMAN_REVIEW_REQUIRED,
+            reason=(
+                "Amounts reconcile exactly, but the payment has no capture "
+                "timestamp, so the expected settlement window is undecidable. "
+                "The timing check could not be run, and is not assumed to pass."
+            ),
+            missing_evidence=["payment.captured_at"],
+            suggested_action=(
+                "Recover the capture timestamp from the provider, then re-run "
+                "reconciliation for this payment."
+            ),
+        )
+
+    residual = exc.evidence.get("residual_paise") or 0
+    secondary = exc.evidence.get("secondary_findings") or []
+
     if exc_type in _DETERMINISTIC_AUTO_CLOSE:
+        if residual:
+            # Money the proven cause does not account for. Closing here would be
+            # closing a case on the strength of the part that was proved while
+            # the rest stays unexplained -- the exact failure this system exists
+            # to prevent.
+            return Decision(
+                case_id=case.case_id,
+                state=HUMAN_REVIEW_REQUIRED,
+                reason=(
+                    f"{_DETERMINISTIC_AUTO_CLOSE[exc_type]} Correcting it still leaves "
+                    f"{to_rupees_str(abs(residual))} INR unattributed, with no record "
+                    f"explaining it. A second, unproven discrepancy is present."
+                ),
+                missing_evidence=["explanation for the residual deduction"],
+                suggested_action=(
+                    "Recover the fee variance, and separately identify the "
+                    "counterparty of the remaining deduction before closing."
+                ),
+            )
+        reason = _DETERMINISTIC_AUTO_CLOSE[exc_type]
+        if secondary:
+            reason += f" Also flagged, and individually benign: {', '.join(secondary)}."
         return Decision(
             case_id=case.case_id,
             state=AUTO_RESOLVED,
-            reason=_DETERMINISTIC_AUTO_CLOSE[exc_type],
+            reason=reason,
             resolution=exc_type.value,
             suggested_action="No action; classified and closed by the deterministic engine.",
         )
@@ -112,14 +160,20 @@ def decide(
 
     if verification.verdict == VERIFIED:
         if investigation.recommended_action == "resolve":
+            reason = (
+                f"Hypothesis {investigation.hypothesis!r} verified independently: "
+                f"{verification.verification_score}, and the shadow ledger balances "
+                f"once the evidence is applied."
+            )
+            if secondary:
+                reason += (
+                    f" Separate findings still reported on this case: "
+                    f"{', '.join(secondary)}."
+                )
             return Decision(
                 case_id=case.case_id,
                 state=AUTO_RESOLVED,
-                reason=(
-                    f"Hypothesis {investigation.hypothesis!r} verified independently: "
-                    f"{verification.verification_score}, and the shadow ledger balances "
-                    f"once the evidence is applied."
-                ),
+                reason=reason,
                 resolution=investigation.hypothesis,
                 suggested_action="No action; evidence-backed classification closed automatically.",
             )

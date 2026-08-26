@@ -1,0 +1,54 @@
+[
+  {
+    "lifecycles": 320,
+    "records": 1345,
+    "generate_seconds": 0.005,
+    "reconcile_seconds": 0.005,
+    "throughput_per_second": 65519.0,
+    "microseconds_per_case": 15.3,
+    "matched": 218,
+    "exceptions": 102,
+    "false_exceptions": 0,
+    "missed_faults": 0,
+    "fault_classes_present": 6
+  },
+  {
+    "lifecycles": 1000,
+    "records": 4222,
+    "generate_seconds": 0.013,
+    "reconcile_seconds": 0.016,
+    "throughput_per_second": 63538.8,
+    "microseconds_per_case": 15.7,
+    "matched": 680,
+    "exceptions": 320,
+    "false_exceptions": 0,
+    "missed_faults": 0,
+    "fault_classes_present": 6
+  },
+  {
+    "lifecycles": 5000,
+    "records": 21133,
+    "generate_seconds": 0.081,
+    "reconcile_seconds": 0.128,
+    "throughput_per_second": 39177.6,
+    "microseconds_per_case": 25.5,
+    "matched": 3400,
+    "exceptions": 1600,
+    "false_exceptions": 0,
+    "missed_faults": 0,
+    "fault_classes_present": 6
+  },
+  {
+    "lifecycles": 12000,
+    "records": 50799,
+    "generate_seconds": 0.26,
+    "reconcile_seconds": 0.378,
+    "throughput_per_second": 31751.4,
+    "microseconds_per_case": 31.5,
+    "matched": 8160,
+    "exceptions": 3840,
+    "false_exceptions": 0,
+    "missed_faults": 0,
+    "fault_classes_present": 6
+  }
+]

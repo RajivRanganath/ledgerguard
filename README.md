@@ -319,20 +319,56 @@ Handled without crashing the batch, each covered by a test:
 | Missing transaction fields | Pydantic `extra="forbid"` models fail loudly at ingestion |
 | Duplicate ingestion | Detected in a pre-pass, collapsed into one case |
 
+## Analyses
+
+Every one writes its own artifact under `evaluation/outputs/` and none of them
+tunes anything:
+
+```bash
+python -m ledgerguard.evaluation.benchmark          # rules only vs hybrid
+python -m ledgerguard.evaluation.ablation           # what each component is worth
+python -m ledgerguard.evaluation.model_comparison   # five investigators, same holdout
+python -m ledgerguard.evaluation.calibration        # is the Verification Score meaningful?
+python -m ledgerguard.evaluation.drift              # which assumptions are load-bearing
+python -m ledgerguard.evaluation.replay             # re-derive every decision from the record
+python -m ledgerguard.evaluation.scale              # deterministic path at 12,000 lifecycles
+python -m ledgerguard.evaluation.report             # exportable reconciliation + audit trail
+python -m ledgerguard.qa "how much is still unresolved?"
+```
+
+`ablation` is the one to read first — it puts a number on the Evidence Gate.
+`replay` is the one an auditor would care about: every decision is re-derived
+from a written record, with the investigator's output replayed as data rather
+than regenerated.
+
+`qa` answers only from reconciled records and refuses anything it cannot derive.
+The model may choose the query; the number is always computed by code.
+
 ## Tests
 
-Five core P0 tests (7 functions), each protecting something that would otherwise
-break silently:
+41 tests, in three tiers.
 
 ```bash
 .venv/bin/python -m pytest ledgerguard/tests -q
 ```
+
+**Five core P0 tests** (7 functions), each protecting something that would
+otherwise break silently:
 
 1. Financial arithmetic is exact on a known example
 2. Shadow Ledger invariants separate a valid lifecycle from three corruptions
 3. Evidence Gate accepts a correctly linked refund
 4. **Evidence Gate rejects an amount-matching refund from another payment**
 5. Insufficient evidence abstains, in four different ways, and never force-resolves
+
+**P1 extended coverage** — duplicate shapes, settlement window boundaries,
+generator reproducibility and split stability, malformed model output (five
+shapes), timeouts and transport failure, malformed records, and compound
+failures.
+
+**P2 evaluation machinery** — including two tests that exist to stop an analysis
+from lying: the ablation must actually change the outcome, and the replay must
+be able to *fail* when a decision is tampered with.
 
 ## Secrets
 

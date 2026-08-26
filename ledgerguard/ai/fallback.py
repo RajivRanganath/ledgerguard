@@ -100,12 +100,49 @@ class FallbackProvider:
             f"all providers exhausted ({detail or last.error})"
         )
 
+    def complete_json(
+        self, system: str, user: str, schema: dict, name: str = "response"
+    ) -> tuple[dict | None, str | None, str | None]:
+        """Structured JSON completion, with the same failover as investigate().
+
+        Providers that cannot do arbitrary structured output (Gemini's
+        generateContent path here) are skipped rather than treated as failures,
+        so they do not consume the retirement budget for something they were
+        never asked to do.
+        """
+        last_error = "no provider in the chain supports raw JSON completion"
+        for provider in self.active:
+            if not hasattr(provider, "complete_json"):
+                continue
+            key = provider.name.split(":", 1)[0]
+            try:
+                payload, served, error = provider.complete_json(system, user, schema, name)
+            except Exception as exc:
+                payload, served, error = None, None, f"{type(exc).__name__}: {exc}"
+            if payload is not None:
+                self._consecutive_failures[key] = 0
+                self.served_by[f"{key}:{served or provider.name}"] += 1
+                return payload, served, None
+            last_error = error or last_error
+            self._consecutive_failures[key] += 1
+            if self._consecutive_failures[key] >= self.failures_before_retiring:
+                self._retire(provider, last_error)
+        return None, None, last_error
+
     def report(self) -> dict:
         """Who answered, and who dropped out. Printed alongside every run."""
         return {
             "chain": [p.name for p in self.providers],
             "served_by": dict(self.served_by),
             "retired": dict(self._retired),
+            "tokens": {
+                p.name.split(":", 1)[0]: {
+                    "prompt": p.prompt_tokens,
+                    "completion": p.completion_tokens,
+                }
+                for p in self.providers
+                if getattr(p, "prompt_tokens", 0) or getattr(p, "completion_tokens", 0)
+            },
             "cache_hits": {
                 p.name.split(":", 1)[0]: p.cache_hits
                 for p in self.providers

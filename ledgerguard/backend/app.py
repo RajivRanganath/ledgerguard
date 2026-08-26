@@ -249,6 +249,19 @@ def _state() -> dict:
         "benchmark": {
             "baseline": base_metrics.as_dict(),
             "hybrid": hyb_metrics.as_dict(),
+            "per_fault_class": [
+                {
+                    "fault_class": name,
+                    "n": hyb_metrics.per_fault_class.get(name, {}).get("n", 0),
+                    "baseline_correct": base_metrics.per_fault_class.get(name, {}).get("correct", 0),
+                    "hybrid_correct": hyb_metrics.per_fault_class.get(name, {}).get("correct", 0),
+                    "hybrid_auto_resolved": hyb_metrics.per_fault_class.get(name, {}).get("auto_resolved", 0),
+                    "hybrid_false_auto": hyb_metrics.per_fault_class.get(name, {}).get("false_auto", 0),
+                }
+                for name in sorted(
+                    set(base_metrics.per_fault_class) | set(hyb_metrics.per_fault_class)
+                )
+            ],
         },
         "cases": cases,
         "adversarial": adv,

@@ -1,0 +1,87 @@
+[
+  {
+    "scenario": "baseline",
+    "change": "no change (control)",
+    "cases": 218,
+    "matched": 218,
+    "exceptions": 0,
+    "false_exception_rate": 0.0,
+    "dominant_exception": "\u2014",
+    "detected_as": {},
+    "verdict": "absorbed: the controller is indifferent to this shift"
+  },
+  {
+    "scenario": "fee_rate_2.25pct",
+    "change": "platform fee 2.00% -> 2.25%",
+    "cases": 218,
+    "matched": 0,
+    "exceptions": 218,
+    "false_exception_rate": 1.0,
+    "dominant_exception": "EXCEPTION_FEE_MISMATCH",
+    "detected_as": {
+      "EXCEPTION_FEE_MISMATCH": 218
+    },
+    "verdict": "NOT absorbed: the assumption is load-bearing and now wrong"
+  },
+  {
+    "scenario": "fee_rate_2.5pct",
+    "change": "platform fee 2.00% -> 2.50%",
+    "cases": 218,
+    "matched": 0,
+    "exceptions": 218,
+    "false_exception_rate": 1.0,
+    "dominant_exception": "EXCEPTION_FEE_MISMATCH",
+    "detected_as": {
+      "EXCEPTION_FEE_MISMATCH": 218
+    },
+    "verdict": "NOT absorbed: the assumption is load-bearing and now wrong"
+  },
+  {
+    "scenario": "fee_rate_1.75pct",
+    "change": "platform fee 2.00% -> 1.75% (in our favour)",
+    "cases": 218,
+    "matched": 0,
+    "exceptions": 218,
+    "false_exception_rate": 1.0,
+    "dominant_exception": "EXCEPTION_FEE_MISMATCH",
+    "detected_as": {
+      "EXCEPTION_FEE_MISMATCH": 218
+    },
+    "verdict": "NOT absorbed: the assumption is load-bearing and now wrong"
+  },
+  {
+    "scenario": "settlement_T3",
+    "change": "settlement lag T+2 -> T+3",
+    "cases": 218,
+    "matched": 218,
+    "exceptions": 0,
+    "false_exception_rate": 0.0,
+    "dominant_exception": "\u2014",
+    "detected_as": {},
+    "verdict": "absorbed: the controller is indifferent to this shift"
+  },
+  {
+    "scenario": "settlement_T4",
+    "change": "settlement lag T+2 -> T+4",
+    "cases": 218,
+    "matched": 0,
+    "exceptions": 218,
+    "false_exception_rate": 1.0,
+    "dominant_exception": "EXCEPTION_DELAYED_SETTLEMENT",
+    "detected_as": {
+      "EXCEPTION_DELAYED_SETTLEMENT": 218
+    },
+    "verdict": "NOT absorbed: the assumption is load-bearing and now wrong"
+  },
+  {
+    "scenario": "amounts_x10",
+    "change": "ticket sizes 10x larger",
+    "cases": 218,
+    "matched": 218,
+    "exceptions": 0,
+    "false_exception_rate": 0.0,
+    "dominant_exception": "\u2014",
+    "detected_as": {},
+    "verdict": "absorbed: the controller is indifferent to this shift"
+  }
+]

@@ -255,6 +255,12 @@ class OpenAICompatibleProvider:
         self._disabled_params: set[str] = set()
         #: Models that actually answered, when they differ from the one asked for.
         self.served_models: set[str] = set()
+        #: Token usage as reported by the host, accumulated across the run.
+        #: Providers that omit `usage` simply contribute nothing, which is why
+        #: the benchmark reports "tokens reported by the provider" rather than
+        #: implying a measurement we did not take.
+        self.prompt_tokens = 0
+        self.completion_tokens = 0
         #: Responses the host served from its own cache rather than the model.
         #: OmniRoute caches temperature-0 requests and does not honour
         #: Cache-Control: no-cache, so repeated runs over a deterministic
@@ -326,17 +332,79 @@ class OpenAICompatibleProvider:
                 time.sleep(min(2.0 * (2 ** attempt), MAX_RETRY_WAIT_SECONDS))
         return None, InvestigationResult.unavailable(last)
 
-    def _response_format(self) -> dict:
+    def _response_format(self, schema: dict | None = None, name: str = "investigation") -> dict:
         if self.supports_json_schema:
             return {
                 "type": "json_schema",
                 "json_schema": {
-                    "name": "investigation",
+                    "name": name,
                     "strict": True,
-                    "schema": INVESTIGATION_SCHEMA,
+                    "schema": schema or INVESTIGATION_SCHEMA,
                 },
             }
         return {"type": "json_object"}
+
+    def complete_json(
+        self, system: str, user: str, schema: dict, name: str = "response"
+    ) -> tuple[dict | None, str | None, str | None]:
+        """One structured-JSON completion against an arbitrary schema.
+
+        Returns ``(payload, served_model, error)``. Used by the ablation study,
+        which needs a different output shape from the investigator's. Shares the
+        same transport, retry, rate-limit and parameter-dropping behaviour so
+        the arms are not accidentally measured under different conditions.
+        """
+        if not self.supports_json_schema:
+            system = (
+                system
+                + "\n\nRespond with a single JSON object and nothing else, matching "
+                "exactly this schema:\n" + json.dumps(schema)
+            )
+        body = {
+            "model": self.model,
+            "max_completion_tokens": self.max_tokens,
+            **({} if os.environ.get("LEDGERGUARD_NO_CACHE") else {"temperature": 0}),
+            "stream": False,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "response_format": self._response_format(schema, name),
+        }
+        if self.reasoning_effort and "reasoning_effort" not in self._disabled_params:
+            body["reasoning_effort"] = self.reasoning_effort
+        if "temperature" in self._disabled_params:
+            body.pop("temperature", None)
+
+        response, failure = self._post_with_retries(
+            f"{self.base_url}/chat/completions",
+            {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
+            body,
+        )
+        if response is None:
+            error = failure.error or "request failed"
+            rejected = self._rejected_parameter(error)
+            if rejected:
+                self._disabled_params.add(rejected)
+                return self.complete_json(system, user, schema, name)
+            if self._retire_current(error):
+                return self.complete_json(system, user, schema, name)
+            return None, None, error
+
+        try:
+            payload = response.json()
+            raw = payload["choices"][0]["message"]["content"]
+            served = payload.get("model") or self.model
+        except Exception as exc:
+            return None, None, f"unexpected response envelope: {exc}"
+        if str(response.headers.get("x-omniroute-cache-hit", "")).lower() == "true":
+            self.cache_hits += 1
+        try:
+            return json.loads(_strip_fences(raw)), served, None
+        except json.JSONDecodeError as exc:
+            if self._retire_current(f"unparseable output: {exc}"):
+                return self.complete_json(system, user, schema, name)
+            return None, served, f"response was not valid JSON: {exc}"
 
     def investigate(self, context: dict) -> InvestigationResult:
         """Investigate, advancing to the next route if the current one is spent."""
@@ -429,6 +497,10 @@ class OpenAICompatibleProvider:
 
         if str(response.headers.get("x-omniroute-cache-hit", "")).lower() == "true":
             self.cache_hits += 1
+
+        usage = payload.get("usage") or {}
+        self.prompt_tokens += int(usage.get("prompt_tokens") or 0)
+        self.completion_tokens += int(usage.get("completion_tokens") or 0)
 
         served = payload.get("model") or self.model
         if served != self.model:

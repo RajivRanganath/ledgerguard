@@ -1,0 +1,106 @@
+case_id,hypothesis,verdict,check,kind,passed,detail,claimed_evidence_ids,final_state
+pay_00121298,unlinked_partial_refund,REJECTED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_01952574']; resolved ['rfnd_01952574'] against the record store,rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_00121298,unlinked_partial_refund,REJECTED,E2_refund_is_processed,existence,PASS,refund rfnd_01952574 status is processed,rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_00121298,unlinked_partial_refund,REJECTED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_01952574 payment_id is None; this case is payment pay_00121298,rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_00121298,unlinked_partial_refund,REJECTED,E4_reference_identifies_this_customer,linkage,FAIL,refund reference 'ADJ/CUST-0007/partial' vs order customer 'CUST-0072' -> NO MATCH,rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_00121298,unlinked_partial_refund,REJECTED,E5_amount_equals_shortfall,amount,PASS,refund amount 698810 vs shortfall 698810,rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_00121298,unlinked_partial_refund,REJECTED,E6_timing_is_plausible,timing,FAIL,refund 2026-06-28 must fall between capture 2026-06-30 and settlement+1d 2026-07-03,rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_00121298,unlinked_partial_refund,REJECTED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 6911935, observed settlement net = 6911935",rfnd_01952574,HUMAN_REVIEW_REQUIRED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_003431D5']; resolved ['rfnd_003431D5'] against the record store,rfnd_003431D5,AUTO_RESOLVED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_003431D5 status is processed,rfnd_003431D5,AUTO_RESOLVED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_003431D5 payment_id is None; this case is payment pay_003478CC,rfnd_003431D5,AUTO_RESOLVED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'CUST-0081/refund posted' vs order customer 'CUST-0081' -> match,rfnd_003431D5,AUTO_RESOLVED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 1272670 vs shortfall 1272670,rfnd_003431D5,AUTO_RESOLVED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-28 must fall between capture 2026-06-27 and settlement+1d 2026-06-30,rfnd_003431D5,AUTO_RESOLVED
+pay_003478CC,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 3355271, observed settlement net = 3355271",rfnd_003431D5,AUTO_RESOLVED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_003431D5']; resolved ['rfnd_003431D5'] against the record store,rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E2_refund_is_processed,existence,PASS,refund rfnd_003431D5 status is processed,rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_003431D5 payment_id is None; this case is payment pay_0048CBEF,rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E4_reference_identifies_this_customer,linkage,FAIL,refund reference 'CUST-0081/refund posted' vs order customer 'CUST-0011' -> NO MATCH,rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E5_amount_equals_shortfall,amount,PASS,refund amount 1272670 vs shortfall 1272670,rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E6_timing_is_plausible,timing,FAIL,refund 2026-06-28 must fall between capture 2026-06-30 and settlement+1d 2026-07-03,rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_0048CBEF,unlinked_partial_refund,REJECTED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = -427498, observed settlement net = -427498",rfnd_003431D5,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0245935A']; resolved ['rfnd_0245935A'] against the record store,rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E2_refund_is_processed,existence,PASS,refund rfnd_0245935A status is processed,rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0245935A payment_id is None; this case is payment pay_00526F48,rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E4_reference_identifies_this_customer,linkage,FAIL,refund reference 'ADJ/CUST-0068/partial' vs order customer 'CUST-0069' -> NO MATCH,rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E5_amount_equals_shortfall,amount,PASS,refund amount 230710 vs shortfall 230710,rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E6_timing_is_plausible,timing,FAIL,refund 2026-06-14 must fall between capture 2026-06-02 and settlement+1d 2026-06-05,rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_00526F48,unlinked_partial_refund,REJECTED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 1412766, observed settlement net = 1412766",rfnd_0245935A,HUMAN_REVIEW_REQUIRED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0108D9BC']; resolved ['rfnd_0108D9BC'] against the record store,rfnd_0108D9BC,AUTO_RESOLVED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_0108D9BC status is processed,rfnd_0108D9BC,AUTO_RESOLVED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0108D9BC payment_id is None; this case is payment pay_0108B5A2,rfnd_0108D9BC,AUTO_RESOLVED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'REF CUST-0080 - cust adj' vs order customer 'CUST-0080' -> match,rfnd_0108D9BC,AUTO_RESOLVED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 65395 vs shortfall 65395,rfnd_0108D9BC,AUTO_RESOLVED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-20 must fall between capture 2026-06-19 and settlement+1d 2026-06-22,rfnd_0108D9BC,AUTO_RESOLVED
+pay_0108B5A2,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 176069, observed settlement net = 176069",rfnd_0108D9BC,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0142A640']; resolved ['rfnd_0142A640'] against the record store,rfnd_0142A640,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_0142A640 status is processed,rfnd_0142A640,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0142A640 payment_id is None; this case is payment pay_014252C5,rfnd_0142A640,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'CUST-0065/refund posted' vs order customer 'CUST-0065' -> match,rfnd_0142A640,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 180290 vs shortfall 180290,rfnd_0142A640,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-06 must fall between capture 2026-06-05 and settlement+1d 2026-06-08,rfnd_0142A640,AUTO_RESOLVED
+pay_014252C5,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 355363, observed settlement net = 355363",rfnd_0142A640,AUTO_RESOLVED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_027971A8']; resolved ['rfnd_027971A8'] against the record store,rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E2_refund_is_processed,existence,PASS,refund rfnd_027971A8 status is processed,rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_027971A8 payment_id is None; this case is payment pay_01452BE5,rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E4_reference_identifies_this_customer,linkage,FAIL,refund reference 'REF CUST-0010 - cust adj' vs order customer 'CUST-0046' -> NO MATCH,rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E5_amount_equals_shortfall,amount,PASS,refund amount 127565 vs shortfall 127565,rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E6_timing_is_plausible,timing,FAIL,refund 2026-06-21 must fall between capture 2026-06-09 and settlement+1d 2026-06-12,rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_01452BE5,unlinked_partial_refund,REJECTED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 6337961, observed settlement net = 6337961",rfnd_027971A8,HUMAN_REVIEW_REQUIRED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0166F085']; resolved ['rfnd_0166F085'] against the record store,rfnd_0166F085,AUTO_RESOLVED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_0166F085 status is processed,rfnd_0166F085,AUTO_RESOLVED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0166F085 payment_id is None; this case is payment pay_0166A046,rfnd_0166F085,AUTO_RESOLVED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'chargeback-adj CUST-0043' vs order customer 'CUST-0043' -> match,rfnd_0166F085,AUTO_RESOLVED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 411830 vs shortfall 411830,rfnd_0166F085,AUTO_RESOLVED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-28 must fall between capture 2026-06-27 and settlement+1d 2026-06-30,rfnd_0166F085,AUTO_RESOLVED
+pay_0166A046,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 1619277, observed settlement net = 1619277",rfnd_0166F085,AUTO_RESOLVED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0108D9BC']; resolved ['rfnd_0108D9BC'] against the record store,rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E2_refund_is_processed,existence,PASS,refund rfnd_0108D9BC status is processed,rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0108D9BC payment_id is None; this case is payment pay_0170BEB1,rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E4_reference_identifies_this_customer,linkage,FAIL,refund reference 'REF CUST-0080 - cust adj' vs order customer 'CUST-0066' -> NO MATCH,rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E5_amount_equals_shortfall,amount,PASS,refund amount 65395 vs shortfall 65395,rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E6_timing_is_plausible,timing,FAIL,refund 2026-06-20 must fall between capture 2026-06-28 and settlement+1d 2026-07-01,rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0170BEB1,unlinked_partial_refund,REJECTED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 263359, observed settlement net = 263359",rfnd_0108D9BC,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0142A640']; resolved ['rfnd_0142A640'] against the record store,rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E2_refund_is_processed,existence,PASS,refund rfnd_0142A640 status is processed,rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0142A640 payment_id is None; this case is payment pay_0190477E,rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E4_reference_identifies_this_customer,linkage,FAIL,refund reference 'CUST-0065/refund posted' vs order customer 'CUST-0052' -> NO MATCH,rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E5_amount_equals_shortfall,amount,PASS,refund amount 180290 vs shortfall 180290,rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E6_timing_is_plausible,timing,FAIL,refund 2026-06-06 must fall between capture 2026-06-14 and settlement+1d 2026-06-17,rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_0190477E,unlinked_partial_refund,REJECTED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 5883154, observed settlement net = 5883154",rfnd_0142A640,HUMAN_REVIEW_REQUIRED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_01952574']; resolved ['rfnd_01952574'] against the record store,rfnd_01952574,AUTO_RESOLVED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_01952574 status is processed,rfnd_01952574,AUTO_RESOLVED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_01952574 payment_id is None; this case is payment pay_01952C76,rfnd_01952574,AUTO_RESOLVED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'ADJ/CUST-0007/partial' vs order customer 'CUST-0007' -> match,rfnd_01952574,AUTO_RESOLVED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 698810 vs shortfall 698810,rfnd_01952574,AUTO_RESOLVED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-28 must fall between capture 2026-06-27 and settlement+1d 2026-06-30,rfnd_01952574,AUTO_RESOLVED
+pay_01952C76,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 2501243, observed settlement net = 2501243",rfnd_01952574,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0216DB0A']; resolved ['rfnd_0216DB0A'] against the record store,rfnd_0216DB0A,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_0216DB0A status is processed,rfnd_0216DB0A,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0216DB0A payment_id is None; this case is payment pay_02164433,rfnd_0216DB0A,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'chargeback-adj CUST-0003' vs order customer 'CUST-0003' -> match,rfnd_0216DB0A,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 2837070 vs shortfall 2837070,rfnd_0216DB0A,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-06 must fall between capture 2026-06-04 and settlement+1d 2026-06-07,rfnd_0216DB0A,AUTO_RESOLVED
+pay_02164433,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 2857100, observed settlement net = 2857100",rfnd_0216DB0A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0245935A']; resolved ['rfnd_0245935A'] against the record store,rfnd_0245935A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_0245935A status is processed,rfnd_0245935A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0245935A payment_id is None; this case is payment pay_02456E14,rfnd_0245935A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'ADJ/CUST-0068/partial' vs order customer 'CUST-0068' -> match,rfnd_0245935A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 230710 vs shortfall 230710,rfnd_0245935A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-14 must fall between capture 2026-06-13 and settlement+1d 2026-06-16,rfnd_0245935A,AUTO_RESOLVED
+pay_02456E14,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 149500, observed settlement net = 149500",rfnd_0245935A,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_0248B238']; resolved ['rfnd_0248B238'] against the record store,rfnd_0248B238,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_0248B238 status is processed,rfnd_0248B238,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_0248B238 payment_id is None; this case is payment pay_02489632,rfnd_0248B238,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'chargeback-adj CUST-0023' vs order customer 'CUST-0023' -> match,rfnd_0248B238,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 1163765 vs shortfall 1163765,rfnd_0248B238,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-08 must fall between capture 2026-06-07 and settlement+1d 2026-06-10,rfnd_0248B238,AUTO_RESOLVED
+pay_02489632,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 1245111, observed settlement net = 1245111",rfnd_0248B238,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E1_evidence_records_exist,existence,PASS,proposed refund ids ['rfnd_027971A8']; resolved ['rfnd_027971A8'] against the record store,rfnd_027971A8,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E2_refund_is_processed,existence,PASS,refund rfnd_027971A8 status is processed,rfnd_027971A8,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E3_refund_not_linked_elsewhere,linkage,PASS,refund rfnd_027971A8 payment_id is None; this case is payment pay_0279F905,rfnd_027971A8,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E4_reference_identifies_this_customer,linkage,PASS,refund reference 'REF CUST-0010 - cust adj' vs order customer 'CUST-0010' -> match,rfnd_027971A8,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E5_amount_equals_shortfall,amount,PASS,refund amount 127565 vs shortfall 127565,rfnd_027971A8,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E6_timing_is_plausible,timing,PASS,refund 2026-06-21 must fall between capture 2026-06-20 and settlement+1d 2026-06-23,rfnd_027971A8,AUTO_RESOLVED
+pay_0279F905,unlinked_partial_refund,VERIFIED,E7_invariant_restored,invariant,PASS,"shadow ledger net with refund applied = 234777, observed settlement net = 234777",rfnd_027971A8,AUTO_RESOLVED

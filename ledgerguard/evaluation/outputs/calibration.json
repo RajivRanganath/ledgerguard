@@ -1,0 +1,46 @@
+{
+  "provider": "heuristic_stub",
+  "investigated": 26,
+  "by_request": [
+    {
+      "label": "resolve",
+      "n": 26,
+      "closing_would_be_correct": 20,
+      "correct_rate": 0.7692
+    }
+  ],
+  "by_verification_score": [
+    {
+      "label": "7/7",
+      "n": 20,
+      "closing_would_be_correct": 20,
+      "correct_rate": 1.0
+    },
+    {
+      "label": "6/7",
+      "n": 2,
+      "closing_would_be_correct": 0,
+      "correct_rate": 0.0
+    },
+    {
+      "label": "5/7",
+      "n": 4,
+      "closing_would_be_correct": 0,
+      "correct_rate": 0.0
+    }
+  ],
+  "by_verdict": [
+    {
+      "label": "VERIFIED",
+      "n": 20,
+      "closing_would_be_correct": 20,
+      "correct_rate": 1.0
+    },
+    {
+      "label": "REJECTED",
+      "n": 6,
+      "closing_would_be_correct": 0,
+      "correct_rate": 0.0
+    }
+  ]
+}

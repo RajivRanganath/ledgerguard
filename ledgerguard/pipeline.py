@@ -70,11 +70,35 @@ class RunReport:
         return {o.case_id: o for o in self.outcomes}
 
 
+def _accept_without_proof(case: CaseResult, result: InvestigationResult) -> VerificationOutcome:
+    """The ablation stand-in for the Evidence Gate: believe the investigator.
+
+    Used only by the ablation study, to measure what the gate is actually
+    preventing. It records zero checks, so nothing about it can be mistaken for
+    verification after the fact.
+    """
+    from .evidence.verifier import UNVERIFIED, VERIFIED
+
+    trusted = result.hypothesis != "insufficient_evidence" and result.source in (
+        "model",
+        "heuristic_stub",
+    )
+    return VerificationOutcome(
+        case_id=case.case_id,
+        hypothesis=result.hypothesis,
+        verdict=VERIFIED if trusted else UNVERIFIED,
+        checks=[],
+        claimed_evidence_ids=list(result.candidate_evidence_ids),
+        note="ABLATION: Evidence Gate disabled; the investigator was taken at its word",
+    )
+
+
 def run(
     batch: Batch,
     use_ai: bool = True,
     provider: InvestigatorProvider | None = None,
     lifecycle_by_payment: dict[str, str] | None = None,
+    use_evidence_gate: bool = True,
 ) -> RunReport:
     started = time.perf_counter()
     cases, ledger = reconcile_batch(batch, lifecycle_by_payment)
@@ -104,7 +128,11 @@ def run(
                 investigations += 1
                 model_calls += 1 if inv.called_model else 0
                 latencies.append(inv.latency_ms)
-                ver = verify(ledger, case, inv.result)
+                ver = (
+                    verify(ledger, case, inv.result)
+                    if use_evidence_gate
+                    else _accept_without_proof(case, inv.result)
+                )
                 verifications[case.case_id] = ver
             else:
                 # Baseline: no investigation at all. The deterministic layer
@@ -124,8 +152,10 @@ def run(
         outcomes.append(CaseOutcome(case=case, investigation=inv, verification=ver))
 
     # Uniqueness pass runs across all cases, so it cannot depend on the order
-    # in which the investigator happened to look at them.
-    resolve_evidence_conflicts(verifications)
+    # in which the investigator happened to look at them. It is part of the
+    # gate, so the ablation skips it too.
+    if use_evidence_gate:
+        resolve_evidence_conflicts(verifications)
 
     for outcome in outcomes:
         if not outcome.case.is_exception:
@@ -137,8 +167,15 @@ def run(
             outcome.verification,
         )
 
+    if not use_ai:
+        system = "Rules only (baseline)"
+    elif not use_evidence_gate:
+        system = "Ablation: no Evidence Gate"
+    else:
+        system = "LedgerGuard (hybrid)"
+
     return RunReport(
-        system="LedgerGuard (hybrid)" if use_ai else "Rules only (baseline)",
+        system=system,
         provider_name=provider.name if use_ai else "none",
         outcomes=outcomes,
         ledger=ledger,

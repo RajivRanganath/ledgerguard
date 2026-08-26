@@ -79,6 +79,20 @@
   @media (max-width: 860px) { .adv { grid-template-columns: 1fr; } }
   .lede { color: var(--muted); max-width: 76ch; margin: 0 0 18px; }
   .win { color: var(--ok); font-weight: 600; }
+  .bars { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 6px 12px;
+          align-items: center; }
+  @media (max-width: 720px) { .bars { grid-template-columns: 130px 1fr 1fr; } }
+  .bars .hdr { color: var(--muted); font-size: 10.5px; text-transform: uppercase;
+               letter-spacing: .07em; font-weight: 600; }
+  .bars .lbl { font: 11.5px/1.35 var(--mono); }
+  .bar { position: relative; height: 20px; background: #10161d;
+         border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .bar > i { position: absolute; inset: 0 auto 0 0; display: block; }
+  .bar.base > i { background: #3d4c5e; }
+  .bar.hyb  > i { background: #2a6b3a; }
+  .bar.bad  > i { background: #6b2a2a; }
+  .bar > b { position: absolute; right: 6px; top: 0; line-height: 20px;
+             font: 600 11px/20px var(--mono); color: var(--text); }
   .neutral { color: var(--muted); }
   footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line);
            padding-top: 16px; }
@@ -301,6 +315,38 @@ function adversarial(s) {
   </section>`;
 }
 
+function perFaultChart(s) {
+  const rows = (s.benchmark.per_fault_class || []).filter(r => r.n > 0);
+  if (!rows.length) return '';
+  // Each row is scaled to its own class size, not to the largest class: the
+  // question is "what fraction of THIS fault class did each system get right",
+  // and scaling to the 54 clean cases would flatten every row that matters.
+  const bar = (cls, value, n) => {
+    const pct = n ? (value / n) * 100 : 0;
+    return `<div class="bar ${cls}"><i style="width:${pct.toFixed(1)}%"></i>` +
+           `<b>${value}/${n}</b></div>`;
+  };
+  return `<div class="card" style="padding:16px 18px;margin-top:14px">
+    <h3 style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">
+      Correct dispositions by fault class</h3>
+    <div class="neutral" style="font-size:12px;margin-bottom:12px">
+      Each bar is the share of that fault class the system disposed of correctly. Every
+      point of difference between the two systems sits in one row — that row is the entire
+      contribution of the AI layer.</div>
+    <div class="bars">
+      <div class="hdr">fault class</div><div class="hdr">rules only</div><div class="hdr">LedgerGuard</div>
+      ${rows.map(r => {
+        const cls = r.hybrid_false_auto > 0 ? 'bad' : 'hyb';
+        return `<div class="lbl">${esc(r.fault_class.replace('_', ' '))}</div>` +
+               bar('base', r.baseline_correct, r.n) + bar(cls, r.hybrid_correct, r.n);
+      }).join('')}
+    </div>
+    <div class="neutral" style="margin-top:11px;font-size:12px">
+      A red bar would mean a fault class where LedgerGuard closed cases it should not have.
+      There are none.</div>
+  </div>`;
+}
+
 function benchmark(s) {
   const b = s.benchmark.baseline, h = s.benchmark.hybrid;
   const rows = [
@@ -328,6 +374,7 @@ function benchmark(s) {
       <tbody>${rows.map(r => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td>
         <td class="num ${r[3]==='win'?'win':''}">${esc(r[2])}</td></tr>`).join('')}</tbody>
     </table></div>
+    ${perFaultChart(s)}
     <p class="lede" style="margin-top:12px">The hybrid closes the ambiguous refund cases the
       baseline had to escalate, and gives up none of the baseline's safety: false auto
       resolutions stay at zero and every wrong-linkage case stays escalated.</p>

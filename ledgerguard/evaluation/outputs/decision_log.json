@@ -1,0 +1,4991 @@
+{
+  "batch_sha256": "3e28d4572d4cfc95a7ebd5ad1a04531475e0044e63eb1c732e38e303866f20fa",
+  "batch": {
+    "orders": [
+      {
+        "order_id": "ord_0001BE49",
+        "merchant_id": "mch_BLUE02",
+        "amount": 228500,
+        "currency": "INR",
+        "created_at": "2026-06-19T19:37:00",
+        "status": "paid",
+        "customer_reference": "CUST-0004"
+      },
+      {
+        "order_id": "ord_000477ED",
+        "merchant_id": "mch_ACME01",
+        "amount": 6644100,
+        "currency": "INR",
+        "created_at": "2026-06-28T14:47:00",
+        "status": "paid",
+        "customer_reference": "CUST-0029"
+      },
+      {
+        "order_id": "ord_0006A8BD",
+        "merchant_id": "mch_CITR03",
+        "amount": 1794800,
+        "currency": "INR",
+        "created_at": "2026-06-13T09:05:00",
+        "status": "paid",
+        "customer_reference": "CUST-0056"
+      },
+      {
+        "order_id": "ord_00079E39",
+        "merchant_id": "mch_DELT04",
+        "amount": 7701900,
+        "currency": "INR",
+        "created_at": "2026-06-15T18:41:00",
+        "status": "paid",
+        "customer_reference": "CUST-0011"
+      },
+      {
+        "order_id": "ord_00123197",
+        "merchant_id": "mch_ACME01",
+        "amount": 7794700,
+        "currency": "INR",
+        "created_at": "2026-06-30T16:42:00",
+        "status": "paid",
+        "customer_reference": "CUST-0072"
+      },
+      {
+        "order_id": "ord_00134D15",
+        "merchant_id": "mch_BLUE02",
+        "amount": 8164600,
+        "currency": "INR",
+        "created_at": "2026-06-16T15:06:00",
+        "status": "paid",
+        "customer_reference": "CUST-0076"
+      },
+      {
+        "order_id": "ord_0017D62C",
+        "merchant_id": "mch_BLUE02",
+        "amount": 2084000,
+        "currency": "INR",
+        "created_at": "2026-06-15T10:06:00",
+        "status": "paid",
+        "customer_reference": "CUST-0064"
+      },
+      {
+        "order_id": "ord_0019631D",
+        "merchant_id": "mch_DELT04",
+        "amount": 2496500,
+        "currency": "INR",
+        "created_at": "2026-06-01T10:20:00",
+        "status": "paid",
+        "customer_reference": "CUST-0036"
+      },
+      {
+        "order_id": "ord_002015EF",
+        "merchant_id": "mch_ACME01",
+        "amount": 2435900,
+        "currency": "INR",
+        "created_at": "2026-06-05T14:20:00",
+        "status": "paid",
+        "customer_reference": "CUST-0085"
+      },
+      {
+        "order_id": "ord_0024105A",
+        "merchant_id": "mch_ACME01",
+        "amount": 773000,
+        "currency": "INR",
+        "created_at": "2026-06-12T11:07:00",
+        "status": "paid",
+        "customer_reference": "CUST-0030"
+      },
+      {
+        "order_id": "ord_0029B12F",
+        "merchant_id": "mch_BLUE02",
+        "amount": 8916400,
+        "currency": "INR",
+        "created_at": "2026-06-25T10:07:00",
+        "status": "paid",
+        "customer_reference": "CUST-0066"
+      },
+      {
+        "order_id": "ord_0033ECE4",
+        "merchant_id": "mch_BLUE02",
+        "amount": 5220500,
+        "currency": "INR",
+        "created_at": "2026-06-19T17:10:00",
+        "status": "paid",
+        "customer_reference": "CUST-0039"
+      },
+      {
+        "order_id": "ord_0034877E",
+        "merchant_id": "mch_CITR03",
+        "amount": 4739800,
+        "currency": "INR",
+        "created_at": "2026-06-27T18:36:00",
+        "status": "paid",
+        "customer_reference": "CUST-0081"
+      },
+      {
+        "order_id": "ord_0035BFCE",
+        "merchant_id": "mch_DELT04",
+        "amount": 1172800,
+        "currency": "INR",
+        "created_at": "2026-06-04T16:52:00",
+        "status": "paid",
+        "customer_reference": "CUST-0068"
+      },
+      {
+        "order_id": "ord_0037B003",
+        "merchant_id": "mch_BLUE02",
+        "amount": 1065500,
+        "currency": "INR",
+        "created_at": "2026-06-21T09:25:00",
+        "status": "paid",
+        "customer_reference": "CUST-0081"
+      },
+      {
+        "order_id": "ord_00489B87",
+        "merchant_id": "mch_ACME01",
+        "amount": 865600,
+        "currency": "INR",
+        "created_at": "2026-06-30T19:37:00",
+        "status": "paid",
+        "customer_reference": "CUST-0011"
+      },
+      {
+        "order_id": "ord_00523018",
+        "merchant_id": "mch_ACME01",
+        "amount": 1683200,
+        "currency": "INR",
+        "created_at": "2026-06-02T15:37:00",
+        "status": "paid",
+        "customer_reference": "CUST-0069"
+      },
+      {
+        "order_id": "ord_00622297",
+        "merchant_id": "mch_CITR03",
+        "amount": 5151500,
+        "currency": "INR",
+        "created_at": "2026-06-01T14:02:00",
+        "status": "paid",
+        "customer_reference": "CUST-0026"
+      },
+      {
+        "order_id": "ord_0068A501",
+        "merchant_id": "mch_ACME01",
+        "amount": 7743100,
+        "currency": "INR",
+        "created_at": "2026-06-19T11:04:00",
+        "status": "paid",
+        "customer_reference": "CUST-0018"
+      },
+      {
+        "order_id": "ord_0071638A",
+        "merchant_id": "mch_DELT04",
+        "amount": 4548400,
+        "currency": "INR",
+        "created_at": "2026-06-19T15:12:00",
+        "status": "paid",
+        "customer_reference": "CUST-0020"
+      },
+      {
+        "order_id": "ord_00757D21",
+        "merchant_id": "mch_DELT04",
+        "amount": 3631300,
+        "currency": "INR",
+        "created_at": "2026-06-07T10:40:00",
+        "status": "paid",
+        "customer_reference": "CUST-0083"
+      },
+      {
+        "order_id": "ord_00792D14",
+        "merchant_id": "mch_DELT04",
+        "amount": 4081200,
+        "currency": "INR",
+        "created_at": "2026-06-06T18:49:00",
+        "status": "paid",
+        "customer_reference": "CUST-0025"
+      },
+      {
+        "order_id": "ord_00806C87",
+        "merchant_id": "mch_ACME01",
+        "amount": 844900,
+        "currency": "INR",
+        "created_at": "2026-06-08T14:44:00",
+        "status": "paid",
+        "customer_reference": "CUST-0050"
+      },
+      {
+        "order_id": "ord_00843587",
+        "merchant_id": "mch_ACME01",
+        "amount": 437200,
+        "currency": "INR",
+        "created_at": "2026-06-25T19:36:00",
+        "status": "paid",
+        "customer_reference": "CUST-0030"
+      },
+      {
+        "order_id": "ord_0091709C",
+        "merchant_id": "mch_DELT04",
+        "amount": 1664900,
+        "currency": "INR",
+        "created_at": "2026-06-14T17:28:00",
+        "status": "paid",
+        "customer_reference": "CUST-0083"
+      },
+      {
+        "order_id": "ord_009489B8",
+        "merchant_id": "mch_CITR03",
+        "amount": 1886000,
+        "currency": "INR",
+        "created_at": "2026-06-18T17:19:00",
+        "status": "paid",
+        "customer_reference": "CUST-0068"
+      },
+      {
+        "order_id": "ord_010052BF",
+        "merchant_id": "mch_ACME01",
+        "amount": 97300,
+        "currency": "INR",
+        "created_at": "2026-06-30T11:28:00",
+        "status": "paid",
+        "customer_reference": "CUST-0059"
+      },
+      {
+        "order_id": "ord_0101ABDC",
+        "merchant_id": "mch_BLUE02",
+        "amount": 443200,
+        "currency": "INR",
+        "created_at": "2026-06-17T12:59:00",
+        "status": "paid",
+        "customer_reference": "CUST-0089"
+      },
+      {
+        "order_id": "ord_0107AAF8",
+        "merchant_id": "mch_DELT04",
+        "amount": 2259700,
+        "currency": "INR",
+        "created_at": "2026-06-29T15:00:00",
+        "status": "paid",
+        "customer_reference": "CUST-0029"
+      },
+      {
+        "order_id": "ord_01089F2B",
+        "merchant_id": "mch_ACME01",
+        "amount": 247300,
+        "currency": "INR",
+        "created_at": "2026-06-19T10:53:00",
+        "status": "paid",
+        "customer_reference": "CUST-0080"
+      },
+      {
+        "order_id": "ord_01093085",
+        "merchant_id": "mch_BLUE02",
+        "amount": 379700,
+        "currency": "INR",
+        "created_at": "2026-06-20T14:44:00",
+        "status": "paid",
+        "customer_reference": "CUST-0073"
+      },
+      {
+        "order_id": "ord_0116CDC5",
+        "merchant_id": "mch_ACME01",
+        "amount": 672300,
+        "currency": "INR",
+        "created_at": "2026-06-16T10:42:00",
+        "status": "paid",
+        "customer_reference": "CUST-0063"
+      },
+      {
+        "order_id": "ord_01172F00",
+        "merchant_id": "mch_BLUE02",
+        "amount": 9408100,
+        "currency": "INR",
+        "created_at": "2026-06-30T19:26:00",
+        "status": "paid",
+        "customer_reference": "CUST-0013"
+      },
+      {
+        "order_id": "ord_011850AD",
+        "merchant_id": "mch_CITR03",
+        "amount": 1461400,
+        "currency": "INR",
+        "created_at": "2026-06-25T19:16:00",
+        "status": "paid",
+        "customer_reference": "CUST-0020"
+      },
+      {
+        "order_id": "ord_01207C31",
+        "merchant_id": "mch_ACME01",
+        "amount": 6863600,
+        "currency": "INR",
+        "created_at": "2026-06-22T12:21:00",
+        "status": "paid",
+        "customer_reference": "CUST-0009"
+      },
+      {
+        "order_id": "ord_01223D5B",
+        "merchant_id": "mch_CITR03",
+        "amount": 3779300,
+        "currency": "INR",
+        "created_at": "2026-06-14T14:24:00",
+        "status": "paid",
+        "customer_reference": "CUST-0022"
+      },
+      {
+        "order_id": "ord_01413DD3",
+        "merchant_id": "mch_BLUE02",
+        "amount": 2370200,
+        "currency": "INR",
+        "created_at": "2026-06-19T16:03:00",
+        "status": "paid",
+        "customer_reference": "CUST-0089"
+      },
+      {
+        "order_id": "ord_0142EE57",
+        "merchant_id": "mch_CITR03",
+        "amount": 548600,
+        "currency": "INR",
+        "created_at": "2026-06-05T16:58:00",
+        "status": "paid",
+        "customer_reference": "CUST-0065"
+      },
+      {
+        "order_id": "ord_0144A315",
+        "merchant_id": "mch_ACME01",
+        "amount": 479100,
+        "currency": "INR",
+        "created_at": "2026-06-13T16:10:00",
+        "status": "paid",
+        "customer_reference": "CUST-0049"
+      },
+      {
+        "order_id": "ord_0145F37E",
+        "merchant_id": "mch_BLUE02",
+        "amount": 6621800,
+        "currency": "INR",
+        "created_at": "2026-06-09T17:42:00",
+        "status": "paid",
+        "customer_reference": "CUST-0046"
+      },
+      {
+        "order_id": "ord_014653BA",
+        "merchant_id": "mch_CITR03",
+        "amount": 77300,
+        "currency": "INR",
+        "created_at": "2026-06-21T18:24:00",
+        "status": "paid",
+        "customer_reference": "CUST-0030"
+      },
+      {
+        "order_id": "ord_0147147E",
+        "merchant_id": "mch_DELT04",
+        "amount": 8297300,
+        "currency": "INR",
+        "created_at": "2026-06-15T18:41:00",
+        "status": "paid",
+        "customer_reference": "CUST-0082"
+      },
+      {
+        "order_id": "ord_0149658B",
+        "merchant_id": "mch_BLUE02",
+        "amount": 385900,
+        "currency": "INR",
+        "created_at": "2026-06-22T18:40:00",
+        "status": "paid",
+        "customer_reference": "CUST-0040"
+      },
+      {
+        "order_id": "ord_015361D5",
+        "merchant_id": "mch_BLUE02",
+        "amount": 8850000,
+        "currency": "INR",
+        "created_at": "2026-06-18T18:30:00",
+        "status": "paid",
+        "customer_reference": "CUST-0052"
+      },
+      {
+        "order_id": "ord_01572D20",
+        "merchant_id": "mch_BLUE02",
+        "amount": 1250400,
+        "currency": "INR",
+        "created_at": "2026-06-21T14:08:00",
+        "status": "paid",
+        "customer_reference": "CUST-0015"
+      },
+      {
+        "order_id": "ord_01583E2B",
+        "merchant_id": "mch_CITR03",
+        "amount": 1698800,
+        "currency": "INR",
+        "created_at": "2026-06-06T14:58:00",
+        "status": "paid",
+        "customer_reference": "CUST-0026"
+      },
+      {
+        "order_id": "ord_0163C42A",
+        "merchant_id": "mch_DELT04",
+        "amount": 761000,
+        "currency": "INR",
+        "created_at": "2026-06-28T09:36:00",
+        "status": "paid",
+        "customer_reference": "CUST-0043"
+      },
+      {
+        "order_id": "ord_0166AF8C",
+        "merchant_id": "mch_CITR03",
+        "amount": 2080200,
+        "currency": "INR",
+        "created_at": "2026-06-27T17:19:00",
+        "status": "paid",
+        "customer_reference": "CUST-0043"
+      },
+      {
+        "order_id": "ord_0168E98E",
+        "merchant_id": "mch_ACME01",
+        "amount": 890700,
+        "currency": "INR",
+        "created_at": "2026-06-08T18:34:00",
+        "status": "paid",
+        "customer_reference": "CUST-0016"
+      },
+      {
+        "order_id": "ord_017036C8",
+        "merchant_id": "mch_CITR03",
+        "amount": 336700,
+        "currency": "INR",
+        "created_at": "2026-06-28T17:12:00",
+        "status": "paid",
+        "customer_reference": "CUST-0066"
+      },
+      {
+        "order_id": "ord_0174FBFE",
+        "merchant_id": "mch_CITR03",
+        "amount": 8853100,
+        "currency": "INR",
+        "created_at": "2026-06-03T10:32:00",
+        "status": "paid",
+        "customer_reference": "CUST-0057"
+      },
+      {
+        "order_id": "ord_01765A40",
+        "merchant_id": "mch_ACME01",
+        "amount": 1474200,
+        "currency": "INR",
+        "created_at": "2026-06-12T10:06:00",
+        "status": "paid",
+        "customer_reference": "CUST-0075"
+      },
+      {
+        "order_id": "ord_018231AC",
+        "merchant_id": "mch_CITR03",
+        "amount": 4385100,
+        "currency": "INR",
+        "created_at": "2026-06-12T10:04:00",
+        "status": "paid",
+        "customer_reference": "CUST-0051"
+      },
+      {
+        "order_id": "ord_01833DE5",
+        "merchant_id": "mch_DELT04",
+        "amount": 1524500,
+        "currency": "INR",
+        "created_at": "2026-06-09T14:42:00",
+        "status": "paid",
+        "customer_reference": "CUST-0055"
+      },
+      {
+        "order_id": "ord_01868E64",
+        "merchant_id": "mch_CITR03",
+        "amount": 8880200,
+        "currency": "INR",
+        "created_at": "2026-06-01T17:54:00",
+        "status": "paid",
+        "customer_reference": "CUST-0051"
+      },
+      {
+        "order_id": "ord_019032A5",
+        "merchant_id": "mch_CITR03",
+        "amount": 6210000,
+        "currency": "INR",
+        "created_at": "2026-06-14T14:36:00",
+        "status": "paid",
+        "customer_reference": "CUST-0052"
+      },
+      {
+        "order_id": "ord_0195B00F",
+        "merchant_id": "mch_DELT04",
+        "amount": 3277400,
+        "currency": "INR",
+        "created_at": "2026-06-27T12:46:00",
+        "status": "paid",
+        "customer_reference": "CUST-0007"
+      },
+      {
+        "order_id": "ord_0214D7B2",
+        "merchant_id": "mch_CITR03",
+        "amount": 370700,
+        "currency": "INR",
+        "created_at": "2026-06-22T14:39:00",
+        "status": "paid",
+        "customer_reference": "CUST-0051"
+      },
+      {
+        "order_id": "ord_0215660E",
+        "merchant_id": "mch_DELT04",
+        "amount": 5592700,
+        "currency": "INR",
+        "created_at": "2026-06-16T14:52:00",
+        "status": "paid",
+        "customer_reference": "CUST-0015"
+      },
+      {
+        "order_id": "ord_02166208",
+        "merchant_id": "mch_ACME01",
+        "amount": 5831800,
+        "currency": "INR",
+        "created_at": "2026-06-04T16:28:00",
+        "status": "paid",
+        "customer_reference": "CUST-0003"
+      },
+      {
+        "order_id": "ord_0221DA76",
+        "merchant_id": "mch_BLUE02",
+        "amount": 2426100,
+        "currency": "INR",
+        "created_at": "2026-06-19T12:40:00",
+        "status": "paid",
+        "customer_reference": "CUST-0000"
+      },
+      {
+        "order_id": "ord_0222A4DB",
+        "merchant_id": "mch_CITR03",
+        "amount": 215100,
+        "currency": "INR",
+        "created_at": "2026-06-08T10:32:00",
+        "status": "paid",
+        "customer_reference": "CUST-0052"
+      },
+      {
+        "order_id": "ord_022823A0",
+        "merchant_id": "mch_ACME01",
+        "amount": 2091500,
+        "currency": "INR",
+        "created_at": "2026-06-13T16:49:00",
+        "status": "paid",
+        "customer_reference": "CUST-0031"
+      },
+      {
+        "order_id": "ord_0233D04E",
+        "merchant_id": "mch_BLUE02",
+        "amount": 5506800,
+        "currency": "INR",
+        "created_at": "2026-06-20T17:51:00",
+        "status": "paid",
+        "customer_reference": "CUST-0030"
+      },
+      {
+        "order_id": "ord_02351954",
+        "merchant_id": "mch_DELT04",
+        "amount": 458500,
+        "currency": "INR",
+        "created_at": "2026-06-25T19:15:00",
+        "status": "paid",
+        "customer_reference": "CUST-0080"
+      },
+      {
+        "order_id": "ord_0237CE90",
+        "merchant_id": "mch_BLUE02",
+        "amount": 354700,
+        "currency": "INR",
+        "created_at": "2026-06-28T10:06:00",
+        "status": "paid",
+        "customer_reference": "CUST-0084"
+      },
+      {
+        "order_id": "ord_02387E0C",
+        "merchant_id": "mch_CITR03",
+        "amount": 287400,
+        "currency": "INR",
+        "created_at": "2026-06-09T15:32:00",
+        "status": "paid",
+        "customer_reference": "CUST-0074"
+      },
+      {
+        "order_id": "ord_0242527C",
+        "merchant_id": "mch_CITR03",
+        "amount": 9199100,
+        "currency": "INR",
+        "created_at": "2026-06-08T15:22:00",
+        "status": "paid",
+        "customer_reference": "CUST-0031"
+      },
+      {
+        "order_id": "ord_02451272",
+        "merchant_id": "mch_BLUE02",
+        "amount": 389400,
+        "currency": "INR",
+        "created_at": "2026-06-13T10:50:00",
+        "status": "paid",
+        "customer_reference": "CUST-0068"
+      },
+      {
+        "order_id": "ord_02483FE6",
+        "merchant_id": "mch_ACME01",
+        "amount": 2467100,
+        "currency": "INR",
+        "created_at": "2026-06-07T12:34:00",
+        "status": "paid",
+        "customer_reference": "CUST-0023"
+      },
+      {
+        "order_id": "ord_02501F95",
+        "merchant_id": "mch_CITR03",
+        "amount": 491500,
+        "currency": "INR",
+        "created_at": "2026-06-01T18:28:00",
+        "status": "paid",
+        "customer_reference": "CUST-0014"
+      },
+      {
+        "order_id": "ord_02559FC5",
+        "merchant_id": "mch_DELT04",
+        "amount": 1535300,
+        "currency": "INR",
+        "created_at": "2026-06-28T17:18:00",
+        "status": "paid",
+        "customer_reference": "CUST-0023"
+      },
+      {
+        "order_id": "ord_0256A12F",
+        "merchant_id": "mch_ACME01",
+        "amount": 929600,
+        "currency": "INR",
+        "created_at": "2026-06-28T15:10:00",
+        "status": "paid",
+        "customer_reference": "CUST-0001"
+      },
+      {
+        "order_id": "ord_02596B2B",
+        "merchant_id": "mch_DELT04",
+        "amount": 3914900,
+        "currency": "INR",
+        "created_at": "2026-06-27T16:30:00",
+        "status": "paid",
+        "customer_reference": "CUST-0045"
+      },
+      {
+        "order_id": "ord_026146CD",
+        "merchant_id": "mch_BLUE02",
+        "amount": 748300,
+        "currency": "INR",
+        "created_at": "2026-06-18T11:58:00",
+        "status": "paid",
+        "customer_reference": "CUST-0016"
+      },
+      {
+        "order_id": "ord_02659BD0",
+        "merchant_id": "mch_BLUE02",
+        "amount": 241300,
+        "currency": "INR",
+        "created_at": "2026-06-18T17:48:00",
+        "status": "paid",
+        "customer_reference": "CUST-0006"
+      },
+      {
+        "order_id": "ord_0271EC7D",
+        "merchant_id": "mch_DELT04",
+        "amount": 369800,
+        "currency": "INR",
+        "created_at": "2026-06-15T12:38:00",
+        "status": "paid",
+        "customer_reference": "CUST-0063"
+      },
+      {
+        "order_id": "ord_0272FB55",
+        "merchant_id": "mch_ACME01",
+        "amount": 6012600,
+        "currency": "INR",
+        "created_at": "2026-06-28T10:17:00",
+        "status": "paid",
+        "customer_reference": "CUST-0055"
+      },
+      {
+        "order_id": "ord_0279DC3C",
+        "merchant_id": "mch_DELT04",
+        "amount": 371100,
+        "currency": "INR",
+        "created_at": "2026-06-20T11:10:00",
+        "status": "paid",
+        "customer_reference": "CUST-0010"
+      },
+      {
+        "order_id": "ord_0288E65E",
+        "merchant_id": "mch_ACME01",
+        "amount": 2633400,
+        "currency": "INR",
+        "created_at": "2026-06-24T13:50:00",
+        "status": "paid",
+        "customer_reference": "CUST-0058"
+      },
+      {
+        "order_id": "ord_0292E1FD",
+        "merchant_id": "mch_ACME01",
+        "amount": 1062500,
+        "currency": "INR",
+        "created_at": "2026-06-21T10:25:00",
+        "status": "paid",
+        "customer_reference": "CUST-0070"
+      },
+      {
+        "order_id": "ord_0295404B",
+        "merchant_id": "mch_DELT04",
+        "amount": 2717300,
+        "currency": "INR",
+        "created_at": "2026-06-15T14:05:00",
+        "status": "paid",
+        "customer_reference": "CUST-0044"
+      },
+      {
+        "order_id": "ord_0301C975",
+        "merchant_id": "mch_BLUE02",
+        "amount": 4091000,
+        "currency": "INR",
+        "created_at": "2026-06-26T18:19:00",
+        "status": "paid",
+        "customer_reference": "CUST-0080"
+      },
+      {
+        "order_id": "ord_0312BC38",
+        "merchant_id": "mch_ACME01",
+        "amount": 233000,
+        "currency": "INR",
+        "created_at": "2026-06-14T14:58:00",
+        "status": "paid",
+        "customer_reference": "CUST-0048"
+      },
+      {
+        "order_id": "ord_03157011",
+        "merchant_id": "mch_DELT04",
+        "amount": 158500,
+        "currency": "INR",
+        "created_at": "2026-06-21T12:12:00",
+        "status": "paid",
+        "customer_reference": "CUST-0039"
+      }
+    ],
+    "payments": [
+      {
+        "payment_id": "pay_0001DA30",
+        "order_id": "ord_0001BE49",
+        "amount": 228500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-19T19:43:00",
+        "fee": 4570,
+        "tax": 823,
+        "reference": "PAY/ord_0001BE49"
+      },
+      {
+        "payment_id": "pay_0004930A",
+        "order_id": "ord_000477ED",
+        "amount": 6644100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-28T15:11:00",
+        "fee": 132882,
+        "tax": 23919,
+        "reference": "PAY/ord_000477ED"
+      },
+      {
+        "payment_id": "pay_00069E09",
+        "order_id": "ord_0006A8BD",
+        "amount": 1794800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-13T09:06:00",
+        "fee": 35896,
+        "tax": 6461,
+        "reference": "PAY/ord_0006A8BD"
+      },
+      {
+        "payment_id": "pay_0007EF01",
+        "order_id": "ord_00079E39",
+        "amount": 7701900,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-15T18:51:00",
+        "fee": 154038,
+        "tax": 27727,
+        "reference": "PAY/ord_00079E39"
+      },
+      {
+        "payment_id": "pay_00121298",
+        "order_id": "ord_00123197",
+        "amount": 7794700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-30T16:49:00",
+        "fee": 155894,
+        "tax": 28061,
+        "reference": "PAY/ord_00123197"
+      },
+      {
+        "payment_id": "pay_0013F8B6",
+        "order_id": "ord_00134D15",
+        "amount": 8164600,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-16T15:18:00",
+        "fee": 163292,
+        "tax": 29393,
+        "reference": "PAY/ord_00134D15"
+      },
+      {
+        "payment_id": "pay_0017BC9F",
+        "order_id": "ord_0017D62C",
+        "amount": 2084000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-15T10:09:00",
+        "fee": 41680,
+        "tax": 7502,
+        "reference": "PAY/ord_0017D62C"
+      },
+      {
+        "payment_id": "pay_001990C7",
+        "order_id": "ord_0019631D",
+        "amount": 2496500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-01T10:35:00",
+        "fee": 49930,
+        "tax": 8987,
+        "reference": "PAY/ord_0019631D"
+      },
+      {
+        "payment_id": "pay_00201B6D",
+        "order_id": "ord_002015EF",
+        "amount": 2435900,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-05T14:25:00",
+        "fee": 48718,
+        "tax": 8769,
+        "reference": "PAY/ord_002015EF"
+      },
+      {
+        "payment_id": "pay_0024C976",
+        "order_id": "ord_0024105A",
+        "amount": 773000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-12T11:13:00",
+        "fee": 15460,
+        "tax": 2783,
+        "reference": "PAY/ord_0024105A"
+      },
+      {
+        "payment_id": "pay_0029AD38",
+        "order_id": "ord_0029B12F",
+        "amount": 8916400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-25T10:18:00",
+        "fee": 178328,
+        "tax": 32099,
+        "reference": "PAY/ord_0029B12F"
+      },
+      {
+        "payment_id": "pay_00331E97",
+        "order_id": "ord_0033ECE4",
+        "amount": 5220500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-19T17:14:00",
+        "fee": 104410,
+        "tax": 18794,
+        "reference": "PAY/ord_0033ECE4"
+      },
+      {
+        "payment_id": "pay_003478CC",
+        "order_id": "ord_0034877E",
+        "amount": 4739800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-27T18:48:00",
+        "fee": 94796,
+        "tax": 17063,
+        "reference": "PAY/ord_0034877E"
+      },
+      {
+        "payment_id": "pay_00351A3E",
+        "order_id": "ord_0035BFCE",
+        "amount": 1172800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-04T17:13:00",
+        "fee": 23456,
+        "tax": 4222,
+        "reference": "PAY/ord_0035BFCE"
+      },
+      {
+        "payment_id": "pay_0037DAA0",
+        "order_id": "ord_0037B003",
+        "amount": 1065500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-21T09:34:00",
+        "fee": 21310,
+        "tax": 3836,
+        "reference": "PAY/ord_0037B003"
+      },
+      {
+        "payment_id": "pay_0048CBEF",
+        "order_id": "ord_00489B87",
+        "amount": 865600,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-30T19:57:00",
+        "fee": 17312,
+        "tax": 3116,
+        "reference": "PAY/ord_00489B87"
+      },
+      {
+        "payment_id": "pay_00526F48",
+        "order_id": "ord_00523018",
+        "amount": 1683200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-02T15:54:00",
+        "fee": 33664,
+        "tax": 6060,
+        "reference": "PAY/ord_00523018"
+      },
+      {
+        "payment_id": "pay_00623BB3",
+        "order_id": "ord_00622297",
+        "amount": 5151500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-01T14:16:00",
+        "fee": 103030,
+        "tax": 18545,
+        "reference": "PAY/ord_00622297"
+      },
+      {
+        "payment_id": "pay_0068DF3B",
+        "order_id": "ord_0068A501",
+        "amount": 7743100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-19T11:09:00",
+        "fee": 154862,
+        "tax": 27875,
+        "reference": "PAY/ord_0068A501"
+      },
+      {
+        "payment_id": "pay_0068DF3B",
+        "order_id": "ord_0068A501",
+        "amount": 7743100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-19T11:09:00",
+        "fee": 154862,
+        "tax": 27875,
+        "reference": "PAY/ord_0068A501"
+      },
+      {
+        "payment_id": "pay_0071FC91",
+        "order_id": "ord_0071638A",
+        "amount": 4548400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-19T15:28:00",
+        "fee": 90968,
+        "tax": 16374,
+        "reference": "PAY/ord_0071638A"
+      },
+      {
+        "payment_id": "pay_00751478",
+        "order_id": "ord_00757D21",
+        "amount": 3631300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-07T10:55:00",
+        "fee": 72626,
+        "tax": 13073,
+        "reference": "PAY/ord_00757D21"
+      },
+      {
+        "payment_id": "pay_0079D5A8",
+        "order_id": "ord_00792D14",
+        "amount": 4081200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-06T19:02:00",
+        "fee": 81624,
+        "tax": 14692,
+        "reference": "PAY/ord_00792D14"
+      },
+      {
+        "payment_id": "pay_0080D9D5",
+        "order_id": "ord_00806C87",
+        "amount": 844900,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-08T14:59:00",
+        "fee": 16898,
+        "tax": 3042,
+        "reference": "PAY/ord_00806C87"
+      },
+      {
+        "payment_id": "pay_00848F3C",
+        "order_id": "ord_00843587",
+        "amount": 437200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-25T19:51:00",
+        "fee": 8744,
+        "tax": 1574,
+        "reference": "PAY/ord_00843587"
+      },
+      {
+        "payment_id": "pay_00911A5A",
+        "order_id": "ord_0091709C",
+        "amount": 1664900,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-14T17:39:00",
+        "fee": 33298,
+        "tax": 5994,
+        "reference": "PAY/ord_0091709C"
+      },
+      {
+        "payment_id": "pay_0094BD06",
+        "order_id": "ord_009489B8",
+        "amount": 1886000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-18T17:29:00",
+        "fee": 37720,
+        "tax": 6790,
+        "reference": "PAY/ord_009489B8"
+      },
+      {
+        "payment_id": "pay_0100B0A5",
+        "order_id": "ord_010052BF",
+        "amount": 97300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-30T11:49:00",
+        "fee": 1946,
+        "tax": 350,
+        "reference": "PAY/ord_010052BF"
+      },
+      {
+        "payment_id": "pay_01013516",
+        "order_id": "ord_0101ABDC",
+        "amount": 443200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-17T13:13:00",
+        "fee": 8864,
+        "tax": 1596,
+        "reference": "PAY/ord_0101ABDC"
+      },
+      {
+        "payment_id": "pay_01072D04",
+        "order_id": "ord_0107AAF8",
+        "amount": 2259700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-29T15:17:00",
+        "fee": 45194,
+        "tax": 8135,
+        "reference": "PAY/ord_0107AAF8"
+      },
+      {
+        "payment_id": "pay_0108B5A2",
+        "order_id": "ord_01089F2B",
+        "amount": 247300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-19T10:55:00",
+        "fee": 4946,
+        "tax": 890,
+        "reference": "PAY/ord_01089F2B"
+      },
+      {
+        "payment_id": "pay_0109BCD2",
+        "order_id": "ord_01093085",
+        "amount": 379700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-20T15:04:00",
+        "fee": 7594,
+        "tax": 1367,
+        "reference": "PAY/ord_01093085"
+      },
+      {
+        "payment_id": "pay_0116305E",
+        "order_id": "ord_0116CDC5",
+        "amount": 672300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-16T11:01:00",
+        "fee": 13446,
+        "tax": 2420,
+        "reference": "PAY/ord_0116CDC5"
+      },
+      {
+        "payment_id": "pay_01178A3E",
+        "order_id": "ord_01172F00",
+        "amount": 9408100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-30T19:50:00",
+        "fee": 188162,
+        "tax": 33869,
+        "reference": "PAY/ord_01172F00"
+      },
+      {
+        "payment_id": "pay_0118AFAF",
+        "order_id": "ord_011850AD",
+        "amount": 1461400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-25T19:33:00",
+        "fee": 29228,
+        "tax": 5261,
+        "reference": "PAY/ord_011850AD"
+      },
+      {
+        "payment_id": "pay_0120EB60",
+        "order_id": "ord_01207C31",
+        "amount": 6863600,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-22T12:31:00",
+        "fee": 137272,
+        "tax": 24709,
+        "reference": "PAY/ord_01207C31"
+      },
+      {
+        "payment_id": "pay_01228658",
+        "order_id": "ord_01223D5B",
+        "amount": 3779300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-14T14:48:00",
+        "fee": 75586,
+        "tax": 13605,
+        "reference": "PAY/ord_01223D5B"
+      },
+      {
+        "payment_id": "pay_01413873",
+        "order_id": "ord_01413DD3",
+        "amount": 2370200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-19T16:15:00",
+        "fee": 47404,
+        "tax": 8533,
+        "reference": "PAY/ord_01413DD3"
+      },
+      {
+        "payment_id": "pay_014252C5",
+        "order_id": "ord_0142EE57",
+        "amount": 548600,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-05T17:03:00",
+        "fee": 10972,
+        "tax": 1975,
+        "reference": "PAY/ord_0142EE57"
+      },
+      {
+        "payment_id": "pay_0144EB18",
+        "order_id": "ord_0144A315",
+        "amount": 479100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-13T16:12:00",
+        "fee": 9582,
+        "tax": 1725,
+        "reference": "PAY/ord_0144A315"
+      },
+      {
+        "payment_id": "pay_01452BE5",
+        "order_id": "ord_0145F37E",
+        "amount": 6621800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-09T17:46:00",
+        "fee": 132436,
+        "tax": 23838,
+        "reference": "PAY/ord_0145F37E"
+      },
+      {
+        "payment_id": "pay_0146953B",
+        "order_id": "ord_014653BA",
+        "amount": 77300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-21T18:43:00",
+        "fee": 1546,
+        "tax": 278,
+        "reference": "PAY/ord_014653BA"
+      },
+      {
+        "payment_id": "pay_01471ED3",
+        "order_id": "ord_0147147E",
+        "amount": 8297300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-15T19:02:00",
+        "fee": 165946,
+        "tax": 29870,
+        "reference": "PAY/ord_0147147E"
+      },
+      {
+        "payment_id": "pay_014991AD",
+        "order_id": "ord_0149658B",
+        "amount": 385900,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-22T18:57:00",
+        "fee": 7718,
+        "tax": 1389,
+        "reference": "PAY/ord_0149658B"
+      },
+      {
+        "payment_id": "pay_01533A32",
+        "order_id": "ord_015361D5",
+        "amount": 8850000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-18T18:46:00",
+        "fee": 177000,
+        "tax": 31860,
+        "reference": "PAY/ord_015361D5"
+      },
+      {
+        "payment_id": "pay_01577FB6",
+        "order_id": "ord_01572D20",
+        "amount": 1250400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-21T14:14:00",
+        "fee": 25008,
+        "tax": 4501,
+        "reference": "PAY/ord_01572D20"
+      },
+      {
+        "payment_id": "pay_0158A5A3",
+        "order_id": "ord_01583E2B",
+        "amount": 1698800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-06T15:07:00",
+        "fee": 33976,
+        "tax": 6116,
+        "reference": "PAY/ord_01583E2B"
+      },
+      {
+        "payment_id": "pay_0163182C",
+        "order_id": "ord_0163C42A",
+        "amount": 761000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-28T09:43:00",
+        "fee": 15220,
+        "tax": 2740,
+        "reference": "PAY/ord_0163C42A"
+      },
+      {
+        "payment_id": "pay_0166A046",
+        "order_id": "ord_0166AF8C",
+        "amount": 2080200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-27T17:30:00",
+        "fee": 41604,
+        "tax": 7489,
+        "reference": "PAY/ord_0166AF8C"
+      },
+      {
+        "payment_id": "pay_0168813A",
+        "order_id": "ord_0168E98E",
+        "amount": 890700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-08T18:35:00",
+        "fee": 17814,
+        "tax": 3207,
+        "reference": "PAY/ord_0168E98E"
+      },
+      {
+        "payment_id": "pay_0170BEB1",
+        "order_id": "ord_017036C8",
+        "amount": 336700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-28T17:36:00",
+        "fee": 6734,
+        "tax": 1212,
+        "reference": "PAY/ord_017036C8"
+      },
+      {
+        "payment_id": "pay_01747F5F",
+        "order_id": "ord_0174FBFE",
+        "amount": 8853100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-03T10:53:00",
+        "fee": 177062,
+        "tax": 31871,
+        "reference": "PAY/ord_0174FBFE"
+      },
+      {
+        "payment_id": "pay_0176E523",
+        "order_id": "ord_01765A40",
+        "amount": 1474200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-12T10:18:00",
+        "fee": 29484,
+        "tax": 5307,
+        "reference": "PAY/ord_01765A40"
+      },
+      {
+        "payment_id": "pay_01826F99",
+        "order_id": "ord_018231AC",
+        "amount": 4385100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-12T10:23:00",
+        "fee": 87702,
+        "tax": 15786,
+        "reference": "PAY/ord_018231AC"
+      },
+      {
+        "payment_id": "pay_01837D97",
+        "order_id": "ord_01833DE5",
+        "amount": 1524500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-09T15:06:00",
+        "fee": 30490,
+        "tax": 5488,
+        "reference": "PAY/ord_01833DE5"
+      },
+      {
+        "payment_id": "pay_01867943",
+        "order_id": "ord_01868E64",
+        "amount": 8880200,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-01T18:17:00",
+        "fee": 177604,
+        "tax": 31969,
+        "reference": "PAY/ord_01868E64"
+      },
+      {
+        "payment_id": "pay_0190477E",
+        "order_id": "ord_019032A5",
+        "amount": 6210000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-14T14:45:00",
+        "fee": 124200,
+        "tax": 22356,
+        "reference": "PAY/ord_019032A5"
+      },
+      {
+        "payment_id": "pay_01952C76",
+        "order_id": "ord_0195B00F",
+        "amount": 3277400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-27T12:57:00",
+        "fee": 65548,
+        "tax": 11799,
+        "reference": "PAY/ord_0195B00F"
+      },
+      {
+        "payment_id": "pay_02146DF9",
+        "order_id": "ord_0214D7B2",
+        "amount": 370700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-22T14:52:00",
+        "fee": 7414,
+        "tax": 1335,
+        "reference": "PAY/ord_0214D7B2"
+      },
+      {
+        "payment_id": "pay_0215D5C8",
+        "order_id": "ord_0215660E",
+        "amount": 5592700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-16T15:15:00",
+        "fee": 111854,
+        "tax": 20134,
+        "reference": "PAY/ord_0215660E"
+      },
+      {
+        "payment_id": "pay_02164433",
+        "order_id": "ord_02166208",
+        "amount": 5831800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-04T16:38:00",
+        "fee": 116636,
+        "tax": 20994,
+        "reference": "PAY/ord_02166208"
+      },
+      {
+        "payment_id": "pay_0221829B",
+        "order_id": "ord_0221DA76",
+        "amount": 2426100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-19T12:57:00",
+        "fee": 48522,
+        "tax": 8734,
+        "reference": "PAY/ord_0221DA76"
+      },
+      {
+        "payment_id": "pay_0222B5A2",
+        "order_id": "ord_0222A4DB",
+        "amount": 215100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-08T10:34:00",
+        "fee": 4302,
+        "tax": 774,
+        "reference": "PAY/ord_0222A4DB"
+      },
+      {
+        "payment_id": "pay_02282D23",
+        "order_id": "ord_022823A0",
+        "amount": 2091500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-13T16:59:00",
+        "fee": 41830,
+        "tax": 7529,
+        "reference": "PAY/ord_022823A0"
+      },
+      {
+        "payment_id": "pay_0233DB5A",
+        "order_id": "ord_0233D04E",
+        "amount": 5506800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-20T18:02:00",
+        "fee": 110136,
+        "tax": 19824,
+        "reference": "PAY/ord_0233D04E"
+      },
+      {
+        "payment_id": "pay_02353003",
+        "order_id": "ord_02351954",
+        "amount": 458500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-25T19:29:00",
+        "fee": 9170,
+        "tax": 1651,
+        "reference": "PAY/ord_02351954"
+      },
+      {
+        "payment_id": "pay_02375EB9",
+        "order_id": "ord_0237CE90",
+        "amount": 354700,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-28T10:26:00",
+        "fee": 7094,
+        "tax": 1277,
+        "reference": "PAY/ord_0237CE90"
+      },
+      {
+        "payment_id": "pay_0238E06D",
+        "order_id": "ord_02387E0C",
+        "amount": 287400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-09T15:37:00",
+        "fee": 5748,
+        "tax": 1035,
+        "reference": "PAY/ord_02387E0C"
+      },
+      {
+        "payment_id": "pay_02424FCB",
+        "order_id": "ord_0242527C",
+        "amount": 9199100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-08T15:39:00",
+        "fee": 183982,
+        "tax": 33117,
+        "reference": "PAY/ord_0242527C"
+      },
+      {
+        "payment_id": "pay_02424FCB",
+        "order_id": "ord_0242527C",
+        "amount": 9199100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-08T15:39:00",
+        "fee": 183982,
+        "tax": 33117,
+        "reference": "PAY/ord_0242527C"
+      },
+      {
+        "payment_id": "pay_02456E14",
+        "order_id": "ord_02451272",
+        "amount": 389400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-13T11:14:00",
+        "fee": 7788,
+        "tax": 1402,
+        "reference": "PAY/ord_02451272"
+      },
+      {
+        "payment_id": "pay_02489632",
+        "order_id": "ord_02483FE6",
+        "amount": 2467100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-07T12:44:00",
+        "fee": 49342,
+        "tax": 8882,
+        "reference": "PAY/ord_02483FE6"
+      },
+      {
+        "payment_id": "pay_0250325D",
+        "order_id": "ord_02501F95",
+        "amount": 491500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-01T18:48:00",
+        "fee": 9830,
+        "tax": 1769,
+        "reference": "PAY/ord_02501F95"
+      },
+      {
+        "payment_id": "pay_0255B483",
+        "order_id": "ord_02559FC5",
+        "amount": 1535300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-28T17:23:00",
+        "fee": 30706,
+        "tax": 5527,
+        "reference": "PAY/ord_02559FC5"
+      },
+      {
+        "payment_id": "pay_02563FB9",
+        "order_id": "ord_0256A12F",
+        "amount": 929600,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-28T15:21:00",
+        "fee": 18592,
+        "tax": 3347,
+        "reference": "PAY/ord_0256A12F"
+      },
+      {
+        "payment_id": "pay_0259B565",
+        "order_id": "ord_02596B2B",
+        "amount": 3914900,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-27T16:38:00",
+        "fee": 78298,
+        "tax": 14094,
+        "reference": "PAY/ord_02596B2B"
+      },
+      {
+        "payment_id": "pay_0261235B",
+        "order_id": "ord_026146CD",
+        "amount": 748300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-18T12:21:00",
+        "fee": 14966,
+        "tax": 2694,
+        "reference": "PAY/ord_026146CD"
+      },
+      {
+        "payment_id": "pay_02654AD4",
+        "order_id": "ord_02659BD0",
+        "amount": 241300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-18T18:08:00",
+        "fee": 4826,
+        "tax": 869,
+        "reference": "PAY/ord_02659BD0"
+      },
+      {
+        "payment_id": "pay_02711BFF",
+        "order_id": "ord_0271EC7D",
+        "amount": 369800,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-15T12:58:00",
+        "fee": 7396,
+        "tax": 1331,
+        "reference": "PAY/ord_0271EC7D"
+      },
+      {
+        "payment_id": "pay_0272E34C",
+        "order_id": "ord_0272FB55",
+        "amount": 6012600,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-28T10:34:00",
+        "fee": 120252,
+        "tax": 21645,
+        "reference": "PAY/ord_0272FB55"
+      },
+      {
+        "payment_id": "pay_0279F905",
+        "order_id": "ord_0279DC3C",
+        "amount": 371100,
+        "currency": "INR",
+        "status": "captured",
+        "method": "upi",
+        "captured_at": "2026-06-20T11:18:00",
+        "fee": 7422,
+        "tax": 1336,
+        "reference": "PAY/ord_0279DC3C"
+      },
+      {
+        "payment_id": "pay_028850A6",
+        "order_id": "ord_0288E65E",
+        "amount": 2633400,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-24T13:56:00",
+        "fee": 52668,
+        "tax": 9480,
+        "reference": "PAY/ord_0288E65E"
+      },
+      {
+        "payment_id": "pay_02924F53",
+        "order_id": "ord_0292E1FD",
+        "amount": 1062500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-21T10:27:00",
+        "fee": 21250,
+        "tax": 3825,
+        "reference": "PAY/ord_0292E1FD"
+      },
+      {
+        "payment_id": "pay_02957CC6",
+        "order_id": "ord_0295404B",
+        "amount": 2717300,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-15T14:14:00",
+        "fee": 54346,
+        "tax": 9782,
+        "reference": "PAY/ord_0295404B"
+      },
+      {
+        "payment_id": "pay_030158E2",
+        "order_id": "ord_0301C975",
+        "amount": 4091000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "netbanking",
+        "captured_at": "2026-06-26T18:42:00",
+        "fee": 81820,
+        "tax": 14728,
+        "reference": "PAY/ord_0301C975"
+      },
+      {
+        "payment_id": "pay_0312514F",
+        "order_id": "ord_0312BC38",
+        "amount": 233000,
+        "currency": "INR",
+        "status": "captured",
+        "method": "wallet",
+        "captured_at": "2026-06-14T15:11:00",
+        "fee": 4660,
+        "tax": 839,
+        "reference": "PAY/ord_0312BC38"
+      },
+      {
+        "payment_id": "pay_031516E0",
+        "order_id": "ord_03157011",
+        "amount": 158500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-21T12:26:00",
+        "fee": 3170,
+        "tax": 571,
+        "reference": "PAY/ord_03157011"
+      },
+      {
+        "payment_id": "pay_031516E0",
+        "order_id": "ord_03157011",
+        "amount": 158500,
+        "currency": "INR",
+        "status": "captured",
+        "method": "card",
+        "captured_at": "2026-06-21T12:26:00",
+        "fee": 3170,
+        "tax": 571,
+        "reference": "PAY/ord_03157011"
+      }
+    ],
+    "refunds": [
+      {
+        "refund_id": "rfnd_0024D38D",
+        "payment_id": "pay_0024C976",
+        "amount": 184850,
+        "status": "processed",
+        "created_at": "2026-06-13T14:13:00",
+        "reference": "RFND/ord_0024105A"
+      },
+      {
+        "refund_id": "rfnd_003431D5",
+        "payment_id": null,
+        "amount": 1272670,
+        "status": "processed",
+        "created_at": "2026-06-28T19:48:00",
+        "reference": "CUST-0081/refund posted"
+      },
+      {
+        "refund_id": "rfnd_0062990D",
+        "payment_id": "pay_00623BB3",
+        "amount": 1942025,
+        "status": "processed",
+        "created_at": "2026-06-03T01:16:00",
+        "reference": "RFND/ord_00622297"
+      },
+      {
+        "refund_id": "rfnd_0108D9BC",
+        "payment_id": null,
+        "amount": 65395,
+        "status": "processed",
+        "created_at": "2026-06-20T11:55:00",
+        "reference": "REF CUST-0080 - cust adj"
+      },
+      {
+        "refund_id": "rfnd_0142A640",
+        "payment_id": null,
+        "amount": 180290,
+        "status": "processed",
+        "created_at": "2026-06-06T22:03:00",
+        "reference": "CUST-0065/refund posted"
+      },
+      {
+        "refund_id": "rfnd_014917A3",
+        "payment_id": "pay_014991AD",
+        "amount": 233785,
+        "status": "processed",
+        "created_at": "2026-06-23T21:57:00",
+        "reference": "RFND/ord_0149658B"
+      },
+      {
+        "refund_id": "rfnd_0166F085",
+        "payment_id": null,
+        "amount": 411830,
+        "status": "processed",
+        "created_at": "2026-06-28T20:30:00",
+        "reference": "chargeback-adj CUST-0043"
+      },
+      {
+        "refund_id": "rfnd_0174825B",
+        "payment_id": "pay_01747F5F",
+        "amount": 4656865,
+        "status": "processed",
+        "created_at": "2026-06-04T18:53:00",
+        "reference": "RFND/ord_0174FBFE"
+      },
+      {
+        "refund_id": "rfnd_01952574",
+        "payment_id": null,
+        "amount": 698810,
+        "status": "processed",
+        "created_at": "2026-06-28T14:57:00",
+        "reference": "ADJ/CUST-0007/partial"
+      },
+      {
+        "refund_id": "rfnd_0216DB0A",
+        "payment_id": null,
+        "amount": 2837070,
+        "status": "processed",
+        "created_at": "2026-06-06T00:38:00",
+        "reference": "chargeback-adj CUST-0003"
+      },
+      {
+        "refund_id": "rfnd_0228BA0C",
+        "payment_id": "pay_02282D23",
+        "amount": 1015625,
+        "status": "processed",
+        "created_at": "2026-06-15T02:59:00",
+        "reference": "RFND/ord_022823A0"
+      },
+      {
+        "refund_id": "rfnd_02358051",
+        "payment_id": "pay_02353003",
+        "amount": 201175,
+        "status": "processed",
+        "created_at": "2026-06-26T22:29:00",
+        "reference": "RFND/ord_02351954"
+      },
+      {
+        "refund_id": "rfnd_0245935A",
+        "payment_id": null,
+        "amount": 230710,
+        "status": "processed",
+        "created_at": "2026-06-14T22:14:00",
+        "reference": "ADJ/CUST-0068/partial"
+      },
+      {
+        "refund_id": "rfnd_0248B238",
+        "payment_id": null,
+        "amount": 1163765,
+        "status": "processed",
+        "created_at": "2026-06-08T17:44:00",
+        "reference": "chargeback-adj CUST-0023"
+      },
+      {
+        "refund_id": "rfnd_02598934",
+        "payment_id": "pay_0259B565",
+        "amount": 1720335,
+        "status": "processed",
+        "created_at": "2026-06-29T00:38:00",
+        "reference": "RFND/ord_02596B2B"
+      },
+      {
+        "refund_id": "rfnd_027971A8",
+        "payment_id": null,
+        "amount": 127565,
+        "status": "processed",
+        "created_at": "2026-06-21T17:18:00",
+        "reference": "REF CUST-0010 - cust adj"
+      },
+      {
+        "refund_id": "rfnd_028880B8",
+        "payment_id": "pay_028850A6",
+        "amount": 1618210,
+        "status": "processed",
+        "created_at": "2026-06-25T15:56:00",
+        "reference": "RFND/ord_0288E65E"
+      },
+      {
+        "refund_id": "rfnd_0301BEC0",
+        "payment_id": "pay_030158E2",
+        "amount": 1174250,
+        "status": "processed",
+        "created_at": "2026-06-28T04:42:00",
+        "reference": "RFND/ord_0301C975"
+      }
+    ],
+    "settlements": [
+      {
+        "settlement_id": "setl_0001E873",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0001DA30"
+        ],
+        "gross_amount": 228500,
+        "fees": 4570,
+        "tax": 823,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 223107,
+        "settlement_date": "2026-06-21T19:43:00",
+        "status": "processed",
+        "reference": "STL/setl_0001E873"
+      },
+      {
+        "settlement_id": "setl_00043C9C",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0004930A"
+        ],
+        "gross_amount": 6644100,
+        "fees": 132882,
+        "tax": 23919,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 6487299,
+        "settlement_date": "2026-06-30T15:11:00",
+        "status": "processed",
+        "reference": "STL/setl_00043C9C"
+      },
+      {
+        "settlement_id": "setl_00067166",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_00069E09"
+        ],
+        "gross_amount": 1794800,
+        "fees": 35896,
+        "tax": 6461,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1752443,
+        "settlement_date": "2026-06-15T09:06:00",
+        "status": "processed",
+        "reference": "STL/setl_00067166"
+      },
+      {
+        "settlement_id": "setl_00074046",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0007EF01"
+        ],
+        "gross_amount": 7701900,
+        "fees": 154038,
+        "tax": 27727,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 7520135,
+        "settlement_date": "2026-06-17T18:51:00",
+        "status": "processed",
+        "reference": "STL/setl_00074046"
+      },
+      {
+        "settlement_id": "setl_0012D881",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_00121298"
+        ],
+        "gross_amount": 7794700,
+        "fees": 155894,
+        "tax": 28061,
+        "refund_adjustments": 698810,
+        "other_adjustments": 0,
+        "net_amount": 6911935,
+        "settlement_date": "2026-07-02T16:49:00",
+        "status": "processed",
+        "reference": "STL/setl_0012D881"
+      },
+      {
+        "settlement_id": "setl_0013A096",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0013F8B6"
+        ],
+        "gross_amount": 8164600,
+        "fees": 163292,
+        "tax": 29393,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 7971915,
+        "settlement_date": "2026-06-18T15:18:00",
+        "status": "processed",
+        "reference": "STL/setl_0013A096"
+      },
+      {
+        "settlement_id": "setl_0017157D",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0017BC9F"
+        ],
+        "gross_amount": 2084000,
+        "fees": 41680,
+        "tax": 7502,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 2034818,
+        "settlement_date": "2026-06-17T10:09:00",
+        "status": "processed",
+        "reference": "STL/setl_0017157D"
+      },
+      {
+        "settlement_id": "setl_00196B9F",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_001990C7"
+        ],
+        "gross_amount": 2496500,
+        "fees": 49930,
+        "tax": 8987,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 2437583,
+        "settlement_date": "2026-06-03T10:35:00",
+        "status": "processed",
+        "reference": "STL/setl_00196B9F"
+      },
+      {
+        "settlement_id": "setl_0024D4D1",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0024C976"
+        ],
+        "gross_amount": 773000,
+        "fees": 15460,
+        "tax": 2783,
+        "refund_adjustments": 184850,
+        "other_adjustments": 0,
+        "net_amount": 569907,
+        "settlement_date": "2026-06-14T11:13:00",
+        "status": "processed",
+        "reference": "STL/setl_0024D4D1"
+      },
+      {
+        "settlement_id": "setl_0029167F",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0029AD38"
+        ],
+        "gross_amount": 8916400,
+        "fees": 231728,
+        "tax": 41711,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 8642961,
+        "settlement_date": "2026-06-27T10:18:00",
+        "status": "processed",
+        "reference": "STL/setl_0029167F"
+      },
+      {
+        "settlement_id": "setl_0033A0DC",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_00331E97"
+        ],
+        "gross_amount": 5220500,
+        "fees": 104410,
+        "tax": 18794,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 5097296,
+        "settlement_date": "2026-06-21T17:14:00",
+        "status": "processed",
+        "reference": "STL/setl_0033A0DC"
+      },
+      {
+        "settlement_id": "setl_0034CA22",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_003478CC"
+        ],
+        "gross_amount": 4739800,
+        "fees": 94796,
+        "tax": 17063,
+        "refund_adjustments": 1272670,
+        "other_adjustments": 0,
+        "net_amount": 3355271,
+        "settlement_date": "2026-06-29T18:48:00",
+        "status": "processed",
+        "reference": "STL/setl_0034CA22"
+      },
+      {
+        "settlement_id": "setl_0035FAA7",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_00351A3E"
+        ],
+        "gross_amount": 1172800,
+        "fees": 23456,
+        "tax": 4222,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1145122,
+        "settlement_date": "2026-06-06T17:13:00",
+        "status": "processed",
+        "reference": "STL/setl_0035FAA7"
+      },
+      {
+        "settlement_id": "setl_00373C9A",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0037DAA0"
+        ],
+        "gross_amount": 1065500,
+        "fees": 33810,
+        "tax": 6086,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1025604,
+        "settlement_date": "2026-06-23T09:34:00",
+        "status": "processed",
+        "reference": "STL/setl_00373C9A"
+      },
+      {
+        "settlement_id": "setl_0048FFC8",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0048CBEF"
+        ],
+        "gross_amount": 865600,
+        "fees": 17312,
+        "tax": 3116,
+        "refund_adjustments": 1272670,
+        "other_adjustments": 0,
+        "net_amount": -427498,
+        "settlement_date": "2026-07-02T19:57:00",
+        "status": "processed",
+        "reference": "STL/setl_0048FFC8"
+      },
+      {
+        "settlement_id": "setl_00522EE9",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_00526F48"
+        ],
+        "gross_amount": 1683200,
+        "fees": 33664,
+        "tax": 6060,
+        "refund_adjustments": 230710,
+        "other_adjustments": 0,
+        "net_amount": 1412766,
+        "settlement_date": "2026-06-04T15:54:00",
+        "status": "processed",
+        "reference": "STL/setl_00522EE9"
+      },
+      {
+        "settlement_id": "setl_00621F19",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_00623BB3"
+        ],
+        "gross_amount": 5151500,
+        "fees": 103030,
+        "tax": 18545,
+        "refund_adjustments": 1942025,
+        "other_adjustments": 0,
+        "net_amount": 3087900,
+        "settlement_date": "2026-06-03T14:16:00",
+        "status": "processed",
+        "reference": "STL/setl_00621F19"
+      },
+      {
+        "settlement_id": "setl_00687447",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0068DF3B"
+        ],
+        "gross_amount": 7743100,
+        "fees": 154862,
+        "tax": 27875,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 7560363,
+        "settlement_date": "2026-06-21T11:09:00",
+        "status": "processed",
+        "reference": "STL/setl_00687447"
+      },
+      {
+        "settlement_id": "setl_00714475",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0071FC91"
+        ],
+        "gross_amount": 4548400,
+        "fees": 90968,
+        "tax": 16374,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 4441058,
+        "settlement_date": "2026-06-21T15:28:00",
+        "status": "processed",
+        "reference": "STL/setl_00714475"
+      },
+      {
+        "settlement_id": "setl_00753835",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_00751478"
+        ],
+        "gross_amount": 3631300,
+        "fees": 72626,
+        "tax": 13073,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 3545601,
+        "settlement_date": "2026-06-19T10:55:00",
+        "status": "processed",
+        "reference": "STL/setl_00753835"
+      },
+      {
+        "settlement_id": "setl_0079E47D",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0079D5A8"
+        ],
+        "gross_amount": 4081200,
+        "fees": 81624,
+        "tax": 14692,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 3984884,
+        "settlement_date": "2026-06-08T19:02:00",
+        "status": "processed",
+        "reference": "STL/setl_0079E47D"
+      },
+      {
+        "settlement_id": "setl_0080E419",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0080D9D5"
+        ],
+        "gross_amount": 844900,
+        "fees": 16898,
+        "tax": 3042,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 824960,
+        "settlement_date": "2026-06-10T14:59:00",
+        "status": "processed",
+        "reference": "STL/setl_0080E419"
+      },
+      {
+        "settlement_id": "setl_0084C0C3",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_00848F3C"
+        ],
+        "gross_amount": 437200,
+        "fees": 8744,
+        "tax": 1574,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 426882,
+        "settlement_date": "2026-06-27T19:51:00",
+        "status": "processed",
+        "reference": "STL/setl_0084C0C3"
+      },
+      {
+        "settlement_id": "setl_009162B0",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_00911A5A"
+        ],
+        "gross_amount": 1664900,
+        "fees": 33298,
+        "tax": 5994,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1625608,
+        "settlement_date": "2026-06-16T17:39:00",
+        "status": "processed",
+        "reference": "STL/setl_009162B0"
+      },
+      {
+        "settlement_id": "setl_00941212",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0094BD06"
+        ],
+        "gross_amount": 1886000,
+        "fees": 37720,
+        "tax": 6790,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1841490,
+        "settlement_date": "2026-06-20T17:29:00",
+        "status": "processed",
+        "reference": "STL/setl_00941212"
+      },
+      {
+        "settlement_id": "setl_0100E373",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0100B0A5"
+        ],
+        "gross_amount": 97300,
+        "fees": 1946,
+        "tax": 350,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 95004,
+        "settlement_date": "2026-07-02T11:49:00",
+        "status": "processed",
+        "reference": "STL/setl_0100E373"
+      },
+      {
+        "settlement_id": "setl_01011AEE",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_01013516"
+        ],
+        "gross_amount": 443200,
+        "fees": 8864,
+        "tax": 1596,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 432740,
+        "settlement_date": "2026-06-19T13:13:00",
+        "status": "processed",
+        "reference": "STL/setl_01011AEE"
+      },
+      {
+        "settlement_id": "setl_01075394",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_01072D04"
+        ],
+        "gross_amount": 2259700,
+        "fees": 45194,
+        "tax": 8135,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 2206371,
+        "settlement_date": "2026-07-09T15:17:00",
+        "status": "processed",
+        "reference": "STL/setl_01075394"
+      },
+      {
+        "settlement_id": "setl_01087B3C",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0108B5A2"
+        ],
+        "gross_amount": 247300,
+        "fees": 4946,
+        "tax": 890,
+        "refund_adjustments": 65395,
+        "other_adjustments": 0,
+        "net_amount": 176069,
+        "settlement_date": "2026-06-21T10:55:00",
+        "status": "processed",
+        "reference": "STL/setl_01087B3C"
+      },
+      {
+        "settlement_id": "setl_01161744",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0116305E"
+        ],
+        "gross_amount": 672300,
+        "fees": 13446,
+        "tax": 2420,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 656434,
+        "settlement_date": "2026-06-18T11:01:00",
+        "status": "processed",
+        "reference": "STL/setl_01161744"
+      },
+      {
+        "settlement_id": "setl_011718D3",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_01178A3E"
+        ],
+        "gross_amount": 9408100,
+        "fees": 188162,
+        "tax": 33869,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 9186069,
+        "settlement_date": "2026-07-02T19:50:00",
+        "status": "processed",
+        "reference": "STL/setl_011718D3"
+      },
+      {
+        "settlement_id": "setl_01184BC1",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0118AFAF"
+        ],
+        "gross_amount": 1461400,
+        "fees": 29228,
+        "tax": 5261,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1426911,
+        "settlement_date": "2026-06-27T19:33:00",
+        "status": "processed",
+        "reference": "STL/setl_01184BC1"
+      },
+      {
+        "settlement_id": "setl_0120DD92",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0120EB60"
+        ],
+        "gross_amount": 6863600,
+        "fees": 193872,
+        "tax": 34897,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 6634831,
+        "settlement_date": "2026-06-24T12:31:00",
+        "status": "processed",
+        "reference": "STL/setl_0120DD92"
+      },
+      {
+        "settlement_id": "setl_0122901F",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_01228658"
+        ],
+        "gross_amount": 3779300,
+        "fees": 75586,
+        "tax": 13605,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 3690109,
+        "settlement_date": "2026-06-16T14:48:00",
+        "status": "processed",
+        "reference": "STL/setl_0122901F"
+      },
+      {
+        "settlement_id": "setl_01411CE4",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_01413873"
+        ],
+        "gross_amount": 2370200,
+        "fees": 47404,
+        "tax": 8533,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 2314263,
+        "settlement_date": "2026-06-27T16:15:00",
+        "status": "processed",
+        "reference": "STL/setl_01411CE4"
+      },
+      {
+        "settlement_id": "setl_0142AAB7",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_014252C5"
+        ],
+        "gross_amount": 548600,
+        "fees": 10972,
+        "tax": 1975,
+        "refund_adjustments": 180290,
+        "other_adjustments": 0,
+        "net_amount": 355363,
+        "settlement_date": "2026-06-07T17:03:00",
+        "status": "processed",
+        "reference": "STL/setl_0142AAB7"
+      },
+      {
+        "settlement_id": "setl_0144E72A",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0144EB18"
+        ],
+        "gross_amount": 479100,
+        "fees": 9582,
+        "tax": 1725,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 467793,
+        "settlement_date": "2026-06-15T16:12:00",
+        "status": "processed",
+        "reference": "STL/setl_0144E72A"
+      },
+      {
+        "settlement_id": "setl_014565C9",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_01452BE5"
+        ],
+        "gross_amount": 6621800,
+        "fees": 132436,
+        "tax": 23838,
+        "refund_adjustments": 127565,
+        "other_adjustments": 0,
+        "net_amount": 6337961,
+        "settlement_date": "2026-06-11T17:46:00",
+        "status": "processed",
+        "reference": "STL/setl_014565C9"
+      },
+      {
+        "settlement_id": "setl_0146FB1E",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0146953B"
+        ],
+        "gross_amount": 77300,
+        "fees": 1546,
+        "tax": 278,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 75476,
+        "settlement_date": "2026-06-23T18:43:00",
+        "status": "processed",
+        "reference": "STL/setl_0146FB1E"
+      },
+      {
+        "settlement_id": "setl_0147EB8C",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_01471ED3"
+        ],
+        "gross_amount": 8297300,
+        "fees": 165946,
+        "tax": 29870,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 8101484,
+        "settlement_date": "2026-06-17T19:02:00",
+        "status": "processed",
+        "reference": "STL/setl_0147EB8C"
+      },
+      {
+        "settlement_id": "setl_01497F90",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_014991AD"
+        ],
+        "gross_amount": 385900,
+        "fees": 7718,
+        "tax": 1389,
+        "refund_adjustments": 233785,
+        "other_adjustments": 0,
+        "net_amount": 143008,
+        "settlement_date": "2026-06-24T18:57:00",
+        "status": "processed",
+        "reference": "STL/setl_01497F90"
+      },
+      {
+        "settlement_id": "setl_0153B769",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_01533A32"
+        ],
+        "gross_amount": 8850000,
+        "fees": 177000,
+        "tax": 31860,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 8641140,
+        "settlement_date": "2026-06-20T18:46:00",
+        "status": "processed",
+        "reference": "STL/setl_0153B769"
+      },
+      {
+        "settlement_id": "setl_0157B883",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_01577FB6"
+        ],
+        "gross_amount": 1250400,
+        "fees": 25008,
+        "tax": 4501,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1220891,
+        "settlement_date": "2026-06-23T14:14:00",
+        "status": "processed",
+        "reference": "STL/setl_0157B883"
+      },
+      {
+        "settlement_id": "setl_015884C7",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0158A5A3"
+        ],
+        "gross_amount": 1698800,
+        "fees": 33976,
+        "tax": 6116,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1658708,
+        "settlement_date": "2026-06-08T15:07:00",
+        "status": "processed",
+        "reference": "STL/setl_015884C7"
+      },
+      {
+        "settlement_id": "setl_0163E5D0",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0163182C"
+        ],
+        "gross_amount": 761000,
+        "fees": 15220,
+        "tax": 2740,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 743040,
+        "settlement_date": "2026-06-30T09:43:00",
+        "status": "processed",
+        "reference": "STL/setl_0163E5D0"
+      },
+      {
+        "settlement_id": "setl_0166B952",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0166A046"
+        ],
+        "gross_amount": 2080200,
+        "fees": 41604,
+        "tax": 7489,
+        "refund_adjustments": 411830,
+        "other_adjustments": 0,
+        "net_amount": 1619277,
+        "settlement_date": "2026-06-29T17:30:00",
+        "status": "processed",
+        "reference": "STL/setl_0166B952"
+      },
+      {
+        "settlement_id": "setl_01687982",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0168813A"
+        ],
+        "gross_amount": 890700,
+        "fees": 17814,
+        "tax": 3207,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 869679,
+        "settlement_date": "2026-06-10T18:35:00",
+        "status": "processed",
+        "reference": "STL/setl_01687982"
+      },
+      {
+        "settlement_id": "setl_01705541",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0170BEB1"
+        ],
+        "gross_amount": 336700,
+        "fees": 6734,
+        "tax": 1212,
+        "refund_adjustments": 65395,
+        "other_adjustments": 0,
+        "net_amount": 263359,
+        "settlement_date": "2026-06-30T17:36:00",
+        "status": "processed",
+        "reference": "STL/setl_01705541"
+      },
+      {
+        "settlement_id": "setl_01748A84",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_01747F5F"
+        ],
+        "gross_amount": 8853100,
+        "fees": 177062,
+        "tax": 31871,
+        "refund_adjustments": 4656865,
+        "other_adjustments": 0,
+        "net_amount": 3987302,
+        "settlement_date": "2026-06-05T10:53:00",
+        "status": "processed",
+        "reference": "STL/setl_01748A84"
+      },
+      {
+        "settlement_id": "setl_0176A394",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0176E523"
+        ],
+        "gross_amount": 1474200,
+        "fees": 29484,
+        "tax": 5307,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1439409,
+        "settlement_date": "2026-06-14T10:18:00",
+        "status": "processed",
+        "reference": "STL/setl_0176A394"
+      },
+      {
+        "settlement_id": "setl_018234B8",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_01826F99"
+        ],
+        "gross_amount": 4385100,
+        "fees": 87702,
+        "tax": 15786,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 4281612,
+        "settlement_date": "2026-06-14T10:23:00",
+        "status": "processed",
+        "reference": "STL/setl_018234B8"
+      },
+      {
+        "settlement_id": "setl_01868E9C",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_01867943"
+        ],
+        "gross_amount": 8880200,
+        "fees": 177604,
+        "tax": 31969,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 8670627,
+        "settlement_date": "2026-06-03T18:17:00",
+        "status": "processed",
+        "reference": "STL/setl_01868E9C"
+      },
+      {
+        "settlement_id": "setl_019055C7",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0190477E"
+        ],
+        "gross_amount": 6210000,
+        "fees": 124200,
+        "tax": 22356,
+        "refund_adjustments": 180290,
+        "other_adjustments": 0,
+        "net_amount": 5883154,
+        "settlement_date": "2026-06-16T14:45:00",
+        "status": "processed",
+        "reference": "STL/setl_019055C7"
+      },
+      {
+        "settlement_id": "setl_0195EB8A",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_01952C76"
+        ],
+        "gross_amount": 3277400,
+        "fees": 65548,
+        "tax": 11799,
+        "refund_adjustments": 698810,
+        "other_adjustments": 0,
+        "net_amount": 2501243,
+        "settlement_date": "2026-06-29T12:57:00",
+        "status": "processed",
+        "reference": "STL/setl_0195EB8A"
+      },
+      {
+        "settlement_id": "setl_0214DD7F",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_02146DF9"
+        ],
+        "gross_amount": 370700,
+        "fees": 10314,
+        "tax": 1857,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 358529,
+        "settlement_date": "2026-06-24T14:52:00",
+        "status": "processed",
+        "reference": "STL/setl_0214DD7F"
+      },
+      {
+        "settlement_id": "setl_02154568",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0215D5C8"
+        ],
+        "gross_amount": 5592700,
+        "fees": 111854,
+        "tax": 20134,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 5460712,
+        "settlement_date": "2026-06-18T15:15:00",
+        "status": "processed",
+        "reference": "STL/setl_02154568"
+      },
+      {
+        "settlement_id": "setl_021662E3",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_02164433"
+        ],
+        "gross_amount": 5831800,
+        "fees": 116636,
+        "tax": 20994,
+        "refund_adjustments": 2837070,
+        "other_adjustments": 0,
+        "net_amount": 2857100,
+        "settlement_date": "2026-06-06T16:38:00",
+        "status": "processed",
+        "reference": "STL/setl_021662E3"
+      },
+      {
+        "settlement_id": "setl_0221B487",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0221829B"
+        ],
+        "gross_amount": 2426100,
+        "fees": 48522,
+        "tax": 8734,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 2368844,
+        "settlement_date": "2026-06-21T12:57:00",
+        "status": "processed",
+        "reference": "STL/setl_0221B487"
+      },
+      {
+        "settlement_id": "setl_0222A8F8",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0222B5A2"
+        ],
+        "gross_amount": 215100,
+        "fees": 4302,
+        "tax": 774,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 210024,
+        "settlement_date": "2026-06-10T10:34:00",
+        "status": "processed",
+        "reference": "STL/setl_0222A8F8"
+      },
+      {
+        "settlement_id": "setl_0228BF22",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_02282D23"
+        ],
+        "gross_amount": 2091500,
+        "fees": 41830,
+        "tax": 7529,
+        "refund_adjustments": 1015625,
+        "other_adjustments": 0,
+        "net_amount": 1026516,
+        "settlement_date": "2026-06-15T16:59:00",
+        "status": "processed",
+        "reference": "STL/setl_0228BF22"
+      },
+      {
+        "settlement_id": "setl_023532F8",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_02353003"
+        ],
+        "gross_amount": 458500,
+        "fees": 9170,
+        "tax": 1651,
+        "refund_adjustments": 201175,
+        "other_adjustments": 0,
+        "net_amount": 246504,
+        "settlement_date": "2026-06-27T19:29:00",
+        "status": "processed",
+        "reference": "STL/setl_023532F8"
+      },
+      {
+        "settlement_id": "setl_0237FEAA",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_02375EB9"
+        ],
+        "gross_amount": 354700,
+        "fees": 7094,
+        "tax": 1277,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 346329,
+        "settlement_date": "2026-06-30T10:26:00",
+        "status": "processed",
+        "reference": "STL/setl_0237FEAA"
+      },
+      {
+        "settlement_id": "setl_02385C94",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0238E06D"
+        ],
+        "gross_amount": 287400,
+        "fees": 5748,
+        "tax": 1035,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 280617,
+        "settlement_date": "2026-06-11T15:37:00",
+        "status": "processed",
+        "reference": "STL/setl_02385C94"
+      },
+      {
+        "settlement_id": "setl_0242F023",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_02424FCB"
+        ],
+        "gross_amount": 9199100,
+        "fees": 183982,
+        "tax": 33117,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 8982001,
+        "settlement_date": "2026-06-10T15:39:00",
+        "status": "processed",
+        "reference": "STL/setl_0242F023"
+      },
+      {
+        "settlement_id": "setl_0245CA4D",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_02456E14"
+        ],
+        "gross_amount": 389400,
+        "fees": 7788,
+        "tax": 1402,
+        "refund_adjustments": 230710,
+        "other_adjustments": 0,
+        "net_amount": 149500,
+        "settlement_date": "2026-06-15T11:14:00",
+        "status": "processed",
+        "reference": "STL/setl_0245CA4D"
+      },
+      {
+        "settlement_id": "setl_0248B795",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_02489632"
+        ],
+        "gross_amount": 2467100,
+        "fees": 49342,
+        "tax": 8882,
+        "refund_adjustments": 1163765,
+        "other_adjustments": 0,
+        "net_amount": 1245111,
+        "settlement_date": "2026-06-09T12:44:00",
+        "status": "processed",
+        "reference": "STL/setl_0248B795"
+      },
+      {
+        "settlement_id": "setl_0250A65A",
+        "merchant_id": "mch_CITR03",
+        "payment_ids": [
+          "pay_0250325D"
+        ],
+        "gross_amount": 491500,
+        "fees": 9830,
+        "tax": 1769,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 479901,
+        "settlement_date": "2026-06-03T18:48:00",
+        "status": "processed",
+        "reference": "STL/setl_0250A65A"
+      },
+      {
+        "settlement_id": "setl_025580F5",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0255B483"
+        ],
+        "gross_amount": 1535300,
+        "fees": 30706,
+        "tax": 5527,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1499067,
+        "settlement_date": "2026-06-30T17:23:00",
+        "status": "processed",
+        "reference": "STL/setl_025580F5"
+      },
+      {
+        "settlement_id": "setl_0256C2E5",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_02563FB9"
+        ],
+        "gross_amount": 929600,
+        "fees": 18592,
+        "tax": 3347,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 907661,
+        "settlement_date": "2026-06-30T15:21:00",
+        "status": "processed",
+        "reference": "STL/setl_0256C2E5"
+      },
+      {
+        "settlement_id": "setl_025955FC",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0259B565"
+        ],
+        "gross_amount": 3914900,
+        "fees": 78298,
+        "tax": 14094,
+        "refund_adjustments": 1720335,
+        "other_adjustments": 0,
+        "net_amount": 2102173,
+        "settlement_date": "2026-06-29T16:38:00",
+        "status": "processed",
+        "reference": "STL/setl_025955FC"
+      },
+      {
+        "settlement_id": "setl_02617E3A",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_0261235B"
+        ],
+        "gross_amount": 748300,
+        "fees": 14966,
+        "tax": 2694,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 730640,
+        "settlement_date": "2026-06-20T12:21:00",
+        "status": "processed",
+        "reference": "STL/setl_02617E3A"
+      },
+      {
+        "settlement_id": "setl_02651846",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_02654AD4"
+        ],
+        "gross_amount": 241300,
+        "fees": 4826,
+        "tax": 869,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 235605,
+        "settlement_date": "2026-06-20T18:08:00",
+        "status": "processed",
+        "reference": "STL/setl_02651846"
+      },
+      {
+        "settlement_id": "setl_02713F71",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_02711BFF"
+        ],
+        "gross_amount": 369800,
+        "fees": 7396,
+        "tax": 1331,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 361073,
+        "settlement_date": "2026-06-17T12:58:00",
+        "status": "processed",
+        "reference": "STL/setl_02713F71"
+      },
+      {
+        "settlement_id": "setl_0272417F",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0272E34C"
+        ],
+        "gross_amount": 6012600,
+        "fees": 120252,
+        "tax": 21645,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 5870703,
+        "settlement_date": "2026-07-08T10:34:00",
+        "status": "processed",
+        "reference": "STL/setl_0272417F"
+      },
+      {
+        "settlement_id": "setl_027975BE",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_0279F905"
+        ],
+        "gross_amount": 371100,
+        "fees": 7422,
+        "tax": 1336,
+        "refund_adjustments": 127565,
+        "other_adjustments": 0,
+        "net_amount": 234777,
+        "settlement_date": "2026-06-22T11:18:00",
+        "status": "processed",
+        "reference": "STL/setl_027975BE"
+      },
+      {
+        "settlement_id": "setl_028828E8",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_028850A6"
+        ],
+        "gross_amount": 2633400,
+        "fees": 52668,
+        "tax": 9480,
+        "refund_adjustments": 1618210,
+        "other_adjustments": 0,
+        "net_amount": 953042,
+        "settlement_date": "2026-06-26T13:56:00",
+        "status": "processed",
+        "reference": "STL/setl_028828E8"
+      },
+      {
+        "settlement_id": "setl_02929736",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_02924F53"
+        ],
+        "gross_amount": 1062500,
+        "fees": 21250,
+        "tax": 3825,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 1037425,
+        "settlement_date": "2026-06-23T10:27:00",
+        "status": "processed",
+        "reference": "STL/setl_02929736"
+      },
+      {
+        "settlement_id": "setl_029527BB",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_02957CC6"
+        ],
+        "gross_amount": 2717300,
+        "fees": 54346,
+        "tax": 9782,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 2653172,
+        "settlement_date": "2026-06-17T14:14:00",
+        "status": "processed",
+        "reference": "STL/setl_029527BB"
+      },
+      {
+        "settlement_id": "setl_0301DAFF",
+        "merchant_id": "mch_BLUE02",
+        "payment_ids": [
+          "pay_030158E2"
+        ],
+        "gross_amount": 4091000,
+        "fees": 81820,
+        "tax": 14728,
+        "refund_adjustments": 1174250,
+        "other_adjustments": 0,
+        "net_amount": 2820202,
+        "settlement_date": "2026-06-28T18:42:00",
+        "status": "processed",
+        "reference": "STL/setl_0301DAFF"
+      },
+      {
+        "settlement_id": "setl_03129C5B",
+        "merchant_id": "mch_ACME01",
+        "payment_ids": [
+          "pay_0312514F"
+        ],
+        "gross_amount": 233000,
+        "fees": 4660,
+        "tax": 839,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 227501,
+        "settlement_date": "2026-06-16T15:11:00",
+        "status": "processed",
+        "reference": "STL/setl_03129C5B"
+      },
+      {
+        "settlement_id": "setl_0315D1C0",
+        "merchant_id": "mch_DELT04",
+        "payment_ids": [
+          "pay_031516E0"
+        ],
+        "gross_amount": 158500,
+        "fees": 3170,
+        "tax": 571,
+        "refund_adjustments": 0,
+        "other_adjustments": 0,
+        "net_amount": 154759,
+        "settlement_date": "2026-06-23T12:26:00",
+        "status": "processed",
+        "reference": "STL/setl_0315D1C0"
+      }
+    ],
+    "bank_entries": [
+      {
+        "bank_entry_id": "bnk_0001B945",
+        "amount": 223107,
+        "credit_or_debit": "credit",
+        "date": "2026-06-21T19:43:00",
+        "reference": "STL/setl_0001E873",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0004283C",
+        "amount": 6487299,
+        "credit_or_debit": "credit",
+        "date": "2026-06-30T15:11:00",
+        "reference": "STL/setl_00043C9C",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0006D49A",
+        "amount": 1752443,
+        "credit_or_debit": "credit",
+        "date": "2026-06-15T09:06:00",
+        "reference": "STL/setl_00067166",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_00075FB1",
+        "amount": 7520135,
+        "credit_or_debit": "credit",
+        "date": "2026-06-17T18:51:00",
+        "reference": "STL/setl_00074046",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_001217AE",
+        "amount": 6911935,
+        "credit_or_debit": "credit",
+        "date": "2026-07-02T16:49:00",
+        "reference": "STL/setl_0012D881",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_00135657",
+        "amount": 7971915,
+        "credit_or_debit": "credit",
+        "date": "2026-06-18T15:18:00",
+        "reference": "STL/setl_0013A096",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_00179128",
+        "amount": 2034818,
+        "credit_or_debit": "credit",
+        "date": "2026-06-17T10:09:00",
+        "reference": "STL/setl_0017157D",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_00191C84",
+        "amount": 2437583,
+        "credit_or_debit": "credit",
+        "date": "2026-06-03T10:35:00",
+        "reference": "STL/setl_00196B9F",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_00241A44",
+        "amount": 569907,
+        "credit_or_debit": "credit",
+        "date": "2026-06-14T11:13:00",
+        "reference": "STL/setl_0024D4D1",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_00294FDB",
+        "amount": 8642961,
+        "credit_or_debit": "credit",
+        "date": "2026-06-27T10:18:00",
+        "reference": "STL/setl_0029167F",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_00337BA6",
+        "amount": 5097296,
+        "credit_or_debit": "credit",
+        "date": "2026-06-21T17:14:00",
+        "reference": "STL/setl_0033A0DC",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_003470FC",
+        "amount": 3355271,
+        "credit_or_debit": "credit",
+        "date": "2026-06-29T18:48:00",
+        "reference": "STL/setl_0034CA22",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0035FFD3",
+        "amount": 1145122,
+        "credit_or_debit": "credit",
+        "date": "2026-06-06T17:13:00",
+        "reference": "STL/setl_0035FAA7",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_00377B77",
+        "amount": 1025604,
+        "credit_or_debit": "credit",
+        "date": "2026-06-23T09:34:00",
+        "reference": "STL/setl_00373C9A",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_004838C5",
+        "amount": -427498,
+        "credit_or_debit": "credit",
+        "date": "2026-07-02T19:57:00",
+        "reference": "STL/setl_0048FFC8",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0052C514",
+        "amount": 1412766,
+        "credit_or_debit": "credit",
+        "date": "2026-06-04T15:54:00",
+        "reference": "STL/setl_00522EE9",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0062D1FC",
+        "amount": 3087900,
+        "credit_or_debit": "credit",
+        "date": "2026-06-03T14:16:00",
+        "reference": "STL/setl_00621F19",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0068B6E4",
+        "amount": 7560363,
+        "credit_or_debit": "credit",
+        "date": "2026-06-21T11:09:00",
+        "reference": "STL/setl_00687447",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_00714B73",
+        "amount": 4441058,
+        "credit_or_debit": "credit",
+        "date": "2026-06-21T15:28:00",
+        "reference": "STL/setl_00714475",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_0075CEC4",
+        "amount": 3545601,
+        "credit_or_debit": "credit",
+        "date": "2026-06-19T10:55:00",
+        "reference": "STL/setl_00753835",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_0079DDCC",
+        "amount": 3984884,
+        "credit_or_debit": "credit",
+        "date": "2026-06-08T19:02:00",
+        "reference": "STL/setl_0079E47D",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_00808911",
+        "amount": 824960,
+        "credit_or_debit": "credit",
+        "date": "2026-06-10T14:59:00",
+        "reference": "STL/setl_0080E419",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_00845120",
+        "amount": 426882,
+        "credit_or_debit": "credit",
+        "date": "2026-06-27T19:51:00",
+        "reference": "STL/setl_0084C0C3",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0091BDFF",
+        "amount": 1625608,
+        "credit_or_debit": "credit",
+        "date": "2026-06-16T17:39:00",
+        "reference": "STL/setl_009162B0",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_00947BB2",
+        "amount": 1841490,
+        "credit_or_debit": "credit",
+        "date": "2026-06-20T17:29:00",
+        "reference": "STL/setl_00941212",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01001328",
+        "amount": 95004,
+        "credit_or_debit": "credit",
+        "date": "2026-07-02T11:49:00",
+        "reference": "STL/setl_0100E373",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0101BE83",
+        "amount": 432740,
+        "credit_or_debit": "credit",
+        "date": "2026-06-19T13:13:00",
+        "reference": "STL/setl_01011AEE",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0107DB61",
+        "amount": 2206371,
+        "credit_or_debit": "credit",
+        "date": "2026-07-09T15:17:00",
+        "reference": "STL/setl_01075394",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_010868FC",
+        "amount": 176069,
+        "credit_or_debit": "credit",
+        "date": "2026-06-21T10:55:00",
+        "reference": "STL/setl_01087B3C",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0116A735",
+        "amount": 656434,
+        "credit_or_debit": "credit",
+        "date": "2026-06-18T11:01:00",
+        "reference": "STL/setl_01161744",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0117B57D",
+        "amount": 9186069,
+        "credit_or_debit": "credit",
+        "date": "2026-07-02T19:50:00",
+        "reference": "STL/setl_011718D3",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0118BA8B",
+        "amount": 1426911,
+        "credit_or_debit": "credit",
+        "date": "2026-06-27T19:33:00",
+        "reference": "STL/setl_01184BC1",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0120EABA",
+        "amount": 6634831,
+        "credit_or_debit": "credit",
+        "date": "2026-06-24T12:31:00",
+        "reference": "STL/setl_0120DD92",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_01226C72",
+        "amount": 3690109,
+        "credit_or_debit": "credit",
+        "date": "2026-06-16T14:48:00",
+        "reference": "STL/setl_0122901F",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01414652",
+        "amount": 2314263,
+        "credit_or_debit": "credit",
+        "date": "2026-06-27T16:15:00",
+        "reference": "STL/setl_01411CE4",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_01423265",
+        "amount": 355363,
+        "credit_or_debit": "credit",
+        "date": "2026-06-07T17:03:00",
+        "reference": "STL/setl_0142AAB7",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01445182",
+        "amount": 467793,
+        "credit_or_debit": "credit",
+        "date": "2026-06-15T16:12:00",
+        "reference": "STL/setl_0144E72A",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_01453436",
+        "amount": 6337961,
+        "credit_or_debit": "credit",
+        "date": "2026-06-11T17:46:00",
+        "reference": "STL/setl_014565C9",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0146F277",
+        "amount": 75476,
+        "credit_or_debit": "credit",
+        "date": "2026-06-23T18:43:00",
+        "reference": "STL/setl_0146FB1E",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01473FA9",
+        "amount": 8101484,
+        "credit_or_debit": "credit",
+        "date": "2026-06-17T19:02:00",
+        "reference": "STL/setl_0147EB8C",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_0149E7F2",
+        "amount": 143008,
+        "credit_or_debit": "credit",
+        "date": "2026-06-24T18:57:00",
+        "reference": "STL/setl_01497F90",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_015322A7",
+        "amount": 8641140,
+        "credit_or_debit": "credit",
+        "date": "2026-06-20T18:46:00",
+        "reference": "STL/setl_0153B769",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0157C94F",
+        "amount": 1220891,
+        "credit_or_debit": "credit",
+        "date": "2026-06-23T14:14:00",
+        "reference": "STL/setl_0157B883",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_015894AA",
+        "amount": 1658708,
+        "credit_or_debit": "credit",
+        "date": "2026-06-08T15:07:00",
+        "reference": "STL/setl_015884C7",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0163B0BA",
+        "amount": 743040,
+        "credit_or_debit": "credit",
+        "date": "2026-06-30T09:43:00",
+        "reference": "STL/setl_0163E5D0",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_016676B4",
+        "amount": 1619277,
+        "credit_or_debit": "credit",
+        "date": "2026-06-29T17:30:00",
+        "reference": "STL/setl_0166B952",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0168B1F8",
+        "amount": 869679,
+        "credit_or_debit": "credit",
+        "date": "2026-06-10T18:35:00",
+        "reference": "STL/setl_01687982",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_017054B4",
+        "amount": 263359,
+        "credit_or_debit": "credit",
+        "date": "2026-06-30T17:36:00",
+        "reference": "STL/setl_01705541",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01745F99",
+        "amount": 3987302,
+        "credit_or_debit": "credit",
+        "date": "2026-06-05T10:53:00",
+        "reference": "STL/setl_01748A84",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0176570D",
+        "amount": 1439409,
+        "credit_or_debit": "credit",
+        "date": "2026-06-14T10:18:00",
+        "reference": "STL/setl_0176A394",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0176570DD",
+        "amount": 1439409,
+        "credit_or_debit": "credit",
+        "date": "2026-06-14T10:18:00",
+        "reference": "STL/setl_0176A394",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_018247D9",
+        "amount": 4281612,
+        "credit_or_debit": "credit",
+        "date": "2026-06-14T10:23:00",
+        "reference": "STL/setl_018234B8",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01865D85",
+        "amount": 8670627,
+        "credit_or_debit": "credit",
+        "date": "2026-06-03T18:17:00",
+        "reference": "STL/setl_01868E9C",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0190FABF",
+        "amount": 5883154,
+        "credit_or_debit": "credit",
+        "date": "2026-06-16T14:45:00",
+        "reference": "STL/setl_019055C7",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_01958CA7",
+        "amount": 2501243,
+        "credit_or_debit": "credit",
+        "date": "2026-06-29T12:57:00",
+        "reference": "STL/setl_0195EB8A",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_0214BC6F",
+        "amount": 358529,
+        "credit_or_debit": "credit",
+        "date": "2026-06-24T14:52:00",
+        "reference": "STL/setl_0214DD7F",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_02151248",
+        "amount": 5460712,
+        "credit_or_debit": "credit",
+        "date": "2026-06-18T15:15:00",
+        "reference": "STL/setl_02154568",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_02166C90",
+        "amount": 2857100,
+        "credit_or_debit": "credit",
+        "date": "2026-06-06T16:38:00",
+        "reference": "STL/setl_021662E3",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0221E3CA",
+        "amount": 2368844,
+        "credit_or_debit": "credit",
+        "date": "2026-06-21T12:57:00",
+        "reference": "STL/setl_0221B487",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0222FF99",
+        "amount": 210024,
+        "credit_or_debit": "credit",
+        "date": "2026-06-10T10:34:00",
+        "reference": "STL/setl_0222A8F8",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0228C4B0",
+        "amount": 1026516,
+        "credit_or_debit": "credit",
+        "date": "2026-06-15T16:59:00",
+        "reference": "STL/setl_0228BF22",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_02352BC3",
+        "amount": 246504,
+        "credit_or_debit": "credit",
+        "date": "2026-06-27T19:29:00",
+        "reference": "STL/setl_023532F8",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_02374F7D",
+        "amount": 346329,
+        "credit_or_debit": "credit",
+        "date": "2026-06-30T10:26:00",
+        "reference": "STL/setl_0237FEAA",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_02382BC4",
+        "amount": 280617,
+        "credit_or_debit": "credit",
+        "date": "2026-06-11T15:37:00",
+        "reference": "STL/setl_02385C94",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_0242A41E",
+        "amount": 8982001,
+        "credit_or_debit": "credit",
+        "date": "2026-06-10T15:39:00",
+        "reference": "STL/setl_0242F023",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_02456FAE",
+        "amount": 149500,
+        "credit_or_debit": "credit",
+        "date": "2026-06-15T11:14:00",
+        "reference": "STL/setl_0245CA4D",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0248D092",
+        "amount": 1245111,
+        "credit_or_debit": "credit",
+        "date": "2026-06-09T12:44:00",
+        "reference": "STL/setl_0248B795",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_025051FE",
+        "amount": 479901,
+        "credit_or_debit": "credit",
+        "date": "2026-06-03T18:48:00",
+        "reference": "STL/setl_0250A65A",
+        "description": "RAZORPAY SETTLEMENT mch_CITR03"
+      },
+      {
+        "bank_entry_id": "bnk_02558C0C",
+        "amount": 1499067,
+        "credit_or_debit": "credit",
+        "date": "2026-06-30T17:23:00",
+        "reference": "STL/setl_025580F5",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_025625ED",
+        "amount": 907661,
+        "credit_or_debit": "credit",
+        "date": "2026-06-30T15:21:00",
+        "reference": "STL/setl_0256C2E5",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0259AE40",
+        "amount": 2102173,
+        "credit_or_debit": "credit",
+        "date": "2026-06-29T16:38:00",
+        "reference": "STL/setl_025955FC",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_02619374",
+        "amount": 730640,
+        "credit_or_debit": "credit",
+        "date": "2026-06-20T12:21:00",
+        "reference": "STL/setl_02617E3A",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_02651297",
+        "amount": 235605,
+        "credit_or_debit": "credit",
+        "date": "2026-06-20T18:08:00",
+        "reference": "STL/setl_02651846",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0271940A",
+        "amount": 361073,
+        "credit_or_debit": "credit",
+        "date": "2026-06-17T12:58:00",
+        "reference": "STL/setl_02713F71",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_02724C1F",
+        "amount": 5870703,
+        "credit_or_debit": "credit",
+        "date": "2026-07-08T10:34:00",
+        "reference": "STL/setl_0272417F",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0279A3AF",
+        "amount": 234777,
+        "credit_or_debit": "credit",
+        "date": "2026-06-22T11:18:00",
+        "reference": "STL/setl_027975BE",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_028877AD",
+        "amount": 953042,
+        "credit_or_debit": "credit",
+        "date": "2026-06-26T13:56:00",
+        "reference": "STL/setl_028828E8",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_02923FC2",
+        "amount": 1037425,
+        "credit_or_debit": "credit",
+        "date": "2026-06-23T10:27:00",
+        "reference": "STL/setl_02929736",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0295370E",
+        "amount": 2653172,
+        "credit_or_debit": "credit",
+        "date": "2026-06-17T14:14:00",
+        "reference": "STL/setl_029527BB",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      },
+      {
+        "bank_entry_id": "bnk_03015313",
+        "amount": 2820202,
+        "credit_or_debit": "credit",
+        "date": "2026-06-28T18:42:00",
+        "reference": "STL/setl_0301DAFF",
+        "description": "RAZORPAY SETTLEMENT mch_BLUE02"
+      },
+      {
+        "bank_entry_id": "bnk_0312F19E",
+        "amount": 227501,
+        "credit_or_debit": "credit",
+        "date": "2026-06-16T15:11:00",
+        "reference": "STL/setl_03129C5B",
+        "description": "RAZORPAY SETTLEMENT mch_ACME01"
+      },
+      {
+        "bank_entry_id": "bnk_0315B58A",
+        "amount": 154759,
+        "credit_or_debit": "credit",
+        "date": "2026-06-23T12:26:00",
+        "reference": "STL/setl_0315D1C0",
+        "description": "RAZORPAY SETTLEMENT mch_DELT04"
+      }
+    ]
+  },
+  "investigations": {
+    "pay_00121298": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_01952574 is for 698810 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_01952574"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_003478CC": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_003431D5 is for 1272670 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_003431D5"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_0048CBEF": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_003431D5 is for 1272670 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_003431D5"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_00526F48": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0245935A is for 230710 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0245935A"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_0108B5A2": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0108D9BC is for 65395 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0108D9BC"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_014252C5": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0142A640 is for 180290 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0142A640"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_01452BE5": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_027971A8 is for 127565 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_027971A8"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_0166A046": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0166F085 is for 411830 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0166F085"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_0170BEB1": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0108D9BC is for 65395 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0108D9BC"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_0190477E": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0142A640 is for 180290 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0142A640"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_01952C76": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_01952574 is for 698810 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_01952574"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_02164433": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0216DB0A is for 2837070 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0216DB0A"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_02456E14": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0245935A is for 230710 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0245935A"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_02489632": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_0248B238 is for 1163765 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_0248B238"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    },
+    "pay_0279F905": {
+      "hypothesis": "unlinked_partial_refund",
+      "reason": "Refund rfnd_027971A8 is for 127565 paise, exactly the unexplained shortfall, and carries no payment linkage. It most likely belongs to this payment and lost its link during ingestion.",
+      "required_evidence": [
+        {
+          "type": "refund",
+          "expected_relationship": "refund belongs to this payment (customer and order must agree)"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.amount == shadow ledger shortfall"
+        },
+        {
+          "type": "refund",
+          "expected_relationship": "refund.created_at is after capture and before settlement"
+        }
+      ],
+      "candidate_evidence_ids": [
+        "rfnd_027971A8"
+      ],
+      "recommended_action": "resolve",
+      "source": "heuristic_stub",
+      "model_name": null,
+      "error": null
+    }
+  },
+  "decisions": {
+    "pay_0001DA30": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0004930A": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_00069E09": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0007EF01": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_00121298": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "REJECTED",
+      "verification_score": "5 of 7 evidence checks passed",
+      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'ADJ/CUST-0007/partial' vs order customer 'CUST-0072' -> NO MATCH",
+      "exposure_paise": 698810
+    },
+    "pay_0013F8B6": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0017BC9F": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_001990C7": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_00201B6D": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_MISSING_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Captured funds have no settlement record. The money is outstanding; LedgerGuard cannot close this, it can only report it.",
+      "exposure_paise": 2378413
+    },
+    "pay_0024C976": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0029AD38": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_FEE_MISMATCH",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Fee and tax reconciled against the independent fee schedule; the exact variance is quantified.",
+      "exposure_paise": 63012
+    },
+    "pay_00331E97": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_003478CC": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 1272670
+    },
+    "pay_00351A3E": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0037DAA0": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_FEE_MISMATCH",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Fee and tax reconciled against the independent fee schedule; the exact variance is quantified.",
+      "exposure_paise": 14750
+    },
+    "pay_0048CBEF": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "REJECTED",
+      "verification_score": "5 of 7 evidence checks passed",
+      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'CUST-0081/refund posted' vs order customer 'CUST-0011' -> NO MATCH",
+      "exposure_paise": 1272670
+    },
+    "pay_00526F48": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "REJECTED",
+      "verification_score": "5 of 7 evidence checks passed",
+      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'ADJ/CUST-0068/partial' vs order customer 'CUST-0069' -> NO MATCH",
+      "exposure_paise": 230710
+    },
+    "pay_00623BB3": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0068DF3B": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DUPLICATE_RECORD",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Duplicate ingestion proven by identifier and content match; the duplicate is suppressed, not paid.",
+      "exposure_paise": 7743100
+    },
+    "pay_0071FC91": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_00751478": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DELAYED_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "All amounts reconcile exactly; the only discrepancy is timing against the expected settlement window.",
+      "exposure_paise": 0
+    },
+    "pay_0079D5A8": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0080D9D5": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_00848F3C": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_00911A5A": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0094BD06": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0100B0A5": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01013516": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01072D04": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DELAYED_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "All amounts reconcile exactly; the only discrepancy is timing against the expected settlement window.",
+      "exposure_paise": 0
+    },
+    "pay_0108B5A2": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 65395
+    },
+    "pay_0109BCD2": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_MISSING_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Captured funds have no settlement record. The money is outstanding; LedgerGuard cannot close this, it can only report it.",
+      "exposure_paise": 370739
+    },
+    "pay_0116305E": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01178A3E": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0118AFAF": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0120EB60": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_FEE_MISMATCH",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Fee and tax reconciled against the independent fee schedule; the exact variance is quantified.",
+      "exposure_paise": 66788
+    },
+    "pay_01228658": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01413873": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DELAYED_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "All amounts reconcile exactly; the only discrepancy is timing against the expected settlement window.",
+      "exposure_paise": 0
+    },
+    "pay_014252C5": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 180290
+    },
+    "pay_0144EB18": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01452BE5": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "REJECTED",
+      "verification_score": "5 of 7 evidence checks passed",
+      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'REF CUST-0010 - cust adj' vs order customer 'CUST-0046' -> NO MATCH",
+      "exposure_paise": 127565
+    },
+    "pay_0146953B": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01471ED3": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_014991AD": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01533A32": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01577FB6": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0158A5A3": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0163182C": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0166A046": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 411830
+    },
+    "pay_0168813A": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0170BEB1": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "REJECTED",
+      "verification_score": "5 of 7 evidence checks passed",
+      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'REF CUST-0080 - cust adj' vs order customer 'CUST-0066' -> NO MATCH",
+      "exposure_paise": 65395
+    },
+    "pay_01747F5F": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0176E523": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DUPLICATE_RECORD",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Duplicate ingestion proven by identifier and content match; the duplicate is suppressed, not paid.",
+      "exposure_paise": 0
+    },
+    "pay_01826F99": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_01837D97": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_MISSING_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Captured funds have no settlement record. The money is outstanding; LedgerGuard cannot close this, it can only report it.",
+      "exposure_paise": 1488522
+    },
+    "pay_01867943": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0190477E": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "REJECTED",
+      "verification_score": "5 of 7 evidence checks passed",
+      "reason": "Evidence Gate rejected the hypothesis 'unlinked_partial_refund': refund reference 'CUST-0065/refund posted' vs order customer 'CUST-0052' -> NO MATCH",
+      "exposure_paise": 180290
+    },
+    "pay_01952C76": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 698810
+    },
+    "pay_02146DF9": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_FEE_MISMATCH",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Fee and tax reconciled against the independent fee schedule; the exact variance is quantified.",
+      "exposure_paise": 3422
+    },
+    "pay_0215D5C8": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02164433": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 2837070
+    },
+    "pay_0221829B": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0222B5A2": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02282D23": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0233DB5A": {
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "exception_type": "EXCEPTION_MISSING_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Captured funds have no settlement record. The money is outstanding; LedgerGuard cannot close this, it can only report it.",
+      "exposure_paise": 5376840
+    },
+    "pay_02353003": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02375EB9": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0238E06D": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02424FCB": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DUPLICATE_RECORD",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Duplicate ingestion proven by identifier and content match; the duplicate is suppressed, not paid.",
+      "exposure_paise": 9199100
+    },
+    "pay_02456E14": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 230710
+    },
+    "pay_02489632": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 1163765
+    },
+    "pay_0250325D": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0255B483": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02563FB9": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0259B565": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0261235B": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02654AD4": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02711BFF": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0272E34C": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DELAYED_SETTLEMENT",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "All amounts reconcile exactly; the only discrepancy is timing against the expected settlement window.",
+      "exposure_paise": 0
+    },
+    "pay_0279F905": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_UNEXPLAINED_SHORTFALL",
+      "verdict": "VERIFIED",
+      "verification_score": "7 of 7 evidence checks passed",
+      "reason": "Hypothesis 'unlinked_partial_refund' verified independently: 7 of 7 evidence checks passed, and the shadow ledger balances once the evidence is applied.",
+      "exposure_paise": 127565
+    },
+    "pay_028850A6": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02924F53": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_02957CC6": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_030158E2": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_0312514F": {
+      "state": "MATCHED",
+      "exception_type": null,
+      "verdict": null,
+      "verification_score": null,
+      "reason": null,
+      "exposure_paise": 0
+    },
+    "pay_031516E0": {
+      "state": "AUTO_RESOLVED",
+      "exception_type": "EXCEPTION_DUPLICATE_RECORD",
+      "verdict": null,
+      "verification_score": null,
+      "reason": "Duplicate ingestion proven by identifier and content match; the duplicate is suppressed, not paid.",
+      "exposure_paise": 158500
+    }
+  }
+}

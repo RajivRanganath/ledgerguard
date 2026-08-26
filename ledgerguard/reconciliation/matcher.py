@@ -75,6 +75,24 @@ def find_duplicates(batch: Batch) -> BatchDuplicates:
     return dup
 
 
+#: Which invariants each classification actually accounts for. Anything else
+#: that failed is a secondary finding.
+_EXPLAINED_BY = {
+    ExceptionType.FEE_MISMATCH: {
+        "I1_settlement_arithmetic_consistent",
+        "I2_fees_and_tax_match_schedule",
+        "I3_net_matches_shadow_ledger",
+    },
+    ExceptionType.DUPLICATE_RECORD: {"I6_bank_credit_matches_settlement"},
+    ExceptionType.DELAYED_SETTLEMENT: {"I5_settlement_within_window"},
+    ExceptionType.UNEXPLAINED_SHORTFALL: {
+        "I3_net_matches_shadow_ledger",
+        "I4_gross_matches_capture",
+    },
+    ExceptionType.BANK_MISMATCH: {"I6_bank_credit_matches_settlement"},
+}
+
+
 def _classify(
     invariants: list[InvariantResult],
 ) -> tuple[ExceptionType | None, InvariantResult | None]:
@@ -201,9 +219,16 @@ def reconcile_payment(
             invariants=invariants,
         )
 
+    # Findings beyond the one that determined the classification. They do not
+    # necessarily block closure, but they must never be silently dropped just
+    # because a different invariant was reported first.
+    explained = _EXPLAINED_BY.get(exc_type, set())
+    secondary = [i.name for i in invariants if not i.holds and i.name not in explained]
+
     evidence = {
         "reason": driver.detail if driver else "",
         "failed_invariants": [i.as_dict() for i in invariants if not i.holds],
+        "secondary_findings": secondary,
         "expected_shadow_net": expected.as_dict(),
         "observed_settlement": {
             "settlement_id": settlement.settlement_id,
@@ -230,6 +255,19 @@ def reconcile_payment(
     elif exc_type is ExceptionType.FEE_MISMATCH:
         expected_value = expected.fees + expected.tax
         observed_value = settlement.fees + settlement.tax
+        # A proven cause is not the same as a fully explained case. Correct the
+        # fee and tax back to schedule and ask whether the settlement now
+        # reconciles. Whatever is left over is money the fee variance does not
+        # account for, and it must not be closed on the strength of the part
+        # that was proved.
+        corrected_net = (
+            settlement.gross_amount
+            - expected.fees
+            - expected.tax
+            - settlement.refund_adjustments
+            + settlement.other_adjustments
+        )
+        evidence["residual_paise"] = expected.net_amount - corrected_net
     elif exc_type is ExceptionType.DELAYED_SETTLEMENT:
         expected_value, observed_value = expected.net_amount, settlement.net_amount
         evidence["days_late"] = (
@@ -237,6 +275,11 @@ def reconcile_payment(
             if expected.window_end
             else None
         )
+        # "Late" and "we cannot tell when it should have arrived" are different
+        # findings. Without a capture timestamp there is no window to be late
+        # against, and treating the second as the first would close a case on a
+        # check that never actually ran.
+        evidence["window_undecidable"] = expected.window_end is None
     else:
         expected_value, observed_value = expected.net_amount, settlement.net_amount
 
