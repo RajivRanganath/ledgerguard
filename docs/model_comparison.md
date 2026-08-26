@@ -61,6 +61,42 @@ not for quality. `LEDGERGUARD_PROVIDER=nvidia` runs it.
 **Cerebras is wired up but the available key returns HTTP 402** (`payment
 required`), so it could not be measured at all.
 
+## OmniRoute, and a routing trap worth knowing about
+
+[OmniRoute](https://www.npmjs.com/package/omniroute) is a *local* router (an
+`omniroute` CLI on `http://localhost:20128/v1`, not a hosted service) that fronts
+~1,120 model routes behind one OpenAI-compatible endpoint. It is wired up as the
+`omniroute` preset, and because auto-detection cannot tell a configured key from
+a running process, selecting it first probes the local endpoint for
+reachability.
+
+It is the only available path to Claude here, since no direct Anthropic key
+exists. `openrouter/anthropic/claude-opus-5` **does** work through it — verified,
+with the response reporting `served: anthropic/claude-opus-5` — but the upstream
+OpenRouter credential in this install deactivates after a handful of calls
+(`No active credentials for provider: openrouter`, HTTP 404) and only
+intermittently recovers. Two full benchmark attempts completed 1 of 15
+investigations each before the credential dropped. **Claude therefore remains
+unmeasured**, and no Claude column is published, because publishing a 1-of-15 run
+as a model measurement would be worse than publishing nothing.
+
+The other routes in this install are not usable either: `auto/*` resolves to slow
+free models (~77–167s per investigation, mostly returning unparseable JSON),
+`oc/*` returns 401, `tllm/*` 403, `ddgw/*` 418, `pepper/*` 502.
+
+### The trap
+
+`auto/claude-opus` **is not Claude.** Asking for it returned a response whose own
+`model` field read `gemini-3.1-flash-lite`. Alias routes resolve to whatever
+upstream happens to be live, so the model that answers can be a different vendor
+entirely from the one named in the request.
+
+That is exactly the class of unverified claim this whole project is about, so the
+provider was changed to record the **served** model from the response envelope
+rather than the requested route, and to track any divergence. On a run whose
+purpose is to state which model produced a number, attributing a result to the
+wrong model would have been the most embarrassing possible failure.
+
 ## Run-to-run variance
 
 Three separate `groq` runs on the identical frozen holdout resolved **5, 6 and 7**

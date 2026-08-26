@@ -17,6 +17,11 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from ..reconciliation.exceptions import PERMITTED_HYPOTHESES
 
+#: Upper bound on the investigator's free-text reason. Claude routinely writes
+#: 600-1500 characters here; earlier, tighter caps rejected otherwise valid
+#: investigations outright.
+REASON_MAX_CHARS = 2000
+
 
 class RequiredEvidence(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -54,7 +59,11 @@ class InvestigationResult(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     hypothesis: str
-    reason: str = Field(max_length=600)
+    #: Display-only commentary. It carries no decision weight -- the gate never
+    #: reads it -- so an over-long reason is truncated rather than rejected. A
+    #: correct investigation must not be thrown away because the model was
+    #: wordy, but an unbounded string from a model still should not be stored.
+    reason: str = Field(max_length=REASON_MAX_CHARS)
     required_evidence: list[RequiredEvidence] = Field(default_factory=list)
     candidate_evidence_ids: list[str] = Field(default_factory=list)
     recommended_action: Literal["resolve", "review"] = "review"
@@ -63,6 +72,14 @@ class InvestigationResult(BaseModel):
     source: Literal["model", "heuristic_stub", "unavailable", "invalid_response"] = "model"
     model_name: Optional[str] = None
     error: Optional[str] = None
+
+    @field_validator("reason", mode="before")
+    @classmethod
+    def _truncate_reason(cls, v):
+        text = "" if v is None else str(v)
+        if len(text) > REASON_MAX_CHARS:
+            return text[: REASON_MAX_CHARS - 3] + "..."
+        return text
 
     @field_validator("hypothesis")
     @classmethod

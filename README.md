@@ -84,18 +84,18 @@ difference is whether the investigation step runs.
 | Exceptions raised | 31 | 31 |
 | False exceptions (clean case flagged) | 0 | 0 |
 | Missed faults (fault case matched) | 0 | 0 |
-| Disposition accuracy | 89.4% | **95.3%** |
-| Exceptions correctly resolved | 12 | **17** |
+| Disposition accuracy | 89.4% | **96.5%** |
+| Exceptions correctly resolved | 12 | **18** |
 | Exceptions incorrectly resolved | 0 | 0 |
 | Correct abstentions | 10 | 10 |
-| Unnecessary abstentions | 9 | **4** |
-| Value left unresolved | INR 191,780.59 | INR 138,922.84 |
+| Unnecessary abstentions | 9 | **3** |
+| Value left unresolved | INR 191,780.59 | INR 135,466.79 |
 | **False auto resolutions** | **0** | **0** |
 | **Value falsely auto resolved** | **INR 0.00** | **INR 0.00** |
 | Investigations run | 0 | 15 |
-| Investigation latency p50 / p95 | — | 10.8s / 19.7s |
+| Investigation latency p50 / p95 | — | 11.7s / 18.0s |
 
-**What this actually says:** the hybrid closes 5 of the 9 ambiguous refund cases
+**What this actually says:** the hybrid closes 6 of the 9 ambiguous refund cases
 the rules-only system had to escalate, and gives up none of the baseline's
 safety — all six wrong-linkage cases stay escalated and the value falsely auto
 resolved stays at zero. The gain is recall on ambiguous exceptions, nothing
@@ -108,8 +108,8 @@ cases, `gpt-oss-120b` proposed a resolvable hypothesis and asked to resolve
 every time. The Evidence Gate rejected all six on linkage. Without the gate,
 that is six silent false closures.
 
-**Model output is not reproducible.** Three `groq` runs on the identical frozen
-holdout resolved 5, 6 and 7 of the 9 F3 cases (95.3%, 96.5%, 97.7% accuracy) at
+**Model output is not reproducible.** Four `groq` runs on the identical frozen
+holdout resolved 5, 6, 6 and 7 of the 9 F3 cases (95.3%–97.7% accuracy) at
 `temperature: 0`. What did *not* vary: false auto resolutions stayed 0, value
 falsely closed stayed INR 0.00, and all six F6 cases were escalated every time.
 The variance lands entirely in how much is safely closed, never in whether

@@ -96,8 +96,16 @@ def _strip_fences(text: str) -> str:
     return text.strip()
 
 
-def _parse(raw: str, model: str) -> InvestigationResult:
-    """Validate a raw model response into the structured result type."""
+def _parse(raw: str, model: str, served_model: str | None = None) -> InvestigationResult:
+    """Validate a raw model response into the structured result type.
+
+    ``served_model`` is what the host says actually answered, which is not
+    always what was asked for: routers resolve alias routes to whatever upstream
+    is currently live, so requesting `auto/claude-opus` can be served by an
+    entirely different model. The report records what answered, not what was
+    requested -- attributing a result to the wrong model would be the most
+    embarrassing possible failure in a project about verifying claims.
+    """
     text = _strip_fences(raw)
     if not text:
         return InvestigationResult.invalid("model returned an empty response")
@@ -110,15 +118,21 @@ def _parse(raw: str, model: str) -> InvestigationResult:
     except Exception as exc:
         # Includes a hypothesis outside the permitted taxonomy.
         return InvestigationResult.invalid(f"response failed schema validation: {exc}")
-    return InvestigationResult(
-        hypothesis=out.hypothesis,
-        reason=out.reason,
-        required_evidence=out.required_evidence,
-        candidate_evidence_ids=out.candidate_evidence_ids,
-        recommended_action=out.recommended_action,
-        source="model",
-        model_name=model,
-    )
+    try:
+        return InvestigationResult(
+            hypothesis=out.hypothesis,
+            reason=out.reason,
+            required_evidence=out.required_evidence,
+            candidate_evidence_ids=out.candidate_evidence_ids,
+            recommended_action=out.recommended_action,
+            source="model",
+            model_name=served_model or model,
+        )
+    except Exception as exc:
+        # A schema problem is a bad response, not a dead provider. Reporting it
+        # as "unavailable" would hide a real defect behind a transport-looking
+        # error message.
+        return InvestigationResult.invalid(f"result failed runtime validation: {exc}")
 
 
 #: base_url, API key env var, default model, and whether the endpoint accepts a
@@ -141,6 +155,20 @@ PRESETS: dict[str, dict] = {
         "env": "NVIDIA_API_KEY",
         "model": "meta/llama-3.3-70b-instruct",
         "json_schema": False,
+    },
+    "omniroute": {
+        # OmniRoute is a *local* router (`omniroute` CLI), not a hosted service.
+        # It fronts many upstreams behind one OpenAI-compatible endpoint, which
+        # is how Claude gets measured here without a direct Anthropic key.
+        "base_url": "http://localhost:20128/v1",
+        "env": "OMNIROUTE_API_KEY",
+        # `auto/*` routes resolve to whatever upstream is currently live, so the
+        # served model is recorded from the response rather than assumed. Point
+        # LEDGERGUARD_MODEL at a concrete route (e.g.
+        # `openrouter/anthropic/claude-opus-5`) when the matching upstream
+        # credential is active in OmniRoute.
+        "model": "auto/best-reasoning",
+        "json_schema": True,
     },
     "openai_compatible": {
         "base_url": None,          # from LEDGERGUARD_BASE_URL
@@ -173,6 +201,8 @@ class OpenAICompatibleProvider:
         self.preset = preset
         self.reasoning_effort = os.environ.get("LEDGERGUARD_REASONING_EFFORT") or None
         self.retries = 0
+        #: Models that actually answered, when they differ from the one asked for.
+        self.served_models: set[str] = set()
         if not (self.base_url and self.api_key and self.model):
             raise ValueError(f"provider {preset!r} is not fully configured")
         self.name = f"{preset}:{self.model}"
@@ -230,6 +260,10 @@ class OpenAICompatibleProvider:
             "model": self.model,
             "max_completion_tokens": self.max_tokens,
             "temperature": 0,
+            # Some routers stream by default and emit keep-alive comments into
+            # the body, which makes the response unparseable as JSON. Ask for a
+            # single response explicitly rather than relying on the default.
+            "stream": False,
             "messages": [
                 {"role": "system", "content": system},
                 {
@@ -260,7 +294,10 @@ class OpenAICompatibleProvider:
         except Exception as exc:
             return InvestigationResult.invalid(f"unexpected response envelope: {exc}")
 
-        return _parse(raw, self.model)
+        served = payload.get("model") or self.model
+        if served != self.model:
+            self.served_models.add(served)
+        return _parse(raw, self.model, served_model=served)
 
 
 class GeminiProvider:

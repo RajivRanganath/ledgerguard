@@ -8,8 +8,8 @@ not a controller.
 The hybrid column is now a real measurement — `groq:openai/gpt-oss-120b`, 15
 live investigations, 15 of 15 completed. Four separate limitations apply to it.
 
-**Model output is not reproducible.** Three runs on the identical frozen holdout
-gave 95.3%, 96.5% and 97.7% disposition accuracy at `temperature: 0`. Any single
+**Model output is not reproducible.** Four runs on the identical frozen holdout
+gave 95.3%–97.7% disposition accuracy at `temperature: 0`. Any single
 accuracy figure from a model run is a sample, not a measurement, and I report the
 range rather than the best one. The deterministic layer *is* reproducible, and
 the safety figures (0 false auto resolutions, INR 0.00 falsely closed, 6/6 F6
@@ -33,9 +33,22 @@ also why the latency figures (p50 10.8s, p95 19.7s, with rate-limit retries
 included) are not representative of a paid tier. No cost-per-100-records figure
 is claimed.
 
-`AnthropicProvider` (`claude-opus-5`, `messages.parse`) is implemented and is
-first in the auto-detection order, but no Anthropic key was available, so Claude
-was never measured here.
+**Claude was never measured.** `AnthropicProvider` (`claude-opus-5`,
+`messages.parse`) is implemented and first in auto-detection order, but no
+Anthropic key was available. Claude *is* reachable through the local OmniRoute
+router (`openrouter/anthropic/claude-opus-5`, verified working), but that
+upstream credential deactivates after a few calls; two benchmark attempts each
+completed 1 of 15 investigations before dropping out. A 1-of-15 run is not a
+measurement, so no Claude column is published. On the hand-built adversarial
+pair, which did complete, Claude Opus 5 declined **both** halves and returned
+`insufficient_evidence` — correctly citing the CUST-0077 / CUST-0001 mismatch
+unprompted. That is a single anecdote, not a result.
+
+**Alias routes can be served by a different vendor.** Requesting
+`auto/claude-opus` on OmniRoute returned a response whose own `model` field read
+`gemini-3.1-flash-lite`. The provider now records the served model from the
+response rather than the requested route. Any provider-attributed number in this
+repository is the model that *answered*, not the one that was asked for.
 
 ## Data
 

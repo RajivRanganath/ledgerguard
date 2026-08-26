@@ -217,7 +217,7 @@ class UnavailableProvider:
 
 #: Auto-detection order. Anthropic first because that is the reference
 #: implementation; the rest are ordinary OpenAI-compatible or Gemini hosts.
-AUTO_ORDER = ["anthropic", "groq", "cerebras", "gemini", "nvidia"]
+AUTO_ORDER = ["anthropic", "omniroute", "groq", "cerebras", "gemini", "nvidia"]
 
 
 def _build(kind: str) -> InvestigatorProvider:
@@ -230,6 +230,18 @@ def _build(kind: str) -> InvestigatorProvider:
 
         return GeminiProvider(model=os.environ.get("LEDGERGUARD_MODEL", "gemini-2.5-flash"))
     from .openai_compatible import PRESETS, OpenAICompatibleProvider
+
+    if kind == "omniroute":
+        # Local router: a configured key proves nothing if the process is not
+        # running, so reachability is part of "is this provider available".
+        # Without this probe, auto-detection would select a dead endpoint and
+        # every investigation would degrade to abstention.
+        import httpx
+
+        try:
+            httpx.get("http://localhost:20128/v1/models", timeout=3.0).raise_for_status()
+        except Exception as exc:
+            raise ValueError(f"omniroute is not reachable on localhost:20128 ({exc})")
 
     if kind in PRESETS:
         return OpenAICompatibleProvider(
