@@ -102,7 +102,7 @@ opportunity. Neither is an error in the way a false auto resolution is.
 
 ## Reading the result
 
-The headline is not "95.3% vs 89.4%". The headline is the per-fault-class table
+The headline is not "97.7% vs 89.4%". The headline is the per-fault-class table
 (canonical run, `fallback(groq->gemini->nvidia->omniroute)`, served by
 `openai/gpt-oss-120b`):
 
