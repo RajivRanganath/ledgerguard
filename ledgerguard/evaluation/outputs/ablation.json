@@ -1,5 +1,5 @@
 {
-  "provider": "fallback(groq->gemini->nvidia->omniroute)",
+  "provider": "omniroute:mistral/mistral-large-latest",
   "arms": [
     {
       "name": "rules_only",
@@ -110,29 +110,65 @@
     {
       "name": "llm_only",
       "description": "No deterministic engine; the model decides every case",
-      "total": 0,
-      "matched": 0,
+      "total": 40,
+      "matched": 4,
       "auto_resolved": 0,
-      "escalated": 0,
-      "correct": 0,
-      "accuracy": 0.0,
+      "escalated": 36,
+      "correct": 10,
+      "accuracy": 0.25,
       "false_auto": 0,
       "false_auto_value_paise": 0,
       "missed_faults": 0,
-      "false_exceptions": 0,
+      "false_exceptions": 20,
       "unavailable": 0,
-      "per_fault_class": {},
-      "note": "skipped: the configured provider does not support raw JSON completion"
+      "per_fault_class": {
+        "F1_MISSING_SETTLEMENT": {
+          "n": 2,
+          "correct": 2,
+          "false_auto": 0
+        },
+        "F2_DUPLICATE_RECORD": {
+          "n": 1,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F3_UNLINKED_PARTIAL_REFUND": {
+          "n": 3,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F4_FEE_TAX_MISMATCH": {
+          "n": 3,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F5_DELAYED_SETTLEMENT": {
+          "n": 3,
+          "correct": 0,
+          "false_auto": 0
+        },
+        "F6_INCORRECT_LINKAGE": {
+          "n": 4,
+          "correct": 4,
+          "false_auto": 0
+        },
+        "NONE": {
+          "n": 24,
+          "correct": 4,
+          "false_auto": 0
+        }
+      },
+      "note": "The model is given the fee and settlement policies in words and must apply them itself. Exposure is scored with the shadow ledger the arm does not have, so the arm is measured generously. Note the cost shape: this arm needs one model call per record, where the hybrid needs one per ambiguous exception. Scored on the first 40 payments."
     },
     {
       "name": "hybrid_no_gate",
       "description": "AI investigates, but its conclusions are taken on trust",
       "total": 85,
       "matched": 54,
-      "auto_resolved": 26,
-      "escalated": 5,
-      "correct": 78,
-      "accuracy": 0.9176,
+      "auto_resolved": 27,
+      "escalated": 4,
+      "correct": 79,
+      "accuracy": 0.9294,
       "false_auto": 6,
       "false_auto_value_paise": 2575440,
       "missed_faults": 0,
@@ -151,7 +187,7 @@
         },
         "F3_UNLINKED_PARTIAL_REFUND": {
           "n": 9,
-          "correct": 8,
+          "correct": 9,
           "false_auto": 0
         },
         "F4_FEE_TAX_MISMATCH": {
@@ -182,10 +218,10 @@
       "description": "The full system",
       "total": 85,
       "matched": 54,
-      "auto_resolved": 18,
-      "escalated": 13,
-      "correct": 82,
-      "accuracy": 0.9647,
+      "auto_resolved": 21,
+      "escalated": 10,
+      "correct": 85,
+      "accuracy": 1.0,
       "false_auto": 0,
       "false_auto_value_paise": 0,
       "missed_faults": 0,
@@ -204,7 +240,7 @@
         },
         "F3_UNLINKED_PARTIAL_REFUND": {
           "n": 9,
-          "correct": 6,
+          "correct": 9,
           "false_auto": 0
         },
         "F4_FEE_TAX_MISMATCH": {

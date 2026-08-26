@@ -266,6 +266,15 @@ def arm_llm_only(dataset: Dataset, provider, limit: int | None = None) -> ArmRes
     unavailable = 0
     seen: set[str] = set()
 
+    # This arm asks for a two-field verdict, not an investigation. Leaving the
+    # investigator's token budget in place burns rate limit for nothing, and on
+    # a free tier that is the difference between minutes and an hour.
+    budgets = {}
+    for p in getattr(provider, "providers", None) or [provider]:
+        if hasattr(p, "max_tokens"):
+            budgets[p] = p.max_tokens
+            p.max_tokens = 400
+
     for payment in batch.payments:
         if payment.payment_id in seen or payment.status != PaymentStatus.CAPTURED:
             continue
@@ -294,6 +303,9 @@ def arm_llm_only(dataset: Dataset, provider, limit: int | None = None) -> ArmRes
             states[payment.payment_id] = (AUTO_RESOLVED, exposure)
         else:
             states[payment.payment_id] = (HUMAN_REVIEW_REQUIRED, exposure)
+
+    for p, original in budgets.items():
+        p.max_tokens = original
 
     return score(
         "llm_only",

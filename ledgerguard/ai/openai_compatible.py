@@ -535,6 +535,55 @@ class GeminiProvider:
         self.retries = 0
         self._client = httpx.Client(timeout=timeout)
 
+    def complete_json(
+        self, system: str, user: str, schema: dict, name: str = "response"
+    ) -> tuple[dict | None, str | None, str | None]:
+        """Structured JSON completion against an arbitrary schema."""
+        url = (
+            f"https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{self.model}:generateContent"
+        )
+        body = {
+            "systemInstruction": {"parts": [{"text": system}]},
+            "contents": [{"role": "user", "parts": [{"text": user}]}],
+            "generationConfig": {
+                "temperature": 0,
+                "thinkingConfig": {"thinkingBudget": 0},
+                "maxOutputTokens": self.max_tokens,
+                "responseMimeType": "application/json",
+                "responseSchema": self._clean_schema(schema),
+            },
+        }
+        response, failure = OpenAICompatibleProvider._post_with_retries(
+            self, url,
+            {"x-goog-api-key": self.api_key, "Content-Type": "application/json"},
+            body,
+        )
+        if response is None:
+            return None, None, (failure.error if failure else "request failed")
+        try:
+            payload = response.json()
+            raw = payload["candidates"][0]["content"]["parts"][0]["text"]
+        except Exception as exc:
+            return None, None, f"unexpected response envelope: {exc}"
+        try:
+            return json.loads(_strip_fences(raw)), self.model, None
+        except json.JSONDecodeError as exc:
+            return None, self.model, f"response was not valid JSON: {exc}"
+
+    @staticmethod
+    def _clean_schema(schema: dict) -> dict:
+        """Gemini's schema dialect rejects additionalProperties."""
+
+        def clean(node):
+            if isinstance(node, dict):
+                return {k: clean(v) for k, v in node.items() if k != "additionalProperties"}
+            if isinstance(node, list):
+                return [clean(v) for v in node]
+            return node
+
+        return clean(schema)
+
     @staticmethod
     def _schema() -> dict:
         """Gemini's schema dialect rejects additionalProperties."""

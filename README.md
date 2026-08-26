@@ -337,6 +337,11 @@ python -m ledgerguard.qa "how much is still unresolved?"
 ```
 
 `ablation` is the one to read first — it puts a number on the Evidence Gate.
+Removing it turns a system with **zero** false closures into one that closes six
+cases it should not have, worth **INR 25,754.40**. Three components, three
+distinct failure modes: without the gate it closes what it should not; without
+the Shadow Ledger it misses 26 of 31 faults; with neither (LLM only) it escalates
+36 of 40 cases and automates nothing. Only the full system avoids all three.
 `replay` is the one an auditor would care about: every decision is re-derived
 from a written record, with the investigator's output replayed as data rather
 than regenerated.

@@ -33,8 +33,19 @@ hold for a settlement that is internally tidy and simply wrong, so the arm goes
 *blind* rather than *wrong*: it misses most faults and closes nothing falsely.
 Those are not equally bad, and the table shows both.
 
-The `llm_only` arm also carries the cost argument: it needs one model call per
-record, where the hybrid needs one per ambiguous exception.
+The `llm_only` arm fails in a third direction again. Given the fee and
+settlement policies in words and no independent expectation, it escalated 36 of
+40 sampled cases and matched only 4. It closed nothing falsely — and automated
+nothing either. A controller that escalates 90% of a clean batch is not a
+controller, and that is precisely the work the Shadow Ledger does.
+
+It also carries the cost argument: one model call per record, where the hybrid
+needs one per ambiguous exception. That is why its sample is 40 rather than 85 —
+four free tiers were exhausted reaching it.
+
+Three arms, three distinct failure modes: `hybrid_no_gate` closes what it should
+not, `no_shadow_ledger` misses what it should catch, `llm_only` refuses to decide
+at all. Only the full system avoids all three.
 
 ## Calibration — is the Verification Score meaningful?
 

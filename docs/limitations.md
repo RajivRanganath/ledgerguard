@@ -85,6 +85,37 @@ repository is the model that *answered*, not the one that was asked for.
   the system being any better, which is exactly why false auto resolutions and
   rupee exposure are reported first.
 
+## What the extra analyses do and do not settle
+
+**The ablation is the strongest evidence here, and it is still one dataset.**
+Removing the Evidence Gate produces six false closures worth INR 25,754.40 on
+this holdout. That demonstrates the gate does something real on data built to
+contain exactly the trap it is designed for. It does not establish a rate for
+production traffic.
+
+**The LLM-only arm was measured on 40 of 85 cases, not all of them.** It needs
+one model call per record, and four free tiers were exhausted getting that far.
+The finding — that a model with no independent expectation escalates 36 of 40
+cases — is stable enough to report, but the sample is stated everywhere it
+appears and the arm is not directly comparable to the 85-case arms.
+
+**Calibration comes from one run on one fixture** with small per-bucket samples.
+No threshold in the system was tuned from it.
+
+**The drift evaluation is deliberately harsh.** It shifts one parameter at a
+time against a controller that is not allowed to adapt. A real deployment would
+update its fee schedule. What it establishes is which assumptions are
+load-bearing, not how often they break.
+
+**Replay covers the deterministic surface only.** The investigator's output is
+replayed as data, not regenerated, because it is not deterministic. So replay
+proves "the same records and the same investigation produce the same decision",
+not "the same records produce the same investigation".
+
+**The scale check exercises the deterministic path only.** The AI layer is
+bounded by rate limits rather than data size, which today is a much harder
+ceiling.
+
 ## Method
 
 - **`accuracy` is disposition accuracy** — did the case end in the state ground
