@@ -217,7 +217,10 @@ class UnavailableProvider:
 
 #: Auto-detection order. Anthropic first because that is the reference
 #: implementation; the rest are ordinary OpenAI-compatible or Gemini hosts.
-AUTO_ORDER = ["anthropic", "omniroute", "groq", "cerebras", "gemini", "nvidia"]
+#: Preference order for the fallback chain. Claude routes (via OmniRoute) come
+#: first for capability; Groq next because it is the fastest reliable one; NVIDIA
+#: last because it averages ~60s per investigation.
+AUTO_ORDER = ["anthropic", "omniroute", "groq", "gemini", "cerebras", "nvidia"]
 
 
 def _build(kind: str) -> InvestigatorProvider:
@@ -250,14 +253,27 @@ def _build(kind: str) -> InvestigatorProvider:
     raise ValueError(f"unknown provider {kind!r}")
 
 
+def build_chain(order: list[str] | None = None) -> list[InvestigatorProvider]:
+    """Every provider that is actually configured, in preference order."""
+    providers = []
+    for candidate in order or AUTO_ORDER:
+        try:
+            providers.append(_build(candidate))
+        except Exception:
+            continue
+    return providers
+
+
 def get_provider(kind: str | None = None) -> InvestigatorProvider:
     """Select an investigator provider.
 
     ``kind`` (or LEDGERGUARD_PROVIDER) may be:
-      anthropic | groq | cerebras | gemini | nvidia | openai_compatible
-      stub  -- the offline stand-in
-      none  -- a dead provider, for testing degradation
-      auto  -- first configured provider in AUTO_ORDER, else the stub
+      anthropic | omniroute | groq | cerebras | gemini | nvidia |
+      openai_compatible   -- one specific provider
+      fallback            -- chain every configured provider, failing over
+      stub                -- the offline stand-in
+      none                -- a dead provider, for testing degradation
+      auto                -- fallback across everything configured, else the stub
 
     A provider that is named explicitly but cannot be configured is an error,
     not a silent downgrade: a run that was meant to measure a model must never
@@ -269,12 +285,16 @@ def get_provider(kind: str | None = None) -> InvestigatorProvider:
     if kind == "stub":
         return HeuristicProvider()
 
-    if kind != "auto":
+    if kind not in ("auto", "fallback"):
         return _build(kind)
 
-    for candidate in AUTO_ORDER:
-        try:
-            return _build(candidate)
-        except Exception:
-            continue
-    return HeuristicProvider()
+    from .fallback import FallbackProvider
+
+    chain = build_chain()
+    if not chain:
+        if kind == "fallback":
+            raise ValueError("no providers are configured, so no chain can be built")
+        return HeuristicProvider()
+    if len(chain) == 1 and kind == "auto":
+        return chain[0]
+    return FallbackProvider(chain)

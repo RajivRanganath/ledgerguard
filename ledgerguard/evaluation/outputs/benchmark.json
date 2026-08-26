@@ -126,7 +126,7 @@
     "exception_value_paise": 36426731,
     "unresolved_value_paise": 19178059,
     "wall_seconds": 0.003,
-    "throughput_per_second": 25970.4,
+    "throughput_per_second": 26232.5,
     "investigations": 0,
     "model_calls": 0,
     "model_calls_per_100_records": 0.0,
@@ -201,26 +201,26 @@
     "false_exceptions": 0,
     "missed_faults": 0,
     "exception_type_correct": 31,
-    "disposition_correct": 82,
-    "accuracy": 0.9647,
-    "auto_resolved": 18,
-    "exceptions_correctly_resolved": 18,
+    "disposition_correct": 81,
+    "accuracy": 0.9529,
+    "auto_resolved": 17,
+    "exceptions_correctly_resolved": 17,
     "exceptions_incorrectly_resolved": 0,
-    "recommend_review": 0,
-    "human_review_required": 13,
+    "recommend_review": 2,
+    "human_review_required": 12,
     "unresolved": 0,
     "correct_abstentions": 10,
-    "unnecessary_abstentions": 3,
+    "unnecessary_abstentions": 4,
     "exception_value_paise": 36426731,
-    "unresolved_value_paise": 13546679,
-    "wall_seconds": 144.762,
-    "throughput_per_second": 0.6,
+    "unresolved_value_paise": 15505489,
+    "wall_seconds": 110.063,
+    "throughput_per_second": 0.8,
     "investigations": 15,
     "model_calls": 15,
     "model_calls_per_100_records": 17.65,
     "investigations_per_100_records": 17.65,
-    "latency_p50_ms": 11677.58,
-    "latency_p95_ms": 17996.09,
+    "latency_p50_ms": 8382.3,
+    "latency_p95_ms": 12886.78,
     "per_fault_class": {
       "F1_MISSING_SETTLEMENT": {
         "n": 4,
@@ -238,10 +238,10 @@
       },
       "F3_UNLINKED_PARTIAL_REFUND": {
         "n": 9,
-        "auto_resolved": 6,
-        "correct": 6,
+        "auto_resolved": 5,
+        "correct": 5,
         "false_auto": 0,
-        "abstained": 3
+        "abstained": 4
       },
       "F4_FEE_TAX_MISMATCH": {
         "n": 4,
@@ -273,7 +273,8 @@
       }
     },
     "false_auto_resolved_value_inr": "0.00",
-    "unresolved_value_inr": "135466.79",
+    "unresolved_value_inr": "155054.89",
     "total_value_inr": "2493357.00"
-  }
+  },
+  "investigator_chain": null
 }

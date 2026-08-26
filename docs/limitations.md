@@ -8,7 +8,7 @@ not a controller.
 The hybrid column is now a real measurement — `groq:openai/gpt-oss-120b`, 15
 live investigations, 15 of 15 completed. Four separate limitations apply to it.
 
-**Model output is not reproducible.** Four runs on the identical frozen holdout
+**Model output is not reproducible.** Five runs on the identical frozen holdout
 gave 95.3%–97.7% disposition accuracy at `temperature: 0`. Any single
 accuracy figure from a model run is a sample, not a measurement, and I report the
 range rather than the best one. The deterministic layer *is* reproducible, and
@@ -43,6 +43,17 @@ measurement, so no Claude column is published. On the hand-built adversarial
 pair, which did complete, Claude Opus 5 declined **both** halves and returned
 `insufficient_evidence` — correctly citing the CUST-0077 / CUST-0001 mismatch
 unprompted. That is a single anecdote, not a result.
+
+**OmniRoute caches, so runs through it are replays, not repeat measurements.**
+It returns `x-omniroute-cache-hit: true` for repeated `temperature: 0` requests,
+serves the identical response id, and does **not** honour `Cache-Control:
+no-cache`. A full benchmark through the chain came back with 15 of 15
+investigations served from cache in 6ms each. The provider now counts cache hits
+and the benchmark prints them, because a latency number or a "second run"
+claim would otherwise be fiction. `LEDGERGUARD_NO_CACHE=1` omits `temperature`
+to force real calls, at the cost of deterministic sampling. **The canonical
+benchmark therefore runs against Groq directly, which does not cache** — the
+fallback chain is the runtime resilience mechanism, not the measurement path.
 
 **Alias routes can be served by a different vendor.** Requesting
 `auto/claude-opus` on OmniRoute returned a response whose own `model` field read

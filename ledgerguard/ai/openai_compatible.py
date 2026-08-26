@@ -141,19 +141,19 @@ PRESETS: dict[str, dict] = {
     "groq": {
         "base_url": "https://api.groq.com/openai/v1",
         "env": "GROQ_API_KEY",
-        "model": "openai/gpt-oss-120b",
+        "models": ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b"],
         "json_schema": True,
     },
     "cerebras": {
         "base_url": "https://api.cerebras.ai/v1",
         "env": "CEREBRAS_API_KEY",
-        "model": "gpt-oss-120b",
+        "models": ["gpt-oss-120b", "gemma-4-31b"],
         "json_schema": True,
     },
     "nvidia": {
         "base_url": "https://integrate.api.nvidia.com/v1",
         "env": "NVIDIA_API_KEY",
-        "model": "meta/llama-3.3-70b-instruct",
+        "models": ["meta/llama-3.3-70b-instruct", "meta/llama-3.1-70b-instruct"],
         "json_schema": False,
     },
     "omniroute": {
@@ -167,13 +167,29 @@ PRESETS: dict[str, dict] = {
         # LEDGERGUARD_MODEL at a concrete route (e.g.
         # `openrouter/anthropic/claude-opus-5`) when the matching upstream
         # credential is active in OmniRoute.
-        "model": "auto/best-reasoning",
+        # Ordered by capability, spanning every upstream connected in the local
+        # OmniRoute install (OpenCode, OpenRouter, Mistral, plus catch-all
+        # aliases). Routes are not pre-verified: upstream credentials come and
+        # go, so the rotation discovers at runtime which ones answer and retires
+        # the rest. OmniRoute's unique value over the direct providers below is
+        # Claude (via two independent upstreams) and Mistral.
+        "models": [
+            "oc/claude-opus-5",
+            "openrouter/anthropic/claude-opus-5",
+            "oc/claude-sonnet-5",
+            "openrouter/anthropic/claude-sonnet-5",
+            "oc/claude-haiku-4-5",
+            "mistral/mistral-large-latest",
+            "mistral/mistral-medium-3-5",
+            "auto/best-reasoning",
+            "auto/smart",
+        ],
         "json_schema": True,
     },
     "openai_compatible": {
         "base_url": None,          # from LEDGERGUARD_BASE_URL
         "env": "LEDGERGUARD_API_KEY",
-        "model": None,             # from LEDGERGUARD_MODEL
+        "models": [],              # from LEDGERGUARD_MODEL
         "json_schema": True,
     },
 }
@@ -186,6 +202,7 @@ class OpenAICompatibleProvider:
         self,
         preset: str = "groq",
         model: str | None = None,
+        models: list[str] | None = None,
         api_key: str | None = None,
         base_url: str | None = None,
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
@@ -194,24 +211,86 @@ class OpenAICompatibleProvider:
         cfg = PRESETS.get(preset, PRESETS["openai_compatible"])
         self.base_url = (base_url or cfg["base_url"] or os.environ.get("LEDGERGUARD_BASE_URL", "")).rstrip("/")
         self.api_key = api_key or os.environ.get(cfg["env"], "")
-        self.model = model or cfg["model"] or os.environ.get("LEDGERGUARD_MODEL", "")
+
+        # A route can die mid-run -- a rate limit resets, an upstream credential
+        # is deactivated, a free tier runs out. Rather than degrade every
+        # remaining case to abstention, the provider carries an ordered list of
+        # routes and advances to the next one when the current is exhausted.
+        chosen = model or os.environ.get("LEDGERGUARD_MODEL") or None
+        if chosen:
+            self.models = [chosen]
+        else:
+            self.models = list(models or cfg.get("models") or [])
+            if not self.models and cfg.get("model"):
+                self.models = [cfg["model"]]
+        self._index = 0
+        #: Routes retired this run, with the failure that retired them.
+        self.exhausted: dict[str, str] = {}
         self.supports_json_schema = bool(cfg["json_schema"])
         self.timeout = timeout
         self.max_tokens = max_tokens
         self.preset = preset
         self.reasoning_effort = os.environ.get("LEDGERGUARD_REASONING_EFFORT") or None
         self.retries = 0
+        #: Retry budget for rate limits and transient 5xx. Lowered by
+        #: FallbackProvider for non-terminal links: waiting out a rate limit is
+        #: only worth it when there is nothing else to ask.
+        self.max_retries = MAX_RETRIES
+        #: Optional request parameters this host has rejected. Sending a tuning
+        #: knob that a model does not support is our bug, not the route's, so
+        #: the parameter is dropped and the route retried rather than retired.
+        self._disabled_params: set[str] = set()
         #: Models that actually answered, when they differ from the one asked for.
         self.served_models: set[str] = set()
-        if not (self.base_url and self.api_key and self.model):
+        #: Responses the host served from its own cache rather than the model.
+        #: OmniRoute caches temperature-0 requests and does not honour
+        #: Cache-Control: no-cache, so repeated runs over a deterministic
+        #: dataset are replays, not independent samples. Counting them is the
+        #: only way a latency figure or a "second run" claim stays honest.
+        self.cache_hits = 0
+        if not (self.base_url and self.api_key and self.models):
             raise ValueError(f"provider {preset!r} is not fully configured")
-        self.name = f"{preset}:{self.model}"
         self._client = httpx.Client(timeout=timeout)
+
+    @property
+    def name(self) -> str:
+        """Preset plus the route currently in use.
+
+        Deliberately not frozen at construction: after rotation the provider is
+        no longer the model it started as, and a report that still named the
+        first route would attribute results to a model that never answered.
+        """
+        return f"{self.preset}:{self.model}"
+
+    #: Optional request parameters that may be dropped if a host rejects them.
+    OPTIONAL_PARAMS = ("reasoning_effort", "temperature", "top_p")
+
+    def _rejected_parameter(self, error: str) -> str | None:
+        """Which optional parameter, if any, this 400 is complaining about."""
+        if "api error 400" not in error:
+            return None
+        lowered = error.lower()
+        for param in self.OPTIONAL_PARAMS:
+            if param in lowered and param not in self._disabled_params:
+                return param
+        return None
+
+    @property
+    def model(self) -> str:
+        """The route currently in use."""
+        return self.models[min(self._index, len(self.models) - 1)]
+
+    def _retire_current(self, reason: str) -> bool:
+        """Retire the current route and move to the next. False if none left."""
+        self.exhausted.setdefault(self.model, reason)
+        self._index += 1
+        return self._index < len(self.models)
 
     def _post_with_retries(self, url: str, headers: dict, body: dict):
         """POST, retrying rate limits and transient 5xx. Returns (response, failure)."""
         last = "unknown error"
-        for attempt in range(MAX_RETRIES + 1):
+        budget = getattr(self, "max_retries", MAX_RETRIES)
+        for attempt in range(budget + 1):
             try:
                 response = self._client.post(url, headers=headers, json=body)
             except httpx.TimeoutException as exc:
@@ -224,12 +303,12 @@ class OpenAICompatibleProvider:
                 last = f"api error {response.status_code}: {response.text[:200]}"
                 if response.status_code not in (408, 429, 500, 502, 503, 504):
                     break
-                if attempt < MAX_RETRIES:
+                if attempt < budget:
                     self.retries += 1
                     time.sleep(_retry_delay(response, attempt))
                     continue
                 break
-            if attempt < MAX_RETRIES:
+            if attempt < budget:
                 self.retries += 1
                 time.sleep(min(2.0 * (2 ** attempt), MAX_RETRY_WAIT_SECONDS))
         return None, InvestigationResult.unavailable(last)
@@ -247,6 +326,27 @@ class OpenAICompatibleProvider:
         return {"type": "json_object"}
 
     def investigate(self, context: dict) -> InvestigationResult:
+        """Investigate, advancing to the next route if the current one is spent."""
+        last: InvestigationResult | None = None
+        while True:
+            outcome, retire_reason = self._investigate_once(context)
+            if retire_reason is None:
+                return outcome
+            last = outcome
+            if not self._retire_current(retire_reason):
+                # Every route is spent. Report the last failure honestly; the
+                # safety gate reads this as "cannot resolve", never as a close.
+                return last
+
+    def _investigate_once(
+        self, context: dict
+    ) -> tuple[InvestigationResult, str | None]:
+        """One attempt on the current route.
+
+        Returns ``(result, retire_reason)``. A non-None ``retire_reason`` means
+        this route is spent -- rate limited past its retries, out of quota, or
+        producing output that will not parse -- and the caller should advance.
+        """
         from .provider import SYSTEM_PROMPT
 
         system = SYSTEM_PROMPT
@@ -259,7 +359,11 @@ class OpenAICompatibleProvider:
         body = {
             "model": self.model,
             "max_completion_tokens": self.max_tokens,
-            "temperature": 0,
+            # OmniRoute caches temperature-0 requests and ignores
+            # Cache-Control: no-cache, so a deterministic dataset replays
+            # instead of re-measuring. LEDGERGUARD_NO_CACHE=1 omits temperature
+            # to force real calls, at the cost of deterministic sampling.
+            **({} if os.environ.get("LEDGERGUARD_NO_CACHE") else {"temperature": 0}),
             # Some routers stream by default and emit keep-alive comments into
             # the body, which makes the response unparseable as JSON. Ask for a
             # single response explicitly rather than relying on the default.
@@ -274,9 +378,10 @@ class OpenAICompatibleProvider:
             ],
             "response_format": self._response_format(),
         }
-
-        if self.reasoning_effort:
+        if self.reasoning_effort and "reasoning_effort" not in self._disabled_params:
             body["reasoning_effort"] = self.reasoning_effort
+        if "temperature" in self._disabled_params:
+            body.pop("temperature", None)
 
         response, failure = self._post_with_retries(
             f"{self.base_url}/chat/completions",
@@ -287,17 +392,42 @@ class OpenAICompatibleProvider:
             body,
         )
         if response is None:
-            return failure
+            error = failure.error or "request failed"
+            # A 400 that names an optional tuning parameter means we sent
+            # something this model does not accept. Drop the parameter and try
+            # the same route again -- retiring a working model over our own
+            # request shape would silently shrink the usable pool.
+            rejected = self._rejected_parameter(error)
+            if rejected:
+                self._disabled_params.add(rejected)
+                return self._investigate_once(context)
+            # Transient failures were already retried inside the post helper, so
+            # reaching here means this route is not going to work.
+            return failure, error
+
         try:
             payload = response.json()
             raw = payload["choices"][0]["message"]["content"]
         except Exception as exc:
-            return InvestigationResult.invalid(f"unexpected response envelope: {exc}")
+            return (
+                InvestigationResult.invalid(f"unexpected response envelope: {exc}"),
+                f"unusable response envelope: {exc}",
+            )
+
+        if str(response.headers.get("x-omniroute-cache-hit", "")).lower() == "true":
+            self.cache_hits += 1
 
         served = payload.get("model") or self.model
         if served != self.model:
             self.served_models.add(served)
-        return _parse(raw, self.model, served_model=served)
+        result = _parse(raw, self.model, served_model=served)
+
+        if result.source == "invalid_response":
+            # A route that cannot produce parseable structured output is not
+            # going to start; retire it rather than spending the whole run on it.
+            return result, f"unparseable output: {result.error}"
+        return result, None
+
 
 
 class GeminiProvider:

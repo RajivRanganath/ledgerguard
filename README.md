@@ -84,18 +84,18 @@ difference is whether the investigation step runs.
 | Exceptions raised | 31 | 31 |
 | False exceptions (clean case flagged) | 0 | 0 |
 | Missed faults (fault case matched) | 0 | 0 |
-| Disposition accuracy | 89.4% | **96.5%** |
-| Exceptions correctly resolved | 12 | **18** |
+| Disposition accuracy | 89.4% | **95.3%** |
+| Exceptions correctly resolved | 12 | **17** |
 | Exceptions incorrectly resolved | 0 | 0 |
 | Correct abstentions | 10 | 10 |
-| Unnecessary abstentions | 9 | **3** |
-| Value left unresolved | INR 191,780.59 | INR 135,466.79 |
+| Unnecessary abstentions | 9 | **4** |
+| Value left unresolved | INR 191,780.59 | INR 155,054.89 |
 | **False auto resolutions** | **0** | **0** |
 | **Value falsely auto resolved** | **INR 0.00** | **INR 0.00** |
 | Investigations run | 0 | 15 |
-| Investigation latency p50 / p95 | — | 11.7s / 18.0s |
+| Investigation latency p50 / p95 | — | 8.4s / 12.9s |
 
-**What this actually says:** the hybrid closes 6 of the 9 ambiguous refund cases
+**What this actually says:** the hybrid closes 5 of the 9 ambiguous refund cases
 the rules-only system had to escalate, and gives up none of the baseline's
 safety — all six wrong-linkage cases stay escalated and the value falsely auto
 resolved stays at zero. The gain is recall on ambiguous exceptions, nothing
@@ -108,8 +108,8 @@ cases, `gpt-oss-120b` proposed a resolvable hypothesis and asked to resolve
 every time. The Evidence Gate rejected all six on linkage. Without the gate,
 that is six silent false closures.
 
-**Model output is not reproducible.** Four `groq` runs on the identical frozen
-holdout resolved 5, 6, 6 and 7 of the 9 F3 cases (95.3%–97.7% accuracy) at
+**Model output is not reproducible.** Five `groq` runs on the identical frozen
+holdout resolved between 5 and 7 of the 9 F3 cases (95.3%–97.7% accuracy) at
 `temperature: 0`. What did *not* vary: false auto resolutions stayed 0, value
 falsely closed stayed INR 0.00, and all six F6 cases were escalated every time.
 The variance lands entirely in how much is safely closed, never in whether
@@ -148,8 +148,36 @@ One API key is needed, and the system runs without any. Auto-detection order is
 | `GEMINI_API_KEY` | `generateContent` | `gemini-2.5-flash` |
 | `NVIDIA_API_KEY` | OpenAI-compatible | `meta/llama-3.3-70b-instruct` |
 
-Any other OpenAI-compatible host works via `LEDGERGUARD_PROVIDER=openai_compatible`
-plus `LEDGERGUARD_BASE_URL`, `LEDGERGUARD_API_KEY` and `LEDGERGUARD_MODEL`.
+Plus `OMNIROUTE_API_KEY` for a local [OmniRoute](https://www.npmjs.com/package/omniroute)
+router, which fronts many upstreams (OpenRouter, OpenCode, Mistral, …) behind one
+endpoint. Any other OpenAI-compatible host works via
+`LEDGERGUARD_PROVIDER=openai_compatible` plus `LEDGERGUARD_BASE_URL`,
+`LEDGERGUARD_API_KEY` and `LEDGERGUARD_MODEL`.
+
+**Failover is automatic.** With more than one key configured, the default
+`auto` provider builds a chain across every configured provider and fails over
+when one runs out — and *within* a provider it rotates between model routes.
+Free tiers die mid-run constantly, and neither failure should turn a resolvable
+case into an abstention:
+
+```
+fallback(omniroute -> groq -> gemini -> cerebras -> nvidia)     # 5 providers, 16 routes
+```
+
+- A route that is rate limited past its retries, out of quota, or emitting
+  unparseable output is **retired for the run**, not retried per case.
+- A provider that fails twice in a row is dropped from the chain, so later cases
+  do not pay its retry budget.
+- A `400` naming an optional parameter (`reasoning_effort`, `temperature`) means
+  *we* sent something the model does not accept — the parameter is dropped and
+  the route retried rather than retired.
+- Only the last link waits out rate limits; earlier links fail over immediately.
+
+Failover changes **who gets asked**, never what counts as proof. The Evidence
+Gate re-derives every hypothesis from records regardless of which provider
+answered, so a weaker fallback can cost recall but cannot cost safety.
+`python -m ledgerguard.evaluation.benchmark --provider fallback` prints exactly
+who served what and which routes died.
 
 With no key at all the AI investigation step degrades to "cannot resolve" and
 everything else — rules, ledger, Evidence Gate, benchmark, dashboard — works

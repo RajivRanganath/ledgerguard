@@ -255,6 +255,9 @@ def main(argv: list[str] | None = None) -> int:
     base_metrics = compute(baseline_report, scored)
     hyb_metrics = compute(hybrid_report, scored)
 
+    # Which providers actually answered, and which dropped out mid-run.
+    fallback_report = provider.report() if hasattr(provider, "report") else None
+
     md = render_markdown(base_metrics, hyb_metrics, manifest)
     (OUTPUT_DIR / "benchmark.md").write_text(md)
     (OUTPUT_DIR / "benchmark.json").write_text(
@@ -271,6 +274,7 @@ def main(argv: list[str] | None = None) -> int:
                 "holdout_manifest": manifest,
                 "baseline": base_metrics.as_dict(),
                 "hybrid": hyb_metrics.as_dict(),
+                "investigator_chain": fallback_report,
             },
             indent=2,
             default=str,
@@ -283,6 +287,22 @@ def main(argv: list[str] | None = None) -> int:
     export_cases(hybrid_report, scored, OUTPUT_DIR / "cases.json")
 
     print(md)
+    if fallback_report:
+        print("\n## Investigator chain\n")
+        print(f"Chain: {' -> '.join(fallback_report['chain'])}")
+        for name, count in fallback_report["served_by"].items():
+            print(f"  served {count:>3} investigations: {name}")
+        for name, hits in fallback_report.get("cache_hits", {}).items():
+            print(
+                f"  CACHE {hits} of these came from {name}'s response cache, not the "
+                f"model. Latency figures and run-to-run independence are invalid "
+                f"for those."
+            )
+        for name, why in fallback_report["retired"].items():
+            print(f"  RETIRED {name}: {why[:120]}")
+        for name, routes in fallback_report["routes_exhausted"].items():
+            for route, why in routes.items():
+                print(f"  route spent {name} / {route}: {why[:100]}")
     print(f"\nArtifacts written to {OUTPUT_DIR}")
     print(f"  benchmark.md, benchmark.json, cases.json")
     print(f"  unresolved_exceptions.csv ({n_unresolved} rows)")
