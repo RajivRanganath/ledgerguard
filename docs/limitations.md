@@ -15,12 +15,13 @@ range rather than the best one. The deterministic layer *is* reproducible, and
 the safety figures (0 false auto resolutions, INR 0.00 falsely closed, 6/6 F6
 escalated) held across all three runs.
 
-**One model on one dataset is thin evidence.** `docs/model_comparison.md` widens
-it to four investigators, but Gemini's row is a rate limit rather than a
-capability measurement (13 of 15 calls returned 429 on an exhausted free-tier
-quota), NVIDIA was excluded for wall-clock reasons, and Cerebras returned HTTP
-402 on the available key. So the honest statement is: one model measured
-properly, one measured badly, one heuristic, and a baseline.
+**Three vendors measured, not one.** `docs/model_comparison.md` runs Mistral
+Large, Gemini 2.5 Flash and gpt-oss-120b over the same frozen holdout, uncached,
+plus the offline stub and the rules-only baseline. Every one of them was falsely
+auto-resolved INR 0.00. That is a far better-supported claim than any single
+accuracy figure. Still unmeasured: Claude (no key, and the OmniRoute Claude
+routes are dead), Cerebras (HTTP 402) and NVIDIA (endpoints end-of-life, key not
+provisioned).
 
 **The offline stub scores highest, and that is a caution about the dataset.**
 It reaches 100% because this fixture's ambiguity is exactly the shape its single

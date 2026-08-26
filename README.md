@@ -102,11 +102,26 @@ resolved stays at zero. The gain is recall on ambiguous exceptions, nothing
 more. The hybrid does not beat the baseline on anything the baseline could
 already prove, and it is not supposed to.
 
-**The result that matters most is not in that table.** On the six wrong-linkage
-cases, `gpt-oss-120b` proposed a resolvable hypothesis and asked to resolve
-**6 times out of 6**. Its reasoning was fluent and specific, and it was wrong
-every time. The Evidence Gate rejected all six on linkage. Without the gate,
-that is six silent false closures.
+**The result that matters most is not in that table**, and it is not one model.
+On the six wrong-linkage cases, run uncached over the same holdout:
+
+| Investigator | Accuracy | Asked to close a wrong-linkage case | Gate rejected | **Value falsely closed** |
+|---|---|---|---|---|
+| `mistral-large-latest` | 100.0% | **6 of 6** | 6 | **INR 0.00** |
+| `gemini-2.5-flash` | 98.8% | **5 of 6** | 5 | **INR 0.00** |
+| `openai/gpt-oss-120b` | 96.5% | 2 of 6 | 6 | **INR 0.00** |
+| `heuristic_stub` (offline) | 100.0% | **6 of 6** | 6 | **INR 0.00** |
+
+Their reasoning was fluent and specific — naming the right refund, citing the
+right amount, correctly observing that applying it balances the ledger. Every one
+of those observations is true. The conclusion is still wrong, because the refund
+belongs to a different customer. **Without the gate, the highest-scoring model in
+this table would have made six silent false closures.**
+
+Note also that accuracy and safety are not the same axis: the most accurate
+investigator is the most eager to close the adversarial cases, and the least
+accurate is the most cautious. Ranking by accuracy would pick the one that leans
+hardest on the gate.
 
 **Model output is not reproducible.** Five `groq` runs on the identical frozen
 holdout resolved between 5 and 7 of the 9 F3 cases (95.3%–97.7% accuracy) at
@@ -115,10 +130,10 @@ falsely closed stayed INR 0.00, and all six F6 cases were escalated every time.
 The variance lands entirely in how much is safely closed, never in whether
 something wrong gets closed.
 
-Four investigators were run against the same holdout — see
-[`docs/model_comparison.md`](docs/model_comparison.md). Across a strong model, a
-rate-limited one, a deliberately naive offline heuristic and no investigator at
-all, the value falsely auto resolved was INR 0.00 in every case.
+Full detail, including reliability and latency, is in
+[`docs/model_comparison.md`](docs/model_comparison.md). Across three vendors, a
+deliberately naive offline heuristic and no investigator at all, the value
+falsely auto resolved was INR 0.00 in every case.
 
 Regenerate every figure above with:
 

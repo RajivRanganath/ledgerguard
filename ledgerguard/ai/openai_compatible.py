@@ -153,7 +153,16 @@ PRESETS: dict[str, dict] = {
     "nvidia": {
         "base_url": "https://integrate.api.nvidia.com/v1",
         "env": "NVIDIA_API_KEY",
-        "models": ["meta/llama-3.3-70b-instruct", "meta/llama-3.1-70b-instruct"],
+        # The meta/llama-* endpoints this originally used are end-of-life
+        # (HTTP 410 Gone). The replacements below exist in the account's model
+        # list but are not provisioned for the key in use ("Function ... Not
+        # found for account"), so NVIDIA sits at the tail of the chain and is
+        # retired after two failures. Left configured because the code path is
+        # correct and only the entitlement is missing.
+        "models": [
+            "nvidia/llama-3.1-nemotron-70b-instruct",
+            "mistralai/mistral-large-2-instruct",
+        ],
         "json_schema": False,
     },
     "omniroute": {
@@ -167,22 +176,18 @@ PRESETS: dict[str, dict] = {
         # LEDGERGUARD_MODEL at a concrete route (e.g.
         # `openrouter/anthropic/claude-opus-5`) when the matching upstream
         # credential is active in OmniRoute.
-        # Ordered by capability, spanning every upstream connected in the local
-        # OmniRoute install (OpenCode, OpenRouter, Mistral, plus catch-all
-        # aliases). Routes are not pre-verified: upstream credentials come and
-        # go, so the rotation discovers at runtime which ones answer and retires
-        # the rest. OmniRoute's unique value over the direct providers below is
-        # Claude (via two independent upstreams) and Mistral.
+        # Mistral only. The Claude routes this install exposes (oc/*,
+        # openrouter/anthropic/*) are not usable -- oc/* returns 401 despite the
+        # upstream showing connected, and openrouter/* reports "No active
+        # credentials" -- and the auto/* aliases resolve to slow free models that
+        # rarely return parseable JSON. Carrying dead routes only buys latency
+        # before the rotation gives up on them, so the list is restricted to
+        # routes verified to answer with strict json_schema. Groq, Gemini and
+        # NVIDIA are reachable here too but are already in the chain directly.
         "models": [
-            "oc/claude-opus-5",
-            "openrouter/anthropic/claude-opus-5",
-            "oc/claude-sonnet-5",
-            "openrouter/anthropic/claude-sonnet-5",
-            "oc/claude-haiku-4-5",
             "mistral/mistral-large-latest",
             "mistral/mistral-medium-3-5",
-            "auto/best-reasoning",
-            "auto/smart",
+            "mistral/mistral-small-latest",
         ],
         "json_schema": True,
     },
