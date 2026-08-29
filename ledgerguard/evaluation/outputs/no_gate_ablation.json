@@ -1,0 +1,48 @@
+{
+  "source_artifacts": [
+    "model_comparison.json"
+  ],
+  "note": "recomputed from recorded runs; no model calls were made",
+  "investigators": 5,
+  "f6_cases_per_investigator": 6,
+  "attempts": 30,
+  "would_auto_close_without_gate": 25,
+  "did_auto_close_with_gate": 0,
+  "per_investigator": [
+    {
+      "investigator": "groq:openai/gpt-oss-20b",
+      "wanted_to_close_f6": 6,
+      "f6_total": 6,
+      "false_auto_with_gate": 0
+    },
+    {
+      "investigator": "gemini:gemini-2.5-flash",
+      "wanted_to_close_f6": 5,
+      "f6_total": 6,
+      "false_auto_with_gate": 0
+    },
+    {
+      "investigator": "nvidia:openai/gpt-oss-120b",
+      "wanted_to_close_f6": 4,
+      "f6_total": 6,
+      "false_auto_with_gate": 0
+    },
+    {
+      "investigator": "omniroute:mistral/mistral-medium-3-5",
+      "wanted_to_close_f6": 4,
+      "f6_total": 6,
+      "false_auto_with_gate": 0
+    },
+    {
+      "investigator": "heuristic_stub",
+      "wanted_to_close_f6": 6,
+      "f6_total": 6,
+      "false_auto_with_gate": 0
+    }
+  ],
+  "ablation_arm": {
+    "investigator": "omniroute:mistral/mistral-large-latest",
+    "false_auto_resolutions": 6,
+    "value_falsely_closed_inr": "25754.40"
+  }
+}

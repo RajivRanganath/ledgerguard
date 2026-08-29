@@ -433,3 +433,135 @@ def test_a_broken_provider_is_reported_not_silently_dropped():
     assert chain == []
     assert [e["provider"] for e in prov.CHAIN_BUILD_ERRORS] == ["groq"]
     assert "AttributeError: simulated defect" in prov.CHAIN_BUILD_ERRORS[0]["error"]
+
+
+# ------------------------------------------- real transport failures, no stubs
+#
+# The tests above replace `provider._client` with an object that raises, which
+# proves the handler but never runs httpx, the configured timeout, or
+# `_post_with_retries`. These drive the real client against a real socket, so a
+# regression in the actual request path cannot pass by raising the right
+# exception type in a stub.
+class _FakeUpstream:
+    """A real HTTP server that misbehaves in one specific way."""
+
+    def __init__(self, mode: str):
+        import http.server
+        import threading
+
+        outer = self
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            protocol_version = "HTTP/1.1"
+
+            def do_POST(self):                       # noqa: N802 (stdlib name)
+                length = int(self.headers.get("Content-Length") or 0)
+                self.rfile.read(length)
+                if outer.mode == "hang":
+                    import time as _t
+                    _t.sleep(30)                     # outlive any sane timeout
+                    return
+                if outer.mode == "not_json":
+                    body = b"<html>502 Bad Gateway</html>"
+                elif outer.mode == "wrong_envelope":
+                    body = b'{"unexpected": "shape"}'
+                else:                                # garbage where JSON belongs
+                    body = (
+                        b'{"choices":[{"message":{"content":'
+                        b'"Sure! I think this is a refund, trust me."}}]}'
+                    )
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, *a):               # keep pytest output clean
+                pass
+
+        self.mode = mode
+        self._server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        self._server.daemon_threads = True
+        self.url = f"http://127.0.0.1:{self._server.server_port}/v1"
+        self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
+        self._thread.start()
+
+    def close(self):
+        self._server.shutdown()
+        self._server.server_close()
+
+
+def _live_provider(url: str, timeout: float = 30.0):
+    from ledgerguard.ai.openai_compatible import OpenAICompatibleProvider
+
+    provider = OpenAICompatibleProvider(
+        preset="openai_compatible",
+        models=["fake-model"],
+        api_key="k",
+        base_url=url,
+        timeout=timeout,
+    )
+    provider.max_retries = 0                         # one attempt, keep it fast
+    return provider
+
+
+def test_a_real_hanging_provider_times_out_and_the_batch_survives():
+    """Force a real timeout against a real socket, not an injected exception.
+
+    The server accepts the request and then never answers. This exercises the
+    configured httpx timeout and `_post_with_retries`, which the stub-based
+    timeout test above cannot reach.
+    """
+    from ledgerguard.synthetic.adversarial import build_adversarial_batch
+
+    upstream = _FakeUpstream("hang")
+    try:
+        provider = _live_provider(upstream.url, timeout=0.5)
+        report = run(build_adversarial_batch(), use_ai=True, provider=provider)
+    finally:
+        upstream.close()
+
+    assert len(report.outcomes) == 2, "the batch must still complete"
+    for outcome in report.outcomes:
+        assert outcome.investigation.result.source == "unavailable"
+        assert "timeout" in outcome.investigation.result.error.lower()
+        assert outcome.decision.state == HUMAN_REVIEW_REQUIRED
+        assert outcome.decision.state != AUTO_RESOLVED
+
+
+@pytest.mark.parametrize("mode", ["not_json", "wrong_envelope", "garbage_content"])
+def test_a_real_malformed_response_never_becomes_a_resolution(mode):
+    """A 200 carrying unusable content must abstain, not misparse.
+
+    Three real shapes seen from live routers: an HTML error page served as 200,
+    a JSON body of the wrong shape, and a correct envelope whose content is
+    prose instead of the requested JSON.
+    """
+    upstream = _FakeUpstream(mode)
+    try:
+        provider = _live_provider(upstream.url)
+        result = provider.investigate({"exception": {"type": "X"}})
+    finally:
+        upstream.close()
+
+    assert result.source in ("invalid_response", "unavailable")
+    assert result.hypothesis == "insufficient_evidence"
+    assert result.recommended_action == "review"
+    assert result.candidate_evidence_ids == []
+    assert result.error
+
+
+def test_a_real_malformed_response_degrades_the_whole_batch_to_review():
+    """The batch-level counterpart: bad output must not close anything."""
+    from ledgerguard.synthetic.adversarial import build_adversarial_batch
+
+    upstream = _FakeUpstream("garbage_content")
+    try:
+        provider = _live_provider(upstream.url)
+        report = run(build_adversarial_batch(), use_ai=True, provider=provider)
+    finally:
+        upstream.close()
+
+    assert len(report.outcomes) == 2
+    for outcome in report.outcomes:
+        assert outcome.decision.state != AUTO_RESOLVED

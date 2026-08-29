@@ -441,8 +441,19 @@ class OpenAICompatibleProvider:
         """One attempt on the current route.
 
         Returns ``(result, retire_reason)``. A non-None ``retire_reason`` means
-        this route is spent -- rate limited past its retries, out of quota, or
-        producing output that will not parse -- and the caller should advance.
+        this route is spent and the caller should advance. Verified against a
+        real misbehaving upstream in `tests/test_p1_extended.py`, a route is
+        retired when it is rate limited past its retries, out of quota, times
+        out, fails at the transport level, returns an envelope that is not the
+        expected chat-completion shape, or returns content that will not parse.
+
+        Timeouts and transport errors retire the route only after the retry
+        budget (`MAX_RETRIES`, 4) is spent, so a single blip does not cost a
+        working model. The tradeoff is deliberate and worth naming: a provider
+        that is merely slow is dropped for the rest of the run rather than
+        stalling every remaining case on it. Retirement is per run and never
+        closes a case -- every retired route's cases reach the safety gate as
+        an abstention.
         """
         from .provider import SYSTEM_PROMPT
 

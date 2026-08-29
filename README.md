@@ -142,6 +142,24 @@ provider-versus-F6 attempts** on an 85-case frozen holdout — the value falsely
 auto resolved was INR 0.00 in every one. The per-provider accuracy figures are
 single-run samples and move on a rerun; that last column has not.
 
+**With the gate versus without it.** That INR 0.00 is not because the
+investigators declined to close the adversarial cases. It is because they were
+stopped. Every investigator's raw hypothesis was recorded before the gate ruled
+on it, and recomputing over that record —
+`python -m ledgerguard.evaluation.no_gate_ablation`, no new model calls —
+gives the counterfactual directly:
+
+| | Wrong-linkage cases auto closed |
+|---|---|
+| Trusting the raw hypothesis, no gate | **25 of 30** |
+| LedgerGuard, gate enforced | **0 of 30** |
+
+The count is not the money: with the gate in place the value it blocks is never
+realised, so `evaluation/ablation.py` measures that separately by running a
+`hybrid_no_gate` arm end to end — **6 false auto resolutions, INR 25,754.40
+falsely closed** for a single investigator on the same holdout. Artifact:
+[`evaluation/outputs/no_gate_ablation.md`](ledgerguard/evaluation/outputs/no_gate_ablation.md).
+
 ### Two claims, two kinds of evidence
 
 These get run together easily, so I keep them apart everywhere:

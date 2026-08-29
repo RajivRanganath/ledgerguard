@@ -132,6 +132,60 @@ which investigator was wrong.
 
 See `docs/model_comparison.md` for the four-investigator table.
 
+## Compound failure cases
+
+Five cases, hand designed, each layering two of the six fault classes on one
+lifecycle. They live in `ledgerguard/synthetic/compound.py` as a **separate
+batch**, deliberately not mixed into the frozen holdout, so none of the
+published holdout numbers move when they change. Pinned by
+`ledgerguard/tests/test_p1_compound.py`.
+
+Each case declares its expected disposition and the reasoning for it *in the
+source*, before the system is run — the same discipline used for the original
+six single-fault classes.
+
+| Case | Faults | Expected | Actual | |
+|---|---|---|---|---|
+| C1 | F5 + F3 — delayed settlement + unlinked partial refund | `AUTO_RESOLVED` | `AUTO_RESOLVED` | match |
+| C2 | F4 + F6 — fee overcharge + unexplained deduction | `HUMAN_REVIEW_REQUIRED` | `HUMAN_REVIEW_REQUIRED` | match |
+| C3 | F2 + F5 — duplicate bank credit + delayed settlement | `AUTO_RESOLVED` | `AUTO_RESOLVED` | match |
+| C4 | F1 + F3 — missing settlement + orphan refund, same customer | `HUMAN_REVIEW_REQUIRED` | `HUMAN_REVIEW_REQUIRED` | match |
+| C5 | F4 + F6 — fee overcharge + wrong-linkage deduction | `HUMAN_REVIEW_REQUIRED` | `HUMAN_REVIEW_REQUIRED` | match |
+
+Recorded from a run with the offline heuristic stub, and re-confirmed against a
+live `fallback(groq->gemini->nvidia->omniroute)` run: 5 of 5 on both.
+
+What the interesting ones actually exercise:
+
+- **C1** closes on the refund and still reports the delay, rather than letting
+  the resolved shortfall silently absorb a second finding.
+- **C2 and C5** are the ones that matter. Both have a *deterministically proven*
+  fee variance sitting on top of an unexplained deduction. Correcting the proven
+  part leaves INR 650.00 (C2) and INR 900.00 (C5) unattributed, and the case is
+  escalated on the residual. A proven cause does not license closing the case.
+- **C4** refuses to net a same-customer orphan refund against a settlement that
+  never arrived.
+
+### What this does and does not demonstrate
+
+It demonstrates that one proven fault does not license closing an unproven one —
+the residual check is doing real work, and C2 and C5 would close incorrectly
+without it.
+
+It does **not** demonstrate that the fault taxonomy is deep. Three honest caveats:
+
+1. **Five hand-built cases, designed by the same person who wrote the resolution
+   rules.** 5 of 5 measures the rules against their author's intent, not against
+   reality. A case I did not think of is not represented here.
+2. **Four of the five never reach the investigator at all.** Layering a second
+   fault usually surfaces a deterministic exception type first (`FEE_MISMATCH`,
+   `DUPLICATE_RECORD`, `MISSING_SETTLEMENT`), which the engine proves without a
+   model call. Only C1 was AI-investigated. So this set says much more about the
+   deterministic layer than about the AI path.
+3. **Only pairs.** No case layers three or more faults, and no case combines two
+   faults that both require investigation — the shape most likely to break the
+   residual logic, and the obvious next thing to build.
+
 ## Artifacts
 
 | File | Contents |
@@ -142,6 +196,8 @@ See `docs/model_comparison.md` for the four-investigator table.
 | `outputs/unresolved_exceptions.csv` | every case not closed, with exposure and blocking reason |
 | `outputs/model_comparison.md` | four investigators on the same holdout |
 | `outputs/model_comparison.json` | the same, machine readable |
+| `outputs/no_gate_ablation.md` | with-gate vs without-gate, recomputed from the above; no new run |
+| `outputs/no_gate_ablation.json` | the same, machine readable |
 | `outputs/reconciliation_report.md` | exportable summary — **a separate run from `benchmark.md`** |
 | `outputs/reconciliation_report.csv` | one row per case, from that same report run |
 | `outputs/evidence_ledger.csv` | one row per evidence check, from that same report run |
