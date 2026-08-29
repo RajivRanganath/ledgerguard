@@ -13,7 +13,7 @@ gave 95.3%–97.7% disposition accuracy at `temperature: 0`. Any single
 accuracy figure from a model run is a sample, not a measurement, and I report the
 range rather than the best one. The deterministic layer *is* reproducible, and
 the safety figures (0 false auto resolutions, INR 0.00 falsely closed, 6/6 F6
-escalated) held across all three runs.
+escalated) held across all five runs.
 
 **Four vendors measured, not one.** `docs/model_comparison.md` runs
 `gemini-2.5-flash`, `gpt-oss-20b` via Groq, `mistral-medium-3-5` via OmniRoute
@@ -21,8 +21,10 @@ and `gpt-oss-120b` via NVIDIA over the same frozen holdout, uncached, plus the
 offline stub and the rules-only baseline — every provider in the automatic
 chain, each on its own free tier. Not one of them falsely auto-resolved
 anything: INR 0.00 in every row. That is a far better-supported claim than any
-single accuracy figure. Deliberately out of scope: any paid API. Cerebras is
-excluded too (its key returns HTTP 402). NVIDIA was unmeasurable for most of this
+single accuracy figure. Deliberately out of scope: any paid API. Cerebras was in the
+chain early on and was removed when its key began returning HTTP 402
+`payment required`; it has not been in the automatic order since, and none
+of the numbers published here were ever produced by it. NVIDIA was unmeasurable for most of this
 build and is not any more -- see below.
 
 **The offline stub ties for highest, and that is a caution about the dataset.**
@@ -157,10 +159,14 @@ ceiling.
 - **Ground truth defines the safe outcome, not the maximal one.** F1 and F6 are
   labelled "should escalate". A system that resolved them would score worse here
   by design.
-- **No calibration.** The Verification Score is a count of named checks that
-  passed, not a probability. It is not calibrated and is never displayed as one.
-- **No LLM-only baseline.** Only rules-only vs hybrid. An LLM-only arm would be
-  informative but was P2 and was not built, so no claim is made about it.
+- **The Verification Score is not a probability.** It is a count of named checks
+  that passed, and it is never displayed as one. Calibration *was* later measured
+  (`evaluation/calibration.py`) but nothing in the system is tuned from it, and
+  the score shown to a user is still the checklist, not a number.
+- **The LLM-only baseline is a later addition and a partial one.** The headline
+  benchmark remains rules-only vs hybrid. An LLM-only arm was added in the
+  ablation and measured on 40 of 85 cases; see the P2 section above for what it
+  does and does not settle.
 - **The two throughput figures measure different things.** The rules-only column
   (~25,000 cases/s) is the deterministic engine with no network call. The hybrid
   column (0.6 cases/s) is dominated entirely by 15 sequential model calls on a
@@ -169,11 +175,13 @@ ceiling.
 
 ## Integration
 
-- **Razorpay Test Mode integration was not attempted.** Track 04 asks only for a
-  synthetic batch of 50+ records, which is satisfied. It was a P1 item gated on
-  P0 being stable, and it stayed behind the more valuable work. No Razorpay API
-  behaviour, endpoint or response shape is claimed or simulated anywhere in this
-  repository.
+- **Razorpay Test Mode integration was declined, not attempted and abandoned.**
+  Two reasons, both true: no Razorpay Test Mode credentials were available, and
+  it was a P1 item gated on P0 being stable that stayed behind more valuable
+  work. Track 04 asks only for a synthetic batch of 50+ records, which is
+  satisfied, and section 2 of the build brief permits skipping it. No Razorpay
+  API behaviour, endpoint or response shape is claimed or simulated anywhere in
+  this repository.
 - **No production data, no live API calls, no real financial transfers of any
   kind are performed.** "Auto resolved" means a reconciliation exception was
   classified and closed inside LedgerGuard. It never means money moved.

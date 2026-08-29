@@ -137,7 +137,10 @@ something wrong gets closed.
 Full detail, including reliability and latency, is in
 [`docs/model_comparison.md`](docs/model_comparison.md). Across four vendors on
 four separate free tiers, a deliberately naive offline heuristic and no
-investigator at all, the value falsely auto resolved was INR 0.00 in every case.
+investigator at all — 5 investigators x 6 wrong-linkage cases, **30
+provider-versus-F6 attempts** on an 85-case frozen holdout — the value falsely
+auto resolved was INR 0.00 in every one. The per-provider accuracy figures are
+single-run samples and move on a rerun; that last column has not.
 
 Regenerate every figure above with:
 
@@ -156,7 +159,9 @@ python3 -m venv .venv
 cp .env.example .env      # optional; the system runs without a key
 ```
 
-One API key is needed, and the system runs without any. The automatic chain is
+One free API key is enough, and the system also runs with none at all — the
+investigation step degrades to abstention and everything else is unchanged.
+The automatic chain is
 `groq` → `gemini` → `nvidia` → `omniroute` → offline stub:
 
 | Env var | Provider | Default model | In the auto chain |
@@ -361,7 +366,7 @@ The model may choose the query; the number is always computed by code.
 
 ## Tests
 
-41 tests, in three tiers.
+48 tests, in four tiers.
 
 ```bash
 .venv/bin/python -m pytest ledgerguard/tests -q
@@ -384,6 +389,11 @@ failures.
 **P2 evaluation machinery** — including two tests that exist to stop an analysis
 from lying: the ablation must actually change the outcome, and the replay must
 be able to *fail* when a decision is tampered with.
+
+**Fallback and route rotation** — seven offline tests prove provider failover,
+retirement, complete-JSON failover, full failure reporting, malformed-provider
+containment, configuration validation, and attribution to the model that
+actually answered.
 
 ## Secrets
 

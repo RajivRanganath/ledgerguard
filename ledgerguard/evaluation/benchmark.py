@@ -57,18 +57,17 @@ def freeze_or_verify_holdout(holdout: Dataset, seed: int, count: int) -> dict:
     path = manifest_path(seed, count)
     if path.exists():
         existing = json.loads(path.read_text())
-        if True:
-            if existing != manifest:
-                raise SystemExit(
-                    "FROZEN HOLDOUT MISMATCH.\n"
-                    "The holdout for this seed was frozen earlier and the regenerated "
-                    "data no longer matches it. Scoring against a changed holdout is "
-                    "not a valid measurement. Investigate the generator change, or "
-                    "delete the manifest deliberately and say so in the write-up.\n"
-                    f"  frozen sha256:      {existing.get('holdout_batch_sha256')}\n"
-                    f"  regenerated sha256: {manifest['holdout_batch_sha256']}"
-                )
-            return existing
+        if existing != manifest:
+            raise SystemExit(
+                "FROZEN HOLDOUT MISMATCH.\n"
+                "The holdout for this seed was frozen earlier and the regenerated "
+                "data no longer matches it. Scoring against a changed holdout is "
+                "not a valid measurement. Investigate the generator change, or "
+                "delete the manifest deliberately and say so in the write-up.\n"
+                f"  frozen sha256:      {existing.get('holdout_batch_sha256')}\n"
+                f"  regenerated sha256: {manifest['holdout_batch_sha256']}"
+            )
+        return existing
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest
@@ -300,6 +299,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Chain: {' -> '.join(fallback_report['chain'])}")
         for name, count in fallback_report["served_by"].items():
             print(f"  served {count:>3} investigations: {name}")
+        for failure in fallback_report.get("failures", []):
+            print(
+                f"  FAILED {failure['operation']} via {failure['provider']}: "
+                f"{failure['error'][:120]}"
+            )
         for name, hits in fallback_report.get("cache_hits", {}).items():
             print(
                 f"  CACHE {hits} of these came from {name}'s response cache, not the "

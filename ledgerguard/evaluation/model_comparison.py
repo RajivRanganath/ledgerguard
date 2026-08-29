@@ -21,6 +21,7 @@ from ..ai.provider import get_provider
 from ..ledger.money import to_rupees_str
 from ..pipeline import run
 from ..synthetic.fault_injector import build_dataset, split
+from .benchmark import freeze_or_verify_holdout
 from ..synthetic.generator import FaultClass
 from .baseline import run_baseline
 from .metrics import compute
@@ -141,6 +142,16 @@ def main(argv: list[str] | None = None) -> int:
 
     full = build_dataset(seed=args.seed, count=args.count)
     _dev, holdout = split(full)
+
+    # This page's whole premise is "only the investigator varies". That is a
+    # claim about the data, so verify it against the same frozen manifest the
+    # benchmark uses instead of asserting it in the prose. A regenerated or
+    # drifted holdout raises SystemExit rather than producing a table that
+    # silently compares investigators on different data.
+    manifest = freeze_or_verify_holdout(holdout, args.seed, args.count)
+    print(f"holdout verified against frozen manifest "
+          f"{manifest['holdout_batch_sha256'][:16]} ({len(manifest['holdout_lifecycle_ids'])} lifecycles)")
+
     lbp = holdout.lifecycle_by_payment()
     batch = holdout.batch()
 

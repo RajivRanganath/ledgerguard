@@ -36,6 +36,8 @@ class FallbackProvider:
     def __init__(self, providers: list, failures_before_retiring: int = FAILURES_BEFORE_RETIRING):
         if not providers:
             raise ValueError("fallback chain is empty")
+        if failures_before_retiring < 1:
+            raise ValueError("failures_before_retiring must be at least 1")
         self.providers = list(providers)
         self.failures_before_retiring = failures_before_retiring
 
@@ -50,6 +52,12 @@ class FallbackProvider:
         self._retired: dict[str, str] = {}
         #: How many investigations each provider actually answered.
         self.served_by: Counter = Counter()
+        #: Every provider-level failure, including failures recovered by fallback.
+        #:
+        #: Keeping only ``_retired`` hid one-off quota/transport failures whenever
+        #: a later provider answered successfully. That made a healthy-looking run
+        #: indistinguishable from one that silently lost its preferred route.
+        self.failures: list[dict[str, str]] = []
         # Short enough for a metrics table; report() carries the full detail.
         short = [p.name.split(":", 1)[0] for p in self.providers]
         self.name = "fallback(" + "->".join(short) + ")"
@@ -63,10 +71,17 @@ class FallbackProvider:
     def _retire(self, provider, reason: str) -> None:
         self._retired.setdefault(provider.name.split(":", 1)[0], reason)
 
+    def _record_failure(self, operation: str, provider_name: str, error: str) -> None:
+        self.failures.append(
+            {"operation": operation, "provider": provider_name, "error": error}
+        )
+
     def investigate(self, context: dict) -> InvestigationResult:
-        last: InvestigationResult | None = None
+        call_failures: list[str] = []
+        retired_before_call = dict(self._retired)
 
         for provider in self.active:
+            provider_name = provider.name
             key = provider.name.split(":", 1)[0]
             try:
                 result = provider.investigate(context)
@@ -77,6 +92,11 @@ class FallbackProvider:
                     f"{type(exc).__name__}: {exc}"
                 )
 
+            if not isinstance(result, InvestigationResult):
+                result = InvestigationResult.unavailable(
+                    f"provider returned {type(result).__name__}, expected InvestigationResult"
+                )
+
             if result.source in ("model", "heuristic_stub"):
                 self._consecutive_failures[key] = 0
                 # Key on the model that actually answered, not on the provider's
@@ -85,19 +105,20 @@ class FallbackProvider:
                 self.served_by[f"{key}:{served}"] += 1
                 return result
 
-            last = result
+            error = result.error or f"unusable result source {result.source}"
+            self._record_failure("investigate", provider_name, error)
+            call_failures.append(f"{provider_name}: {error}")
             self._consecutive_failures[key] += 1
             if self._consecutive_failures[key] >= self.failures_before_retiring:
-                self._retire(provider, result.error or "repeated unusable responses")
+                self._retire(provider, error)
 
         # Nothing in the chain could answer. Abstain, and say why.
-        if last is None:
-            return InvestigationResult.unavailable(
-                "every provider in the fallback chain was already retired"
-            )
-        detail = "; ".join(f"{name}: {why}" for name, why in self._retired.items())
+        prior_failures = [
+            f"{name}: {why}" for name, why in retired_before_call.items()
+        ]
+        detail = "; ".join(prior_failures + call_failures)
         return InvestigationResult.unavailable(
-            f"all providers exhausted ({detail or last.error})"
+            f"all providers exhausted ({detail or 'every provider was already retired'})"
         )
 
     def complete_json(
@@ -105,15 +126,16 @@ class FallbackProvider:
     ) -> tuple[dict | None, str | None, str | None]:
         """Structured JSON completion, with the same failover as investigate().
 
-        Providers that cannot do arbitrary structured output (Gemini's
-        generateContent path here) are skipped rather than treated as failures,
-        so they do not consume the retirement budget for something they were
-        never asked to do.
+        Providers that cannot do arbitrary structured output are skipped rather
+        than treated as failures, so they do not consume the retirement budget
+        for something they were never asked to do.
         """
-        last_error = "no provider in the chain supports raw JSON completion"
+        default_error = "no provider in the chain supports raw JSON completion"
+        call_failures: list[str] = []
         for provider in self.active:
             if not hasattr(provider, "complete_json"):
                 continue
+            provider_name = provider.name
             key = provider.name.split(":", 1)[0]
             try:
                 payload, served, error = provider.complete_json(system, user, schema, name)
@@ -123,17 +145,20 @@ class FallbackProvider:
                 self._consecutive_failures[key] = 0
                 self.served_by[f"{key}:{served or provider.name}"] += 1
                 return payload, served, None
-            last_error = error or last_error
+            last_error = error or "provider returned no payload without an error"
+            self._record_failure("complete_json", provider_name, last_error)
+            call_failures.append(f"{provider_name}: {last_error}")
             self._consecutive_failures[key] += 1
             if self._consecutive_failures[key] >= self.failures_before_retiring:
                 self._retire(provider, last_error)
-        return None, None, last_error
+        return None, None, "; ".join(call_failures) or default_error
 
     def report(self) -> dict:
         """Who answered, and who dropped out. Printed alongside every run."""
         return {
             "chain": [p.name for p in self.providers],
             "served_by": dict(self.served_by),
+            "failures": list(self.failures),
             "retired": dict(self._retired),
             "tokens": {
                 p.name.split(":", 1)[0]: {

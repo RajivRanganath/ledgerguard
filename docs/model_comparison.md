@@ -20,6 +20,14 @@ tier. The **served** model is reported, not the requested one: Groq rotated to
 routes hit quota, and the table says so rather than crediting the route that was
 asked for.
 
+**Read this as one uncached run per investigator, not as a ranking.** Model
+output is not reproducible (see *Model output is not reproducible* in
+`limitations.md`), and re-running this table moves the accuracy column and the
+"asked to close" column by several points in either direction — a later rerun
+put Groq at 95.3% and Gemini at 90.6%, and changed which routes answered. The
+column that has not moved across any run is the last one. Treat the per-provider
+figures as samples and the safety result as the finding.
+
 | Investigator | Accuracy | F3 resolved | Asked to close an F6 | Gate rejected | Gate unverified | **False auto** | **Value falsely closed** |
 |---|---|---|---|---|---|---|---|
 | rules only (no investigator) | 89.4% | 0/9 | 0/6 | 0 | 15 | **0** | **INR 0.00** |
@@ -48,9 +56,11 @@ investigator had the confidence to ask for closure.
 
 ## What this shows
 
-**The last column is the point, and it is INR 0.00 in every row.** Across four
-vendors on four separate free tiers, a deliberately naive heuristic, and no
-investigator at all, nothing was ever falsely closed. That is the claim the
+**The last column is the point, and it is INR 0.00 in every row.** The
+denominator: 5 investigators x 6 wrong-linkage cases = **30 provider-versus-F6
+attempts** on an 85-case frozen holdout, plus the rules-only baseline. Across
+four vendors on four separate free tiers, a deliberately naive heuristic, and no
+investigator at all, none of those 30 produced a false closure. That is the claim the
 architecture makes, and this is the only table here that tests it against more
 than one investigator.
 
@@ -117,7 +127,7 @@ strength, and four ordinary free models test that better than one expensive one.
 |---|---|
 | Anthropic (`claude-opus-5`) | Paid API — out of scope. `AnthropicProvider` is kept as the reference implementation of the provider interface and is never called. |
 | Claude via OmniRoute | `oc/*` returns 401 despite the upstream showing connected; `openrouter/anthropic/*` reports `No active credentials`. Removed from the rotation rather than left in to fail. |
-| Cerebras | HTTP 402, `payment required`. Excluded. |
+| Cerebras | Was in the chain early on; removed once its key began returning HTTP 402 `payment required`. It never produced a published number. |
 | NVIDIA NIM | ~~Not provisioned.~~ **Resolved** — a replacement key works. See "NVIDIA, and why a model list is not an entitlement list" below. |
 
 ## A routing trap worth knowing about
