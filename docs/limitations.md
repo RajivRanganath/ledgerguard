@@ -27,6 +27,19 @@ chain early on and was removed when its key began returning HTTP 402
 of the numbers published here were ever produced by it. NVIDIA was unmeasurable for most of this
 build and is not any more -- see below.
 
+**What the safety result does and does not prove.** Two separate claims live
+here and I do not merge them. That the investigator *cannot* close a case is
+architectural: `decide()` reaches `AUTO_RESOLVED` only from a deterministic
+proven cause or a `VERIFIED` gate verdict, and the model's recommended action
+can only downgrade a close, never create one. That holds for any model, and I
+stress-tested it rather than assuming it — an investigator fabricating a record
+id on every case closed nothing on the invented evidence, and an invalid key
+degraded its cases to human review without stopping the batch. That *no
+investigator falsely closed anything* is empirical, and its denominator is
+small: 6 wrong-linkage cases on one 85-lifecycle holdout, 5 investigators, 30
+attempts. Six adversarial cases in one fault taxonomy is evidence, not a
+guarantee, and the limiting factor is the taxonomy rather than the gate.
+
 **The offline stub ties for highest, and that is a caution about the dataset.**
 It reaches 100% -- level with Gemini -- because this fixture's ambiguity is
 exactly the shape its single heuristic assumes. It is well-matched, not competent. If a naive amount-matcher

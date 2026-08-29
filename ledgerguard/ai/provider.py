@@ -281,6 +281,13 @@ def build_chain(order: list[str] | None = None) -> list[InvestigatorProvider]:
     broken link cannot take down the batch, but it is recorded and announced:
     silently running on two providers when four were configured would make a
     degraded run indistinguishable from the intended one.
+
+    This catches construction-time defects only, such as a malformed proxy in
+    the environment. An invalid key or a dead endpoint constructs perfectly
+    well and fails on the first request instead, which is FallbackProvider's
+    job: it records the upstream error, rotates routes, retires the provider,
+    and degrades those cases to human review. Both paths are covered by tests;
+    neither is silent.
     """
     CHAIN_BUILD_ERRORS.clear()
     providers = []

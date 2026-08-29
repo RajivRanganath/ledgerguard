@@ -180,3 +180,34 @@ def test_openai_compatible_rotates_routes_and_credits_response_model():
     assert result.model_name == "actual-upstream-model"
     assert provider.exhausted == {"requested-a": "api error 429: quota"}
     assert provider.model == "requested-b"
+
+
+def test_a_real_construction_failure_is_recorded_not_swallowed(monkeypatch):
+    """Hold the chain-error path to a real misconfiguration, not a stubbed one.
+
+    A malformed proxy in the environment (common behind a corporate VPN) makes
+    httpx raise while the provider is being built. That is a defect, not an
+    absent key, so it must be recorded and announced rather than quietly
+    removing the provider from the chain.
+    """
+    from ledgerguard.ai import provider as prov
+
+    monkeypatch.setenv("ALL_PROXY", "::::not-a-url")
+    monkeypatch.setenv("GROQ_API_KEY", "placeholder-not-a-real-key")
+
+    chain = prov.build_chain(["groq"])
+
+    assert chain == []
+    assert [e["provider"] for e in prov.CHAIN_BUILD_ERRORS] == ["groq"]
+    # The real upstream exception type is preserved, not flattened to a string
+    # like "unavailable" that would read the same as "not configured".
+    assert "InvalidURL" in prov.CHAIN_BUILD_ERRORS[0]["error"]
+
+
+def test_a_missing_key_stays_quiet(monkeypatch):
+    """The counterpart: running on a subset is normal and must not warn."""
+    from ledgerguard.ai import provider as prov
+
+    monkeypatch.setenv("GROQ_API_KEY", "")
+    assert prov.build_chain(["groq"]) == []
+    assert prov.CHAIN_BUILD_ERRORS == []

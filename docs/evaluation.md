@@ -142,4 +142,13 @@ See `docs/model_comparison.md` for the four-investigator table.
 | `outputs/unresolved_exceptions.csv` | every case not closed, with exposure and blocking reason |
 | `outputs/model_comparison.md` | four investigators on the same holdout |
 | `outputs/model_comparison.json` | the same, machine readable |
+| `outputs/reconciliation_report.md` | exportable summary — **a separate run from `benchmark.md`** |
+| `outputs/reconciliation_report.csv` | one row per case, from that same report run |
+| `outputs/evidence_ledger.csv` | one row per evidence check, from that same report run |
 | `frozen/holdout_20260905_320.json` | the frozen holdout manifest |
+
+The benchmark artifacts and the report artifacts are produced by two different
+commands and therefore two different live runs. Each names its investigator on
+its first lines. Their accuracy figures differ by sampling (19 vs 20 exceptions
+closed); their safety figures do not (0 false auto resolutions, INR 0.00 falsely
+closed, 6/6 F6 escalated in both).
