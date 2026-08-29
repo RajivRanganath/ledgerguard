@@ -84,16 +84,17 @@ def rehearse(run_no: int) -> tuple[bool, float]:
 
     # 2:30 adversarial — the beat that must never regress silently
     adv = state["adversarial"]
+    investigator = state["provider"]
     # The live investigator may or may not fall for this case -- a capable model
     # sometimes declines it. So the assertion is on the OUTCOME, not the path:
     # the wrong case must never be closed, however the investigator behaved.
     ok &= check("beat 3: victim was NOT auto resolved",
                 adv["victim"]["state"] == "HUMAN_REVIEW_REQUIRED",
-                f"live model: {adv['victim']['verdict']} / {adv['victim']['hypothesis']}")
+                f"{investigator}: {adv['victim']['verdict']} / {adv['victim']['hypothesis']}")
     ok &= check("beat 3: donor was never closed without a verified gate",
                 adv["donor"]["state"] != "AUTO_RESOLVED"
                 or adv["donor"]["verdict"] == "VERIFIED",
-                f"live model: {adv['donor']['verdict']} / {adv['donor']['hypothesis']}")
+                f"{investigator}: {adv['donor']['verdict']} / {adv['donor']['hypothesis']}")
 
     # The naive investigator always falls for it, so both halves of the gate's
     # behaviour are pinned deterministically here and cannot regress silently
@@ -138,6 +139,15 @@ def rehearse(run_no: int) -> tuple[bool, float]:
 
 
 def main() -> int:
+    try:
+        get("/api/health")
+    except Exception as exc:
+        print(f"Cannot reach the dashboard at {BASE} ({type(exc).__name__}: {exc}).")
+        print("Start it first, then rerun:")
+        print("  ./run_demo.sh")
+        print("  # or: .venv/bin/python -m uvicorn ledgerguard.backend.app:app --port 8137")
+        return 2
+
     all_ok = True
     for i in range(1, 4):
         ok, secs = rehearse(i)

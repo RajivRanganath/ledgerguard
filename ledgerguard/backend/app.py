@@ -325,4 +325,7 @@ def api_health() -> dict:
 def index():
     if not FRONTEND.exists():
         raise HTTPException(status_code=404, detail="frontend/index.html not built")
-    return FileResponse(FRONTEND)
+    # Revalidate every load. Without this the browser serves a cached page, so an
+    # edit made between two runs silently does not appear -- a bad surprise
+    # halfway through a demo.
+    return FileResponse(FRONTEND, headers={"Cache-Control": "no-cache"})

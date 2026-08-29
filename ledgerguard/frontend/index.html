@@ -123,8 +123,9 @@ function overview(s) {
     ${s.provider_is_model ? '' : `<div class="banner" style="margin-bottom:16px">
       Investigator: <code>${esc(s.provider)}</code> — the offline stand-in, not a model.
       It is deliberately naive (it matches on amount and asks to resolve), so the Evidence Gate
-      is being shown against the worst plausible investigator. Set <code>ANTHROPIC_API_KEY</code>
-      and restart to run the Claude-backed investigator.</div>`}
+      is being shown against the worst plausible investigator. Set any provider key
+      (<code>GROQ_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>NVIDIA_API_KEY</code> or
+      <code>OMNIROUTE_API_KEY</code>) and restart to run a real investigator.</div>`}
     <div class="strip">
       ${stat('Records processed', o.records_processed)}
       ${stat('Value reconciled', 'INR ' + o.value_inr)}
@@ -259,6 +260,17 @@ function explorer(s) {
     </div></section>`;
 }
 
+function f6line(s) {
+  const f6 = s.cases.filter(c => (c.fault_class || '').startsWith('F6'));
+  if (!f6.length) return '';
+  const asked = f6.filter(c => c.investigation && c.investigation.recommended_action === 'resolve').length;
+  const rejected = f6.filter(c => c.verification && c.verification.verdict === 'REJECTED').length;
+  const closed = f6.filter(c => c.state === 'AUTO_RESOLVED').length;
+  return `On the ${f6.length} generated wrong-linkage cases in this run, the investigator asked to
+    resolve <em>${asked}</em>, the gate rejected <em>${rejected}</em>, and
+    <strong>${closed === 0 ? 'none were closed' : closed + ' were closed'}</strong>.`;
+}
+
 function adversarial(s) {
   const a = s.adversarial;
   const panel = (k, t, sub) => {
@@ -280,7 +292,7 @@ function adversarial(s) {
       <div class="neutral" style="margin-top:8px;font-size:12px">${esc(d.decision_reason)}</div>
     </div>`;
   };
-  const n = a.naive && a.naive.victim;
+  const n = s.provider_is_model && a.naive && a.naive.victim;
   const naivePanel = !n ? '' : `<div class="card" style="padding:16px 18px;margin-top:14px">
       <h3 style="margin:0 0 4px;font-size:13px">Payment A again, with a naive investigator
         <span class="neutral">(heuristic_stub)</span></h3>
@@ -310,8 +322,7 @@ function adversarial(s) {
     <p class="lede" style="margin-top:14px">For Payment A the amount matches exactly and the
       ledger balances — both checks pass — and the case is still refused, because the refund
       belongs to a different customer. <strong>The gate rejects on linkage, not on amount.</strong>
-      On the six generated wrong-linkage cases in the benchmark, the live model asked to resolve
-      <em>all six</em>, and the gate rejected all six.</p>
+      ${f6line(s)}</p>
   </section>`;
 }
 

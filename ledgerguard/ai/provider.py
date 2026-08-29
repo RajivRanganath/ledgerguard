@@ -4,12 +4,15 @@ The rest of LedgerGuard depends on exactly one function shape:
 
     investigate(context: dict) -> InvestigationResult
 
-Two implementations ship. ``AnthropicProvider`` calls Claude with a structured
-output schema. ``HeuristicProvider`` is an offline stand-in that lets the whole
-pipeline, benchmark and demo run with no API key present -- it is deliberately
-naive, because a naive investigator is exactly what the Evidence Gate has to
-survive. Every result records which provider produced it; the benchmark report
-prints that, so a stub run is never mistaken for a model run.
+Several implementations ship. ``AnthropicProvider`` calls Claude through the
+Anthropic SDK, ``OpenAICompatibleProvider`` and ``GeminiProvider`` (in
+``openai_compatible.py``) cover every other host, and ``FallbackProvider`` (in
+``fallback.py``) chains them so one running out of quota does not end the run.
+``HeuristicProvider`` is an offline stand-in that lets the whole pipeline,
+benchmark and demo run with no API key present -- it is deliberately naive,
+because a naive investigator is exactly what the Evidence Gate has to survive.
+Every result records which provider produced it; the benchmark report prints
+that, so a stub run is never mistaken for a model run.
 """
 
 from __future__ import annotations
@@ -208,16 +211,14 @@ class UnavailableProvider:
 
     name = "unavailable"
 
-    def __init__(self, error: str = "no ANTHROPIC_API_KEY configured") -> None:
+    def __init__(self, error: str = "no investigator provider is configured") -> None:
         self.error = error
 
     def investigate(self, context: dict) -> InvestigationResult:
         return InvestigationResult.unavailable(self.error)
 
 
-#: Auto-detection order. Anthropic first because that is the reference
-#: implementation; the rest are ordinary OpenAI-compatible or Gemini hosts.
-#: Preference order for the fallback chain, in the order requested.
+#: Preference order for the automatic fallback chain, in the order requested.
 #:
 #: Groq first: fastest of the reliable ones (~1.4s) and it does not cache.
 #: Gemini second: fast when its free-tier quota is intact.

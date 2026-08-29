@@ -35,8 +35,9 @@ included) are not representative of a paid tier. No cost-per-100-records figure
 is claimed.
 
 **Claude was never measured.** `AnthropicProvider` (`claude-opus-5`,
-`messages.parse`) is implemented and first in auto-detection order, but no
-Anthropic key was available. Claude *is* reachable through the local OmniRoute
+`messages.parse`) is implemented and available as an explicit
+`--provider anthropic`, but no Anthropic key was available, so it is deliberately
+not in the automatic chain. Claude *is* reachable through the local OmniRoute
 router (`openrouter/anthropic/claude-opus-5`, verified working), but that
 upstream credential deactivates after a few calls; two benchmark attempts each
 completed 1 of 15 investigations before dropping out. A 1-of-15 run is not a
@@ -153,6 +154,10 @@ chosen for demo reliability over stack conformance.
 
 ## Secrets
 
-One secret: `ANTHROPIC_API_KEY`, read from the environment. `.env` is gitignored,
-`.env.example` carries placeholders only. No key, token or credential is
-committed anywhere in this repository or its history.
+One class of secret: provider API keys (`GROQ_API_KEY`, `GEMINI_API_KEY`,
+`NVIDIA_API_KEY`, `OMNIROUTE_API_KEY`, `CEREBRAS_API_KEY`), each read from the
+environment and used for nothing but an investigator call. There are no Razorpay
+credentials, no database password and no payment-rail access, because no real
+money is ever moved. `.env` is gitignored, `.env.example` carries placeholders
+only. No key, token or credential is committed anywhere in this repository or
+its history.

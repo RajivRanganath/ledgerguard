@@ -153,20 +153,24 @@ python3 -m venv .venv
 cp .env.example .env      # optional; the system runs without a key
 ```
 
-One API key is needed, and the system runs without any. Auto-detection order is
-`anthropic` → `groq` → `cerebras` → `gemini` → `nvidia` → offline stub:
+One API key is needed, and the system runs without any. The automatic chain is
+`groq` → `gemini` → `nvidia` → `omniroute` → offline stub:
 
-| Env var | Provider | Default model |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | Anthropic SDK | `claude-opus-5` (explicit only) |
-| `GROQ_API_KEY` | OpenAI-compatible | `openai/gpt-oss-120b` |
-| `CEREBRAS_API_KEY` | OpenAI-compatible | `gpt-oss-120b` (explicit only) |
-| `GEMINI_API_KEY` | `generateContent` | `gemini-2.5-flash` |
-| `NVIDIA_API_KEY` | OpenAI-compatible | `meta/llama-3.3-70b-instruct` |
+| Env var | Provider | Default model | In the auto chain |
+|---|---|---|---|
+| `GROQ_API_KEY` | OpenAI-compatible | `openai/gpt-oss-120b` | 1st |
+| `GEMINI_API_KEY` | `generateContent` | `gemini-2.5-flash` | 2nd |
+| `NVIDIA_API_KEY` | OpenAI-compatible | `meta/llama-3.3-70b-instruct` | 3rd |
+| `OMNIROUTE_API_KEY` | local router on `:20128` | `mistral-large-latest` | 4th |
+| `ANTHROPIC_API_KEY` | Anthropic SDK | `claude-opus-5` | explicit only |
+| `CEREBRAS_API_KEY` | OpenAI-compatible | `gpt-oss-120b` | explicit only |
 
-Plus `OMNIROUTE_API_KEY` for a local [OmniRoute](https://www.npmjs.com/package/omniroute)
+`OMNIROUTE_API_KEY` drives a local [OmniRoute](https://www.npmjs.com/package/omniroute)
 router, which fronts many upstreams (OpenRouter, OpenCode, Mistral, …) behind one
-endpoint. Any other OpenAI-compatible host works via
+endpoint under its own separate credentials — which is why it stays in the chain
+even when the direct keys above are exhausted. Anthropic and Cerebras are fully
+implemented but deliberately outside the automatic order: no Anthropic key was
+available, and the Cerebras key returns HTTP 402. Any other OpenAI-compatible host works via
 `LEDGERGUARD_PROVIDER=openai_compatible` plus `LEDGERGUARD_BASE_URL`,
 `LEDGERGUARD_API_KEY` and `LEDGERGUARD_MODEL`.
 
@@ -377,8 +381,12 @@ be able to *fail* when a decision is tampered with.
 
 ## Secrets
 
-`ANTHROPIC_API_KEY` only, read from the environment. `.env` is gitignored;
-`.env.example` carries placeholders. No key, token or credential is committed.
+Provider API keys only — `GROQ_API_KEY`, `GEMINI_API_KEY`, `NVIDIA_API_KEY`,
+`OMNIROUTE_API_KEY`, `CEREBRAS_API_KEY` — each read from the environment, each
+used for nothing but an investigator call. No other secret exists: there are no
+Razorpay credentials, no database password, and no payment rail is touched.
+`.env` is gitignored; `.env.example` carries placeholders. No key, token or
+credential is committed.
 
 ## Repository
 

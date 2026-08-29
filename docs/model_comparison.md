@@ -94,7 +94,7 @@ the fallback chain is the runtime resilience mechanism, not the measurement path
 
 | Provider | Status |
 |---|---|
-| Anthropic (`claude-opus-5`) | No API key. Implemented and first in auto-detection order. |
+| Anthropic (`claude-opus-5`) | No API key. Implemented and supported as an explicit `--provider anthropic`, but deliberately outside the automatic chain. |
 | Claude via OmniRoute | `oc/*` returns 401 despite the upstream showing connected; `openrouter/anthropic/*` reports `No active credentials`. Removed from the rotation rather than left in to fail. |
 | Cerebras | HTTP 402, `payment required`. |
 | NVIDIA NIM | The `meta/llama-*` endpoints are end-of-life (HTTP 410 Gone); the listed replacements are not provisioned for this key (`Function ... Not found for account`). |

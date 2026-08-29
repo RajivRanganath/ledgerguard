@@ -235,7 +235,12 @@ def main(argv: list[str] | None = None) -> int:
         "--split", choices=["holdout", "dev", "all"], default="holdout",
         help="which slice to score (default: the frozen holdout)",
     )
-    parser.add_argument("--provider", default=None, help="anthropic | stub | none")
+    parser.add_argument(
+        "--provider",
+        default=None,
+        help="auto | fallback | groq | gemini | nvidia | omniroute | "
+        "anthropic | cerebras | openai_compatible | stub | none",
+    )
     args = parser.parse_args(argv)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -322,7 +327,8 @@ def main(argv: list[str] | None = None) -> int:
     if hyb_metrics.provider == "heuristic_stub":
         print(
             "\nNOTE: the hybrid run used the offline heuristic stub, not a model. "
-            "Set ANTHROPIC_API_KEY and rerun to measure with Claude."
+            "Configure a provider key (GROQ_API_KEY, GEMINI_API_KEY, NVIDIA_API_KEY "
+            "or OMNIROUTE_API_KEY) and rerun to measure against a real investigator."
         )
     return 0
 

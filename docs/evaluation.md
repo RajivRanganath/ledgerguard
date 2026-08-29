@@ -14,7 +14,8 @@ benchmark prints which provider served how many investigations, and how many
 came from a cache, so the run is self-describing either way.
 
 Options: `--seed`, `--count`, `--split {holdout,dev,all}`, and
-`--provider {anthropic,groq,cerebras,gemini,nvidia,openai_compatible,stub,none}`.
+`--provider {auto,fallback,groq,gemini,nvidia,omniroute,anthropic,cerebras,
+openai_compatible,stub,none}`.
 
 To compare investigators on the same holdout:
 
