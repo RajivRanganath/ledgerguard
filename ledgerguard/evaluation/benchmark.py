@@ -6,8 +6,13 @@ Regenerates the dataset from its seed, freezes (or re-verifies) the holdout
 manifest, runs the rules-only baseline and the full hybrid controller over the
 same frozen holdout, and writes every artifact under evaluation/outputs/.
 
-Every number in every artifact comes from these two runs. Nothing is typed in
-by hand, and rerunning with the same seed reproduces the same file contents.
+Every number in every artifact comes from these two runs; nothing is typed in
+by hand. Rerunning with the same seed reproduces the deterministic path exactly
+-- same dispositions, same money, same unresolved rows, byte for byte, with only
+wall-clock timing fields differing. The AI-investigated path is not reproducible
+in that sense: the same prompt to the same model can yield a different
+hypothesis, so a live rerun can land on a different accuracy. Runs are labelled
+with the investigator that produced them for exactly this reason.
 """
 
 from __future__ import annotations
@@ -215,6 +220,10 @@ def export_cases(report: RunReport, dataset: Dataset, path: Path) -> None:
                     "source": outcome.investigation.result.source,
                     "model_name": outcome.investigation.result.model_name,
                     "latency_ms": round(outcome.investigation.latency_ms, 2),
+                    # Set when the controller stripped ids the model invented. The
+                    # strongest single sign of an LLM fabricating a record, so it
+                    # belongs in the artifact, not only in an aggregate count.
+                    "controller_note": outcome.investigation.result.error,
                 }
                 if outcome.investigation
                 else None

@@ -30,6 +30,22 @@ NEEDS_INVESTIGATION = {
     ExceptionType.BANK_MISMATCH,
 }
 
+#: Which hypotheses have an evidence battery that actually explains a given
+#: exception type.
+#:
+#: Verifying a hypothesis against the records is necessary but not sufficient:
+#: a battery can pass while explaining the wrong discrepancy. The refund
+#: battery reconstructs the *settlement* net (E7), so it can prove an
+#: UNEXPLAINED_SHORTFALL. It says nothing about why a *bank* credit disagrees
+#: with a settlement, so it must never close a BANK_MISMATCH -- otherwise a
+#: coincidentally-matching orphan refund could auto-resolve a bank-side fault
+#: on evidence that never addressed it.
+ADMISSIBLE_HYPOTHESES: dict[ExceptionType, set[str]] = {
+    ExceptionType.UNEXPLAINED_SHORTFALL: {"unlinked_partial_refund"},
+    ExceptionType.BANK_MISMATCH: set(),
+    ExceptionType.AMBIGUOUS_REFERENCE: set(),
+}
+
 _RISK_BY_TYPE = {
     ExceptionType.MISSING_SETTLEMENT: Risk.HIGH,
     ExceptionType.UNEXPLAINED_SHORTFALL: Risk.HIGH,

@@ -138,6 +138,10 @@ def _state() -> dict:
                         "source": outcome.investigation.result.source,
                         "model_name": outcome.investigation.result.model_name,
                         "latency_ms": round(outcome.investigation.latency_ms, 2),
+                        # Set when the controller stripped ids the model invented. The
+                        # strongest single sign of an LLM fabricating a record, so it
+                        # belongs in the artifact, not only in an aggregate count.
+                        "controller_note": outcome.investigation.result.error,
                     }
                     if outcome.investigation
                     else None

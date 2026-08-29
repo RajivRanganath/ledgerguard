@@ -95,8 +95,11 @@ reaches the model) and `NEEDS_INVESTIGATION`. On the frozen holdout, 16 of the
 31 exceptions are proven outright and never cost a model call.
 
 ### `ai/`
-`investigate_exception(context) -> InvestigationResult` is the entire surface the
-rest of the system depends on, so the controller is model independent.
+`InvestigatorProvider.investigate(context) -> InvestigationResult`
+(`ai/provider.py`) is the entire surface the rest of the system depends on, so
+the controller is model independent. `investigate_case(ledger, case, provider)`
+in `ai/investigator.py` is the only caller: it builds the context, enforces the
+timeout, and strips any evidence id the model did not receive as a candidate.
 
 The wire schema (`InvestigatorOutput`) is separate from the runtime type
 (`InvestigationResult`) so the runtime-only fields — `source`, `model_name`,

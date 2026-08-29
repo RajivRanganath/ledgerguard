@@ -343,3 +343,93 @@ def test_unknown_exception_type_reaches_unresolved_not_a_close():
     decision = decide(case, None, None)
     assert decision.state == UNRESOLVED
     assert decision.state != AUTO_RESOLVED
+
+
+def test_frozen_holdout_mismatch_is_refused(tmp_path, monkeypatch):
+    """A holdout that drifted must abort scoring, not be silently re-frozen.
+
+    The frozen manifest is what makes the benchmark a measurement rather than a
+    claim. If the generator changes and this check stops firing, every published
+    number quietly becomes a score against a different dataset.
+    """
+    from ledgerguard.evaluation import benchmark as bm
+
+    monkeypatch.setattr(bm, "MANIFEST_DIR", tmp_path)
+    full = build_dataset(seed=424242, count=40)
+    _dev, holdout = split(full)
+
+    first = bm.freeze_or_verify_holdout(holdout, 424242, 40)
+    assert first["holdout_batch_sha256"]
+    # Re-verifying the identical holdout is a no-op, not a rewrite.
+    assert bm.freeze_or_verify_holdout(holdout, 424242, 40) == first
+
+    drifted = split(build_dataset(seed=525252, count=40))[1]
+    with pytest.raises(SystemExit) as excinfo:
+        bm.freeze_or_verify_holdout(drifted, 424242, 40)
+    assert "FROZEN HOLDOUT MISMATCH" in str(excinfo.value)
+
+
+def test_hypothesis_must_be_admissible_for_the_exception_it_would_close():
+    """A passing evidence battery must not close an exception it never explains.
+
+    The refund battery reconstructs the settlement net. A bank-side discrepancy
+    is a different discrepancy, so `unlinked_partial_refund` must not be
+    verifiable against it even if every individual check would pass.
+    """
+    from ledgerguard.evidence.verifier import UNVERIFIED, verify
+    from ledgerguard.ledger.shadow_ledger import ExpectedSettlement, ShadowLedger
+    from ledgerguard.reconciliation.exceptions import ADMISSIBLE_HYPOTHESES, make_exception
+    from ledgerguard.reconciliation.matcher import CaseResult
+
+    assert "unlinked_partial_refund" not in ADMISSIBLE_HYPOTHESES[ExceptionType.BANK_MISMATCH]
+
+    exc = make_exception(
+        case_id="pay_B", lifecycle_id="LC", transaction_ids=["pay_B"],
+        exception_type=ExceptionType.BANK_MISMATCH,
+        detected_by="deterministic_matcher",
+        expected_value=1000, observed_value=900, evidence={},
+    )
+    case = CaseResult(
+        case_id="pay_B", payment_id="pay_B", order_id="ord_B",
+        status=exc.exception_type.value,
+        expected=ExpectedSettlement("pay_B", 0, 0, 0, 0, 0, 0),
+        settlement=None, exception=exc,
+    )
+    result = InvestigationResult(
+        hypothesis="unlinked_partial_refund",
+        reason="the amounts line up",
+        candidate_evidence_ids=["rfnd_X"],
+        recommended_action="resolve",
+        source="model",
+    )
+    outcome = verify(ShadowLedger(Batch()), case, result)
+    assert outcome.verdict == UNVERIFIED
+    assert "not an admissible explanation" in outcome.note
+    # The battery must not have run at all -- no checks were weighed.
+    assert outcome.checks == []
+
+
+def test_a_broken_provider_is_reported_not_silently_dropped():
+    """A configured-but-broken provider must not look like an absent one.
+
+    A missing key is a legitimate way to run on a subset and stays quiet. A
+    provider that raises for any other reason is a defect, and a benchmark that
+    silently ran on fewer providers than intended is not the run it claims.
+    """
+    from ledgerguard.ai import provider as prov
+
+    def _boom(kind: str):
+        if kind == "groq":
+            raise AttributeError("simulated defect")
+        raise ValueError(f"{kind} is not configured")
+
+    original = prov._build
+    try:
+        prov._build = _boom
+        chain = prov.build_chain(["groq", "gemini"])
+    finally:
+        prov._build = original
+
+    assert chain == []
+    assert [e["provider"] for e in prov.CHAIN_BUILD_ERRORS] == ["groq"]
+    assert "AttributeError: simulated defect" in prov.CHAIN_BUILD_ERRORS[0]["error"]

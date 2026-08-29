@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Protocol
 
@@ -265,14 +266,37 @@ def _build(kind: str) -> InvestigatorProvider:
     raise ValueError(f"unknown provider {kind!r}")
 
 
+#: Providers that failed to construct for a reason other than "not configured",
+#: from the most recent build_chain() call. A missing key is expected and stays
+#: silent; anything else is a defect, and a defect that removes a provider from
+#: the chain must not look identical to one the user simply did not configure.
+CHAIN_BUILD_ERRORS: list[dict[str, str]] = []
+
+
 def build_chain(order: list[str] | None = None) -> list[InvestigatorProvider]:
-    """Every provider that is actually configured, in preference order."""
+    """Every provider that is actually configured, in preference order.
+
+    A provider with no key is skipped quietly -- that is the documented way to
+    run on a subset. A provider that raises anything else is skipped too, so one
+    broken link cannot take down the batch, but it is recorded and announced:
+    silently running on two providers when four were configured would make a
+    degraded run indistinguishable from the intended one.
+    """
+    CHAIN_BUILD_ERRORS.clear()
     providers = []
     for candidate in order or AUTO_ORDER:
         try:
             providers.append(_build(candidate))
-        except Exception:
-            continue
+        except ValueError:
+            continue                              # not configured, or unreachable
+        except Exception as exc:                  # a real defect in this provider
+            detail = f"{type(exc).__name__}: {exc}"
+            CHAIN_BUILD_ERRORS.append({"provider": candidate, "error": detail})
+            print(
+                f"warning: provider {candidate!r} is configured but failed to "
+                f"initialise ({detail}); it was left out of the chain",
+                file=sys.stderr,
+            )
     return providers
 
 

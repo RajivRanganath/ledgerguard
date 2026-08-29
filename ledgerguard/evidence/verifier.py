@@ -28,6 +28,7 @@ from datetime import timedelta
 from ..ai.schemas import InvestigationResult
 from ..ledger.models import Refund, RefundStatus
 from ..ledger.shadow_ledger import ShadowLedger
+from ..reconciliation.exceptions import ADMISSIBLE_HYPOTHESES
 from ..reconciliation.matcher import CaseResult
 
 VERIFIED = "VERIFIED"
@@ -236,6 +237,25 @@ def verify(
             checks=[],
             ai_required_evidence=ai_required,
             note=f"no usable investigation to verify ({result.error})",
+        )
+
+    # A battery only proves the discrepancy it was built to reconstruct. Running
+    # the refund battery against an exception it cannot explain would let a
+    # passing check-set close the wrong fault, so admissibility is decided by
+    # the exception type before any evidence is weighed.
+    admissible = ADMISSIBLE_HYPOTHESES.get(case.exception.exception_type, set())
+    if result.hypothesis in ("unlinked_partial_refund",) and result.hypothesis not in admissible:
+        return VerificationOutcome(
+            case_id=case.case_id,
+            hypothesis=result.hypothesis,
+            verdict=UNVERIFIED,
+            checks=[],
+            ai_required_evidence=ai_required,
+            note=(
+                f"hypothesis {result.hypothesis!r} is not an admissible explanation for "
+                f"{case.exception.exception_type.value}; the evidence battery for it "
+                "reconstructs a different discrepancy than the one raised"
+            ),
         )
 
     if result.hypothesis == "unlinked_partial_refund":
