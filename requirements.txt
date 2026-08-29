@@ -5,9 +5,10 @@ httpx>=0.27          # every OpenAI-compatible and Gemini provider, and the
 pydantic>=2.9
 uvicorn>=0.30
 
-# Only needed for `--provider anthropic`, which is outside the automatic chain.
-# The import is lazy, so the rest of the system runs without it.
-anthropic>=1.0.0
+# Not installed by default. `AnthropicProvider` is kept as the reference
+# implementation of the provider interface, but this project runs on free tiers
+# only and never calls it. Its import is lazy, so nothing else needs it.
+# anthropic>=1.0.0
 
 # Tests
 pytest>=8.0

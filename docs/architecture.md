@@ -108,8 +108,8 @@ Providers, all returning the same type:
 
 | Provider | Transport | Default model | Structured output |
 |---|---|---|---|
-| `AnthropicProvider` | `anthropic` SDK, `messages.parse` | `claude-opus-5` | native schema |
-| `OpenAICompatibleProvider` | chat completions over httpx | Groq `openai/gpt-oss-120b`, Cerebras `gpt-oss-120b`, NVIDIA `meta/llama-3.3-70b-instruct` | strict `json_schema`, falling back to `json_object` |
+| `AnthropicProvider` | `anthropic` SDK, `messages.parse` | `claude-opus-5` | native schema — reference implementation only, never called (free tiers only) |
+| `OpenAICompatibleProvider` | chat completions over httpx | Groq `openai/gpt-oss-120b`, NVIDIA `openai/gpt-oss-120b`, OmniRoute `mistral/mistral-large-latest` | strict `json_schema`, falling back to `json_object` (NVIDIA uses `json_object`) |
 | `GeminiProvider` | `generateContent` over httpx | `gemini-2.5-flash` | `responseSchema` |
 | `HeuristicProvider` | none | — | offline stand-in, deliberately naive |
 | `UnavailableProvider` | none | — | models a dead provider |

@@ -108,16 +108,19 @@ On the six wrong-linkage cases, run uncached over the same holdout:
 
 | Investigator | Accuracy | Asked to close a wrong-linkage case | Gate rejected | **Value falsely closed** |
 |---|---|---|---|---|
-| `mistral-large-latest` | 100.0% | **6 of 6** | 6 | **INR 0.00** |
-| `gemini-2.5-flash` | 98.8% | **5 of 6** | 5 | **INR 0.00** |
-| `openai/gpt-oss-120b` | 96.5% | 2 of 6 | 6 | **INR 0.00** |
+| `gemini-2.5-flash` | 100.0% | **5 of 6** | 5 | **INR 0.00** |
+| `openai/gpt-oss-20b` (Groq) | 98.8% | **6 of 6** | 6 | **INR 0.00** |
+| `mistral-medium-3-5` (OmniRoute) | 97.7% | 4 of 6 | 6 | **INR 0.00** |
+| `openai/gpt-oss-120b` (NVIDIA) | 95.3% | 4 of 6 | 5 | **INR 0.00** |
 | `heuristic_stub` (offline) | 100.0% | **6 of 6** | 6 | **INR 0.00** |
 
-Their reasoning was fluent and specific — naming the right refund, citing the
-right amount, correctly observing that applying it balances the ledger. Every one
-of those observations is true. The conclusion is still wrong, because the refund
-belongs to a different customer. **Without the gate, the highest-scoring model in
-this table would have made six silent false closures.**
+Four vendors, four separate free tiers, plus a deliberately naive offline
+heuristic. Their reasoning was fluent and specific — naming the right refund,
+citing the right amount, correctly observing that applying it balances the
+ledger. Every one of those observations is true. The conclusion is still wrong,
+because the refund belongs to a different customer. **Without the gate, the
+highest-scoring model in this table would have made five silent false
+closures.**
 
 Note also that accuracy and safety are not the same axis: the most accurate
 investigator is the most eager to close the adversarial cases, and the least
@@ -132,9 +135,9 @@ The variance lands entirely in how much is safely closed, never in whether
 something wrong gets closed.
 
 Full detail, including reliability and latency, is in
-[`docs/model_comparison.md`](docs/model_comparison.md). Across three vendors, a
-deliberately naive offline heuristic and no investigator at all, the value
-falsely auto resolved was INR 0.00 in every case.
+[`docs/model_comparison.md`](docs/model_comparison.md). Across four vendors on
+four separate free tiers, a deliberately naive offline heuristic and no
+investigator at all, the value falsely auto resolved was INR 0.00 in every case.
 
 Regenerate every figure above with:
 
@@ -160,17 +163,19 @@ One API key is needed, and the system runs without any. The automatic chain is
 |---|---|---|---|
 | `GROQ_API_KEY` | OpenAI-compatible | `openai/gpt-oss-120b` | 1st |
 | `GEMINI_API_KEY` | `generateContent` | `gemini-2.5-flash` | 2nd |
-| `NVIDIA_API_KEY` | OpenAI-compatible | `meta/llama-3.3-70b-instruct` | 3rd |
+| `NVIDIA_API_KEY` | OpenAI-compatible | `openai/gpt-oss-120b` | 3rd |
 | `OMNIROUTE_API_KEY` | local router on `:20128` | `mistral-large-latest` | 4th |
-| `ANTHROPIC_API_KEY` | Anthropic SDK | `claude-opus-5` | explicit only |
-| `CEREBRAS_API_KEY` | OpenAI-compatible | `gpt-oss-120b` | explicit only |
 
 `OMNIROUTE_API_KEY` drives a local [OmniRoute](https://www.npmjs.com/package/omniroute)
 router, which fronts many upstreams (OpenRouter, OpenCode, Mistral, …) behind one
 endpoint under its own separate credentials — which is why it stays in the chain
-even when the direct keys above are exhausted. Anthropic and Cerebras are fully
-implemented but deliberately outside the automatic order: no Anthropic key was
-available, and the Cerebras key returns HTTP 402. Any other OpenAI-compatible host works via
+even when the direct keys above are exhausted.
+
+**All four are free tiers, and that is deliberate.** No paid API key is used
+anywhere in this repository, and none is needed to reproduce any number in it.
+The claim being made is that the Evidence Gate holds regardless of how strong the
+investigator is, which four ordinary free models support better than one
+expensive one. Any other OpenAI-compatible host works via
 `LEDGERGUARD_PROVIDER=openai_compatible` plus `LEDGERGUARD_BASE_URL`,
 `LEDGERGUARD_API_KEY` and `LEDGERGUARD_MODEL`.
 
@@ -180,16 +185,17 @@ provider it rotates between model routes. Free tiers die mid-run constantly, and
 neither failure should turn a resolvable case into an abstention:
 
 ```
-fallback(groq -> gemini -> nvidia -> omniroute)        # 4 providers, 12 routes
+fallback(groq -> gemini -> nvidia -> omniroute)        # 4 providers, 13 routes
 ```
 
 OmniRoute is deliberately last and is the deepest link: it fronts Mistral,
 NVIDIA and Groq under *its own* credentials, separate from the direct keys, so
 it survives those running out. Every route in the chain was individually
-verified to answer with a strict JSON schema before being listed — dead ones
-(Claude via OmniRoute, end-of-life NVIDIA endpoints, models that answer in prose)
-are not carried, since a dead route only buys latency before the rotation gives
-up on it.
+verified by calling it — strict `json_schema` where the host supports it,
+`json_object` on NVIDIA — and dead ones are not carried, since a dead route only
+buys latency before the rotation gives up on it. Routes dropped after testing:
+Claude via OmniRoute (401 / no active credentials), NVIDIA endpoints the account
+is not entitled to invoke, and models that answer in prose instead of JSON.
 
 - A route that is rate limited past its retries, out of quota, or emitting
   unparseable output is **retired for the run**, not retried per case.
@@ -382,8 +388,8 @@ be able to *fail* when a decision is tampered with.
 ## Secrets
 
 Provider API keys only — `GROQ_API_KEY`, `GEMINI_API_KEY`, `NVIDIA_API_KEY`,
-`OMNIROUTE_API_KEY`, `CEREBRAS_API_KEY` — each read from the environment, each
-used for nothing but an investigator call. No other secret exists: there are no
+`OMNIROUTE_API_KEY` — each read from the environment, each used for nothing but
+an investigator call, and all four free tier. No other secret exists: there are no
 Razorpay credentials, no database password, and no payment rail is touched.
 `.env` is gitignored; `.env.example` carries placeholders. No key, token or
 credential is committed.

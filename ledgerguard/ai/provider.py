@@ -222,16 +222,16 @@ class UnavailableProvider:
 #:
 #: Groq first: fastest of the reliable ones (~1.4s) and it does not cache.
 #: Gemini second: fast when its free-tier quota is intact.
-#: NVIDIA third: currently unusable with the available key (endpoints are
-#:   end-of-life, replacements not provisioned) but it fails in ~0.1s and is
-#:   retired after two attempts, so it costs almost nothing to keep in place for
-#:   when the entitlement is fixed.
+#: NVIDIA third: working since the key was replaced. The catalogue it advertises
+#:   is much larger than what an account may invoke, so the routes are the three
+#:   that were confirmed by actually calling them (see the nvidia preset).
 #: OmniRoute last: reaches Mistral, but is the slowest by a wide margin
 #:   (p50 ~53s uncached) and caches temperature-0 responses.
 #:
-#: Anthropic and Cerebras are deliberately not in the chain -- no Anthropic key
-#: exists, and the Cerebras key returns HTTP 402. Both remain fully supported as
-#: an explicit --provider choice; only the automatic order excludes them.
+#: All four are free tiers. No paid API is used anywhere in this project.
+#: Anthropic is implemented (it is the reference implementation of the provider
+#: interface) but never called; Cerebras is excluded outright -- its key returns
+#: HTTP 402. Neither is in the automatic order.
 AUTO_ORDER = ["groq", "gemini", "nvidia", "omniroute"]
 
 
@@ -280,8 +280,9 @@ def get_provider(kind: str | None = None) -> InvestigatorProvider:
     """Select an investigator provider.
 
     ``kind`` (or LEDGERGUARD_PROVIDER) may be:
-      anthropic | omniroute | groq | cerebras | gemini | nvidia |
-      openai_compatible   -- one specific provider
+      groq | gemini | nvidia | omniroute | openai_compatible
+                          -- one specific provider (anthropic and cerebras are
+                             still constructible but are not used here)
       fallback            -- chain every configured provider, failing over
       stub                -- the offline stand-in
       none                -- a dead provider, for testing degradation

@@ -15,17 +15,19 @@ range rather than the best one. The deterministic layer *is* reproducible, and
 the safety figures (0 false auto resolutions, INR 0.00 falsely closed, 6/6 F6
 escalated) held across all three runs.
 
-**Three vendors measured, not one.** `docs/model_comparison.md` runs Mistral
-Large, Gemini 2.5 Flash and gpt-oss-120b over the same frozen holdout, uncached,
-plus the offline stub and the rules-only baseline. Every one of them was falsely
-auto-resolved INR 0.00. That is a far better-supported claim than any single
-accuracy figure. Still unmeasured: Claude (no key, and the OmniRoute Claude
-routes are dead), Cerebras (HTTP 402) and NVIDIA (endpoints end-of-life, key not
-provisioned).
+**Four vendors measured, not one.** `docs/model_comparison.md` runs
+`gemini-2.5-flash`, `gpt-oss-20b` via Groq, `mistral-medium-3-5` via OmniRoute
+and `gpt-oss-120b` via NVIDIA over the same frozen holdout, uncached, plus the
+offline stub and the rules-only baseline — every provider in the automatic
+chain, each on its own free tier. Not one of them falsely auto-resolved
+anything: INR 0.00 in every row. That is a far better-supported claim than any
+single accuracy figure. Deliberately out of scope: any paid API. Cerebras is
+excluded too (its key returns HTTP 402). NVIDIA was unmeasurable for most of this
+build and is not any more -- see below.
 
-**The offline stub scores highest, and that is a caution about the dataset.**
-It reaches 100% because this fixture's ambiguity is exactly the shape its single
-heuristic assumes. It is well-matched, not competent. If a naive amount-matcher
+**The offline stub ties for highest, and that is a caution about the dataset.**
+It reaches 100% -- level with Gemini -- because this fixture's ambiguity is
+exactly the shape its single heuristic assumes. It is well-matched, not competent. If a naive amount-matcher
 tops the table, headline accuracy on this data is close to meaningless — which is
 why false auto resolutions and rupee exposure are the reported headline instead.
 
@@ -34,17 +36,23 @@ also why the latency figures (p50 10.8s, p95 19.7s, with rate-limit retries
 included) are not representative of a paid tier. No cost-per-100-records figure
 is claimed.
 
-**Claude was never measured.** `AnthropicProvider` (`claude-opus-5`,
-`messages.parse`) is implemented and available as an explicit
-`--provider anthropic`, but no Anthropic key was available, so it is deliberately
-not in the automatic chain. Claude *is* reachable through the local OmniRoute
-router (`openrouter/anthropic/claude-opus-5`, verified working), but that
-upstream credential deactivates after a few calls; two benchmark attempts each
-completed 1 of 15 investigations before dropping out. A 1-of-15 run is not a
-measurement, so no Claude column is published. On the hand-built adversarial
-pair, which did complete, Claude Opus 5 declined **both** halves and returned
-`insufficient_evidence` — correctly citing the CUST-0077 / CUST-0001 mismatch
-unprompted. That is a single anecdote, not a result.
+**Free tiers only, by design — so no paid frontier model is measured here.**
+Every investigator in this repository runs on a free tier: Groq, Gemini, NVIDIA
+NIM, and the local OmniRoute router. No paid API key is used, and none is
+required to reproduce any number in this repository. That is a deliberate
+constraint, not a missing piece: the architectural claim is that the Evidence
+Gate holds *regardless* of how good the investigator is, and a claim of that
+shape is better supported by four ordinary free-tier models than by one
+expensive one.
+
+`AnthropicProvider` remains implemented because the provider interface is meant
+to be model-independent and it is the reference implementation of that
+interface. It is not in the chain and no Claude column is published. The one
+data point that exists is an anecdote, and is recorded as one: on the hand-built
+adversarial pair reached through OmniRoute before that upstream credential
+lapsed, Claude Opus 5 declined **both** halves with `insufficient_evidence`,
+citing the CUST-0077 / CUST-0001 mismatch unprompted. One pair is not a
+measurement.
 
 **OmniRoute caches, so runs through it are replays, not repeat measurements.**
 It returns `x-omniroute-cache-hit: true` for repeated `temperature: 0` requests,
@@ -62,6 +70,30 @@ fallback chain is the runtime resilience mechanism, not the measurement path.
 `gemini-3.1-flash-lite`. The provider now records the served model from the
 response rather than the requested route. Any provider-attributed number in this
 repository is the model that *answered*, not the one that was asked for.
+
+**A provider's model list is not a list of what you may call.** NVIDIA NIM was
+recorded here for most of this build as unusable: the two routes configured for
+it returned `Function ... Not found for account`, and I attributed that to a key
+that had never been provisioned. When a working key replaced it, `GET /v1/models`
+returned 200 and **83 models** — and calling them one by one showed that **36 of
+the 57 chat models it advertises still return the same 404 for this account**.
+Both previously configured routes were in that unentitled set. The catalogue is
+global; entitlement is per account, and the API exposes no field that
+distinguishes them.
+
+So the diagnosis in the earlier version of this file was half wrong. The key was
+one problem; the other was configuring routes from a catalogue instead of from a
+call. The NVIDIA routes now listed are the ones I invoked against the
+adversarial pair and kept only where they returned parseable structured output
+and the correct verdict on both halves. `nvidia/nemotron-3-super-120b-a12b` is
+entitled, answered, and was still rejected — it replied in prose and one
+response was not JSON at all. It degraded safely to human review, which is the
+fallback working, but a route that reliably fails to emit JSON only buys
+latency.
+
+This is the same failure the Evidence Gate exists to catch, one layer down: a
+provider *claiming* a capability is not the same as the capability being there,
+and the only way to tell is to check it against the thing itself.
 
 ## Data
 
@@ -154,9 +186,10 @@ chosen for demo reliability over stack conformance.
 
 ## Secrets
 
-One class of secret: provider API keys (`GROQ_API_KEY`, `GEMINI_API_KEY`,
-`NVIDIA_API_KEY`, `OMNIROUTE_API_KEY`, `CEREBRAS_API_KEY`), each read from the
-environment and used for nothing but an investigator call. There are no Razorpay
+One class of secret: free-tier provider API keys (`GROQ_API_KEY`,
+`GEMINI_API_KEY`, `NVIDIA_API_KEY`, `OMNIROUTE_API_KEY`), each read from the
+environment and used for nothing but an investigator call. No paid API key is
+used anywhere. There are no Razorpay
 credentials, no database password and no payment-rail access, because no real
 money is ever moved. `.env` is gitignored, `.env.example` carries placeholders
 only. No key, token or credential is committed anywhere in this repository or

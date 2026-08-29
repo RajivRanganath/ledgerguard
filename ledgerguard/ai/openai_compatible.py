@@ -153,15 +153,31 @@ PRESETS: dict[str, dict] = {
     "nvidia": {
         "base_url": "https://integrate.api.nvidia.com/v1",
         "env": "NVIDIA_API_KEY",
-        # The meta/llama-* endpoints this originally used are end-of-life
-        # (HTTP 410 Gone). The replacements below exist in the account's model
-        # list but are not provisioned for the key in use ("Function ... Not
-        # found for account"), so NVIDIA sits at the tail of the chain and is
-        # retired after two failures. Left configured because the code path is
-        # correct and only the entitlement is missing.
+        # NVIDIA's /v1/models lists the whole public catalogue, not what the
+        # account may actually invoke: 36 of the 57 chat models it advertises
+        # return "Function ... Not found for account" on the first call. Both
+        # models this preset used before -- nvidia/llama-3.1-nemotron-70b-instruct
+        # and mistralai/mistral-large-2-instruct -- are in that unentitled set,
+        # which is why the provider looked dead while the key was fine.
+        #
+        # These two were picked by invoking every entitled model on the
+        # adversarial pair and keeping the ones that returned valid structured
+        # output and the correct verdict on both halves:
+        #   openai/gpt-oss-120b        18.6s, both halves correct
+        #   openai/gpt-oss-20b         29.3s, both halves correct
+        #   mistralai/mistral-nemotron 61.3s, both halves correct
+        # Rejected: nvidia/nemotron-3-super-120b-a12b (39.2s, replied in prose,
+        # one response was not JSON at all). It degraded safely to human review,
+        # which is the point of the fallback, but a route that reliably fails to
+        # emit JSON is latency for nothing.
+        #
+        # gpt-oss-120b is also Groq's first route. That is deliberate, not a
+        # duplicate: the same weights on a different host with a separate quota
+        # is exactly what a fallback link is for.
         "models": [
-            "nvidia/llama-3.1-nemotron-70b-instruct",
-            "mistralai/mistral-large-2-instruct",
+            "openai/gpt-oss-120b",
+            "openai/gpt-oss-20b",
+            "mistralai/mistral-nemotron",
         ],
         "json_schema": False,
     },
