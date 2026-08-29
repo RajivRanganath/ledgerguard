@@ -131,7 +131,7 @@ def main(argv: list[str] | None = None) -> int:
         "\"Closing would be correct\" is the counterfactual: if the case were closed",
         "at this point, would ground truth agree? Nothing here tunes the system.",
     ]
-    lines += table("The investigator's own request", request_buckets, "model asked to")
+    lines += table("The investigator's own request", request_buckets, "investigator asked to")
     lines += table("The Verification Score", score_buckets, "checks passed")
     lines += table("The gate's verdict", verdict_buckets, "verdict")
 

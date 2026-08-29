@@ -1,6 +1,13 @@
-anthropic>=1.0.0
+# Runtime
 fastapi>=0.115
+httpx>=0.27          # every OpenAI-compatible and Gemini provider, and the
+                     # OmniRoute reachability probe, call it directly
 pydantic>=2.9
-pytest>=8.0
-python-dotenv>=1.0
 uvicorn>=0.30
+
+# Only needed for `--provider anthropic`, which is outside the automatic chain.
+# The import is lazy, so the rest of the system runs without it.
+anthropic>=1.0.0
+
+# Tests
+pytest>=8.0

@@ -8,7 +8,7 @@ at this point, would ground truth agree? Nothing here tunes the system.
 
 ## The investigator's own request
 
-| model asked to | cases | closing would be correct | rate |
+| investigator asked to | cases | closing would be correct | rate |
 |---|---|---|---|
 | `resolve` | 26 | 20 | 76.9% |
 

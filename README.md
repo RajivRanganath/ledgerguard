@@ -392,17 +392,22 @@ credential is committed.
 
 ```
 ledgerguard/
-  ledger/       money.py  models.py  shadow_ledger.py  invariants.py
+  ledger/          money.py  models.py  shadow_ledger.py  invariants.py
   reconciliation/  matcher.py  exceptions.py
-  ai/           provider.py  investigator.py  schemas.py
-  evidence/     verifier.py  safety.py
-  synthetic/    generator.py  fault_injector.py  adversarial.py
-  evaluation/   baseline.py  benchmark.py  metrics.py  frozen/  outputs/
-  backend/      app.py
-  frontend/     index.html
-  tests/        test_p0_core.py
-  pipeline.py
-docs/           architecture.md  evaluation.md  limitations.md
+  ai/              provider.py  openai_compatible.py  fallback.py
+                   investigator.py  schemas.py
+  evidence/        verifier.py  safety.py
+  synthetic/       generator.py  fault_injector.py  adversarial.py  compound.py
+  evaluation/      baseline.py  benchmark.py  metrics.py  report.py
+                   ablation.py  calibration.py  replay.py  drift.py  scale.py
+                   cost.py  model_comparison.py  frozen/  outputs/
+  backend/         app.py
+  frontend/        index.html
+  tests/           test_p0_core.py  test_p1_extended.py  test_p1_compound.py
+                   test_p2_evaluation.py  rehearsal_check.py
+  pipeline.py      qa.py
+docs/              architecture.md  evaluation.md  limitations.md  analyses.md
+                   model_comparison.md  demo_script.md  panel_defense.md
 BUILD_STATUS.md
 ```
 

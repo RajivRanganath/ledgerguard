@@ -52,6 +52,15 @@ at all. Only the full system avoids all three.
 Run on the development split; the holdout is untouched, because a calibration
 curve fitted on the holdout would contaminate every other number here.
 
+The published table was produced with the **offline stub**, not a model —
+`calibration.md` names the investigator on its second line. That is deliberate:
+calibration needs many investigated cases per bucket, and the free-tier quotas
+that constrain every other analysis here would have given a handful. So read the
+numbers as a property of *this fixture under a deliberately naive investigator*,
+not as a measurement of any model's self-assessment. The shape of the result —
+a request to resolve is less reliable than a full evidence checklist — is the
+part that generalises; the specific rates are not.
+
 Two things are calibrated against the same ground truth: the investigator's own
 request to resolve, and the Verification Score. The gap between them is the
 argument for showing a checklist instead of a confidence number.
