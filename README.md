@@ -2,7 +2,6 @@
 
 **A self verifying AI finance controller.** Razorpay AI Buildathon, Track 04.
 
-**Start here:** [five-minute judge walkthrough and competition requirements](docs/submission_guide.md).
 The workflow is settlement reconciliation: inspect the source records, verify an
 ambiguous refund, and export the exceptions that still need a human.
 
@@ -14,6 +13,24 @@ in about two seconds — but how do you know whether that explanation is
 **The core claim: LLM reasoning is not financial truth. Financial truth is
 deterministic accounting state plus verified evidence. The AI may propose, the
 financial system must prove.**
+
+---
+
+## Where to verify each published requirement
+
+Track 04, AI Finance Controller, checked against the official Buildathon page.
+The official description does not mandate multiple agents, a particular frontend
+framework, or a Razorpay payment API integration. Synthetic settlement
+reconciliation is the chosen workflow, and no payment is ever initiated.
+
+| Published requirement | Where to verify it |
+|---|---|
+| One finance-operations loop | Dashboard: records → investigation → checks → disposition → exception report |
+| At least 50 synthetic records | 320 generated lifecycles; 85 held out and frozen for the benchmark |
+| Match rate | `evaluation/outputs/benchmark.json` — `baseline.match_rate`, `hybrid.match_rate` |
+| Throughput and measured accuracy | Same artifact; wall-clock figures include provider latency |
+| Exceptions that could not be resolved | Dashboard exception queue, and `evaluation/outputs/unresolved_exceptions.csv` |
+| Architecture | [`docs/architecture.md`](docs/architecture.md) |
 
 ---
 
@@ -290,8 +307,11 @@ With the server up, verify every beat of the demo before presenting:
 .venv/bin/python -m ledgerguard.tests.rehearsal_check
 ```
 
-It walks all five beats of [`docs/demo_script.md`](docs/demo_script.md) three
-times and fails if any of them regressed — including the adversarial case.
+It walks all five beats of the demo three times — clean reconciliation, a
+verified refund, the adversarial rejection, the benchmark, the unresolved list —
+and fails if any of them regressed. It asserts outcomes rather than paths, so a
+live model that answers differently does not produce a false alarm, but a beat
+that genuinely disappeared does.
 
 Or the pieces individually:
 
@@ -442,8 +462,7 @@ The model may choose the query; the number is always computed by code.
 
 ## Tests
 
-Run the suite for the current test count; historical checkpoint counts in
-`BUILD_STATUS.md` describe their respective revisions.
+Run the suite for the current count.
 
 ```bash
 .venv/bin/python -m pytest ledgerguard/tests -q
@@ -502,14 +521,13 @@ ledgerguard/
                    rehearsal_check.py
   pipeline.py      qa.py
 docs/              architecture.md  evaluation.md  limitations.md  analyses.md
-                   model_comparison.md  demo_script.md  panel_defense.md
-BUILD_STATUS.md
+                   model_comparison.md
 ```
 
-`docs/demo_script.md` is the timed five minute walkthrough;
-`docs/panel_defense.md` is the written defense of the design decisions.
-`BUILD_STATUS.md` records every checkpoint with the evidence that backs it,
-including two bugs found and fixed during evaluation.
+[`docs/architecture.md`](docs/architecture.md) is the sixty-second version of how
+the pieces fit; [`docs/evaluation.md`](docs/evaluation.md) is how every number
+was produced; [`docs/limitations.md`](docs/limitations.md) is what this does not
+establish, stated plainly.
 
 ---
 

@@ -52,8 +52,9 @@ than silently scoring against changed data.
 
 Manifests are keyed per `(seed, count)`. An earlier version used a single file,
 which meant running with a different `--count` silently overwrote the manifest an
-earlier result had been scored against. That was a real hole and is recorded in
-`BUILD_STATUS.md`.
+earlier result had been scored against — a result would then be reported against
+a holdout that no longer existed. That was a real hole, and keying the manifest
+by configuration is what closed it.
 
 No system was tuned using individual holdout answers.
 

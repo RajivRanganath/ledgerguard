@@ -1,8 +1,14 @@
 """Demo rehearsal check.
 
-Walks every beat of docs/demo_script.md against a live server and asserts the
-data each beat depends on is actually there. Run it before demoing; if a beat
-regresses, this fails instead of the demo.
+Walks every beat of the five minute walkthrough against a live server and
+asserts the data each beat depends on is actually there: a clean case that
+reconciles with no model call, an ambiguous refund the Evidence Gate verified,
+the adversarial pair, the benchmark comparison, and a non-empty unresolved list
+where every row explains itself.
+
+It asserts outcomes rather than paths, so a live investigator that answers
+differently from the last run does not raise a false alarm — but a beat that
+genuinely is not there fails here instead of in front of an audience.
 
     .venv/bin/python -m ledgerguard.tests.rehearsal_check
 """
