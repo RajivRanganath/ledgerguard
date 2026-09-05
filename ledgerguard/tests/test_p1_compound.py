@@ -28,7 +28,7 @@ def _run():
 
 def test_every_compound_case_reaches_its_designed_disposition():
     outcomes, cases = _run()
-    assert len(cases) == 5, "the brief asks for three to five compound cases"
+    assert len(cases) == 5, "three to five compound cases were planned"
 
     wrong = []
     for case in cases.values():

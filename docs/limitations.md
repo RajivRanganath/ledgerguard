@@ -192,7 +192,7 @@ ceiling.
   Two reasons, both true: no Razorpay Test Mode credentials were available, and
   it was a P1 item gated on P0 being stable that stayed behind more valuable
   work. Track 04 asks only for a synthetic batch of 50+ records, which is
-  satisfied, and section 2 of the build brief permits skipping it. No Razorpay
+  satisfied, and it was a P1 item I chose to cut. No Razorpay
   API behaviour, endpoint or response shape is claimed or simulated anywhere in
   this repository.
 - **No production data, no live API calls, no real financial transfers of any
