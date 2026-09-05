@@ -14,6 +14,18 @@ in about two seconds — but how do you know whether that explanation is
 deterministic accounting state plus verified evidence. The AI may propose, the
 financial system must prove.**
 
+## Quick start
+
+```bash
+git clone https://github.com/RajivRanganath/ledgerguard.git && cd ledgerguard
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+./run_demo.sh          # tests, then benchmark, then http://127.0.0.1:8137
+```
+
+**No API key is needed.** Without one the AI investigation step degrades to an
+offline stand-in and says so on the page; the deterministic engine, Shadow
+Ledger, Evidence Gate, benchmark and dashboard all run unchanged.
+
 ---
 
 ## Where to verify each published requirement
