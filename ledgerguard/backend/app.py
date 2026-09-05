@@ -8,12 +8,14 @@ path -- the dashboard is a window onto a real run, not a separate story.
 from __future__ import annotations
 
 import json
+import hashlib
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, Response
 
 from ..ai.provider import HeuristicProvider, get_provider
 from ..evaluation.benchmark import batch_digest
@@ -40,8 +42,18 @@ app.add_middleware(
 )
 
 
-@lru_cache(maxsize=1)
+_state_lock = Lock()
+
+
 def _state() -> dict:
+    # lru_cache alone permits duplicate computations on concurrent cache misses.
+    # Serialize initialization so a second browser/health request shares the run.
+    with _state_lock:
+        return _cached_state()
+
+
+@lru_cache(maxsize=1)
+def _cached_state() -> dict:
     """Run the controller once, on the frozen holdout, and cache the result."""
     full = build_dataset()
     _dev, holdout = split(full)
@@ -304,6 +316,26 @@ def _pick_demo_cases(cases: list[dict]) -> list[str]:
 @app.get("/api/state")
 def api_state() -> dict:
     return _state()
+
+
+@app.get("/api/evidence-download")
+def api_evidence_download() -> Response:
+    """Export the exact cached dashboard run, never rerun an investigator.
+
+    The digest identifies these bytes; it is not a signature or certification.
+    This is the same synthetic, scoring-labelled data exposed by /api/state.
+    """
+    payload = json.dumps(_state(), sort_keys=True, indent=2, ensure_ascii=False).encode("utf-8")
+    digest = hashlib.sha256(payload).hexdigest()
+    return Response(
+        content=payload,
+        media_type="application/json",
+        headers={
+            "Content-Disposition": f'attachment; filename="ledgerguard-evidence-{digest[:16]}.json"',
+            "X-Content-SHA256": digest,
+            "Cache-Control": "no-store",
+        },
+    )
 
 
 @app.get("/api/cases/{case_id}")

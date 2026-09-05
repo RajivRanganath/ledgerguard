@@ -2,6 +2,10 @@
 
 **A self verifying AI finance controller.** Razorpay AI Buildathon, Track 04.
 
+**Start here:** [five-minute judge walkthrough and competition requirements](docs/submission_guide.md).
+The workflow is settlement reconciliation: inspect the source records, verify an
+ambiguous refund, and export the exceptions that still need a human.
+
 I built LedgerGuard to answer a question that a reconciliation chatbot does not
 answer: an LLM can generate a plausible explanation for a financial discrepancy
 in about two seconds — but how do you know whether that explanation is
@@ -33,8 +37,8 @@ LedgerGuard reconciles orders, payments, refunds, settlements and bank records.
 3. **The AI investigator only sees what could not be proved.** It gets the
    records, the Shadow Ledger's expected value, the discrepancy, the permitted
    hypothesis taxonomy, and candidate related records. It returns structured
-   JSON only. It cannot do arithmetic, cannot edit a record, cannot touch the
-   ledger, and cannot close a case.
+   JSON only. It is instructed not to calculate money; its prose is not used for
+   monetary computation. It has no record-editing or case-closing tools.
 
 4. **The Evidence Gate re-proves every claim.** If the model says a shortfall is
    a partial refund, the gate checks whether that refund exists, whether it is
@@ -70,7 +74,11 @@ suggested human action.
 
 ---
 
-## What the benchmark actually showed
+## Recorded benchmark result
+
+The tables below describe the saved evaluation artifacts. They are historical
+samples, not a guarantee of current model availability or rerun accuracy. The
+dashboard computes a fresh run and displays its own values.
 
 Frozen holdout, 85 lifecycles, seed `20260905`, batch SHA-256 `3e28d4572d4cfc95`.
 Investigator: the default chain `fallback(groq->gemini->nvidia->omniroute)`, run
@@ -260,7 +268,8 @@ is not entitled to invoke, and models that answer in prose instead of JSON.
 
 Failover changes **who gets asked**, never what counts as proof. The Evidence
 Gate re-derives every hypothesis from records regardless of which provider
-answered, so a weaker fallback can cost recall but cannot cost safety.
+answered. This preserves the verification policy across providers; correctness
+still depends on the implemented checks and the data they receive.
 `python -m ledgerguard.evaluation.benchmark --provider fallback` prints exactly
 who served what and which routes died.
 
@@ -390,6 +399,8 @@ Handled without crashing the batch, each covered by a test:
 | No API key | Offline stand-in; provider named in every report |
 | Provider unavailable / times out / returns an error | That case → `HUMAN_REVIEW_REQUIRED`, batch continues |
 | Provider raises instead of returning | Caught in the pipeline, same degradation |
+| Provider *returns* something that is not a result | Type-checked and rejected before use; batch continues |
+| Two records share an id but disagree on content | Escalated as a conflict, never collapsed as a duplicate |
 | Malformed or unparseable model JSON | `InvestigationResult.invalid` → abstain |
 | Rate limit (429) or transient 5xx | Retried up to 4x honouring `Retry-After`, then abstains |
 | Truncated response (reasoning tokens ate the budget) | Fails JSON validation → abstain |
@@ -431,7 +442,8 @@ The model may choose the query; the number is always computed by code.
 
 ## Tests
 
-48 tests, in four tiers.
+Run the suite for the current test count; historical checkpoint counts in
+`BUILD_STATUS.md` describe their respective revisions.
 
 ```bash
 .venv/bin/python -m pytest ledgerguard/tests -q
@@ -476,7 +488,7 @@ ledgerguard/
   ledger/          money.py  models.py  shadow_ledger.py  invariants.py
   reconciliation/  matcher.py  exceptions.py
   ai/              provider.py  openai_compatible.py  fallback.py
-                   investigator.py  schemas.py
+                   investigator.py  schemas.py  errors.py
   evidence/        verifier.py  safety.py
   synthetic/       generator.py  fault_injector.py  adversarial.py  compound.py
   evaluation/      baseline.py  benchmark.py  metrics.py  report.py
@@ -485,7 +497,9 @@ ledgerguard/
   backend/         app.py
   frontend/        index.html
   tests/           test_p0_core.py  test_p1_extended.py  test_p1_compound.py
-                   test_p2_evaluation.py  rehearsal_check.py
+                   test_p2_evaluation.py  test_fallback.py
+                   test_dashboard_startup.py  test_evidence_download.py
+                   rehearsal_check.py
   pipeline.py      qa.py
 docs/              architecture.md  evaluation.md  limitations.md  analyses.md
                    model_comparison.md  demo_script.md  panel_defense.md

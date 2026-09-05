@@ -71,7 +71,7 @@ Verified, not assumed:
 These guarantees cover the **dataset and the deterministic layer**, and they
 hold with `--provider stub` or `--provider none`. They do **not** extend to a
 model run: five `groq` runs on the identical holdout resolved between 5 and 7
-of the 9 F3 cases at `temperature: 0`. The safety figures were stable across all three
+of the 9 F3 cases at `temperature: 0`. The historical notes report stable safety across all five
 (0 false auto resolutions, INR 0.00 falsely closed, all 6 F6 escalated); the
 variance is confined to how much is safely closed. Report the range, not the
 best run.
@@ -123,14 +123,33 @@ two F3 cases the model left open are *unnecessary abstentions* — safe, but a
 missed opportunity, counted separately from correct abstentions so the cost of
 caution stays visible.
 
-The F6 row is where the architecture is actually tested. `gpt-oss-120b` proposed
-a resolvable hypothesis and asked to resolve on **6 of 6** of those cases. All
-six were rejected by the gate on linkage. Without the gate, that column reads six
-false auto resolutions. The deliberately naive offline stub also asked to resolve
-6 of 6, and was also rejected 6 of 6 — the gate's behaviour did not depend on
-which investigator was wrong.
+The F6 row is where the architecture is actually tested. In this committed run,
+`gpt-oss-120b` proposed `unlinked_partial_refund` on five of the six cases and
+asked to resolve on **four** of them; the gate positively disproved **five** on
+linkage. On the sixth it returned `insufficient_evidence` and declined the case
+on its own — the right answer, arrived at without help. Per-case detail is in
+`outputs/cases.json`; count it yourself rather than taking this paragraph's word
+for it.
 
-See `docs/model_comparison.md` for the four-investigator table.
+Two things follow, and they pull in opposite directions, which is why both are
+here. The model is capable of getting this right. It is not *reliably* capable:
+the same model on the hand-built adversarial fixture, and the same model in
+other runs, asks to close cases it should not. The deliberately naive offline
+stub asked to resolve 6 of 6 and was rejected 6 of 6. Nothing in the model's
+output distinguishes the case it declined from the four it wanted closed — that
+indistinguishability is the entire argument for the gate.
+
+Without the gate, that column reads four false auto resolutions for this run.
+Across all five investigators it reads 25 of 30; see
+`outputs/no_gate_ablation.md`.
+
+**These per-run counts move.** Model output is not reproducible, so the number
+asked to close is a sample and will differ on a rerun. What has not moved in any
+recorded run: false auto resolutions 0, value falsely closed INR 0.00, all six
+F6 cases escalated.
+
+See `docs/model_comparison.md` for the five-investigator table, where
+`gpt-oss-20b` via Groq did ask to close 6 of 6.
 
 ## Compound failure cases
 
@@ -202,6 +221,16 @@ It does **not** demonstrate that the fault taxonomy is deep. Three honest caveat
 | `outputs/reconciliation_report.csv` | one row per case, from that same report run |
 | `outputs/evidence_ledger.csv` | one row per evidence check, from that same report run |
 | `frozen/holdout_20260905_320.json` | the frozen holdout manifest |
+
+One stale field, recorded rather than hand-corrected: `benchmark.json`'s
+`investigator_chain.chain` names `nvidia/llama-3.1-nemotron-70b-instruct`, a
+route the NVIDIA preset no longer carries (see the comment in
+`ai/openai_compatible.py` — it was in the set this account is not entitled to
+invoke, and was replaced). The chain list describes the chain as it stood when
+that run was made. It did not affect the run: `served_by` shows Groq answered
+all 15 investigations, and no NVIDIA route was ever reached. Artifacts are not
+edited by hand here, so it stays as recorded until the benchmark is next
+regenerated.
 
 The benchmark artifacts and the report artifacts are produced by two different
 commands and therefore two different live runs. Each names its investigator on

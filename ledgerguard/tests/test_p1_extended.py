@@ -97,6 +97,77 @@ def test_find_duplicates_distinguishes_id_from_content_duplication():
     assert not find_duplicates(Batch(bank_entries=[entry, other])).bank_signatures
 
 
+def test_a_shared_id_with_different_content_is_a_conflict_not_a_duplicate():
+    """The claim "proven by identifier AND content match" has to be true.
+
+    Two rows carrying one payment_id but disagreeing on the amount are not a
+    re-ingestion, they are two contradictory versions of one payment. Closing
+    that as a duplicate would suppress a row on the strength of a content check
+    that failed -- an unproven auto close on the deterministic path, which is
+    the exact failure the whole system exists to prevent.
+    """
+    dataset = build_dataset()
+    _dev, holdout = split(dataset)
+    batch = holdout.batch()
+
+    clean = next(
+        p for p in batch.payments
+        if holdout.fault_class_by_payment()[p.payment_id] == FaultClass.NONE
+    )
+    conflicting = clean.model_copy(update={"amount": clean.amount * 3})
+    tampered = batch.model_copy(
+        update={"payments": list(batch.payments) + [conflicting]}
+    )
+
+    dup = find_duplicates(tampered)
+    assert clean.payment_id in dup.payment_conflicts
+    assert clean.payment_id not in dup.payment_ids, "a conflict is not a duplicate"
+
+    outcome = next(
+        o for o in run(tampered, use_ai=False).outcomes
+        if o.case.payment_id == clean.payment_id
+    )
+    assert outcome.state == HUMAN_REVIEW_REQUIRED
+    assert outcome.decision.missing_evidence, "the human must be told what is missing"
+    assert "disagree on content" in outcome.decision.reason
+
+    # An exact re-ingestion of the same row is still provable, and still closes.
+    exact = batch.model_copy(update={"payments": list(batch.payments) + [clean]})
+    dup_exact = find_duplicates(exact)
+    assert clean.payment_id in dup_exact.payment_ids
+    assert not dup_exact.payment_conflicts
+    closed = next(
+        o for o in run(exact, use_ai=False).outcomes
+        if o.case.payment_id == clean.payment_id
+    )
+    assert closed.state == AUTO_RESOLVED
+
+
+def test_two_settlements_that_disagree_are_never_collapsed_into_one():
+    """Same payment, two settlements, different nets. Which is real is unproven."""
+    dataset = build_dataset()
+    _dev, holdout = split(dataset)
+    batch = holdout.batch()
+
+    original = batch.settlements[0]
+    rival = original.model_copy(
+        update={
+            "settlement_id": original.settlement_id + "X",
+            "net_amount": original.net_amount - 5000,
+        }
+    )
+    tampered = batch.model_copy(
+        update={"settlements": list(batch.settlements) + [rival]}
+    )
+
+    outcome = next(
+        o for o in run(tampered, use_ai=False).outcomes
+        if o.case.payment_id == original.payment_ids[0]
+    )
+    assert outcome.case.exception.evidence["content_conflict"] == "settlement"
+    assert outcome.state == HUMAN_REVIEW_REQUIRED
+
+
 # --------------------------------------------------------- delayed settlement
 def test_delayed_settlement_is_timing_only_and_never_an_amount_exception():
     dataset = build_dataset()
@@ -264,6 +335,40 @@ def test_connection_failure_is_reported_as_transport_not_as_bad_output():
     assert "transport error" in result.error
 
 
+@pytest.mark.parametrize(
+    "returned",
+    [
+        {"hypothesis": "unlinked_partial_refund", "recommended_action": "resolve"},
+        "unlinked_partial_refund",
+        None,
+    ],
+    ids=["dict", "string", "none"],
+)
+def test_a_provider_returning_the_wrong_type_cannot_take_down_the_batch(returned):
+    """A provider that *returns* garbage, rather than raising it.
+
+    The chain type-checks its members, but a single provider selected directly
+    (`LEDGERGUARD_PROVIDER=groq`) does not go through the chain. Without a guard
+    the admissibility filter dereferences whatever came back and the whole run
+    dies -- the one thing no provider is allowed to do to the batch.
+    """
+    from ledgerguard.synthetic.adversarial import build_adversarial_batch
+
+    class WrongType:
+        name = "wrong_type"
+
+        def investigate(self, context):
+            return returned
+
+    report = run(build_adversarial_batch(), use_ai=True, provider=WrongType())
+
+    assert len(report.outcomes) == 2, "the batch must still complete"
+    for outcome in report.outcomes:
+        assert outcome.investigation.result.source == "unavailable"
+        assert "expected InvestigationResult" in outcome.investigation.result.error
+        assert outcome.decision.state == HUMAN_REVIEW_REQUIRED
+
+
 # --------------------------------------------------------------- missing fields
 def test_malformed_records_fail_loudly_at_ingestion():
     with pytest.raises(ValidationError):
@@ -421,7 +526,7 @@ def test_a_broken_provider_is_reported_not_silently_dropped():
     def _boom(kind: str):
         if kind == "groq":
             raise AttributeError("simulated defect")
-        raise ValueError(f"{kind} is not configured")
+        raise prov.ProviderNotConfigured(f"{kind} is not configured")
 
     original = prov._build
     try:

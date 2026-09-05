@@ -26,7 +26,8 @@ SERVER_PID=$!
 trap 'kill $SERVER_PID 2>/dev/null' EXIT
 
 # The server runs the controller once at startup. With a live investigator that
-# is ~15 sequential model calls, so warm it before announcing readiness rather
+# is ~17 sequential model calls (15 holdout exceptions plus the adversarial
+# pair), so warm it before announcing readiness rather
 # than letting the first page load block for minutes mid-demo.
 echo "Warming up (this runs the controller once; with a live model it takes a few minutes)..."
 until curl -sf http://127.0.0.1:8137/api/health >/dev/null 2>&1; do

@@ -25,6 +25,7 @@ import time
 import httpx
 
 from ..reconciliation.exceptions import PERMITTED_HYPOTHESES
+from .errors import ProviderNotConfigured
 from .schemas import InvestigationResult, InvestigatorOutput
 
 DEFAULT_TIMEOUT_SECONDS = 60.0
@@ -284,7 +285,7 @@ class OpenAICompatibleProvider:
         #: only way a latency figure or a "second run" claim stays honest.
         self.cache_hits = 0
         if not (self.base_url and self.api_key and self.models):
-            raise ValueError(f"provider {preset!r} is not fully configured")
+            raise ProviderNotConfigured(f"provider {preset!r} is not fully configured")
         self._client = httpx.Client(timeout=timeout)
 
     @property
@@ -554,7 +555,7 @@ class GeminiProvider:
     ) -> None:
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY", "")
         if not self.api_key:
-            raise ValueError("GEMINI_API_KEY is not set")
+            raise ProviderNotConfigured("GEMINI_API_KEY is not set")
         self.model = model
         self.timeout = timeout
         self.max_tokens = max_tokens

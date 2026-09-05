@@ -90,6 +90,17 @@ case per captured payment: no settlement → `MISSING_SETTLEMENT`; more than one
 `DUPLICATE_RECORD`; otherwise run all six invariants and map the failures to a
 specific exception type, most severe first.
 
+The duplicate pre-pass compares **content, not just identifiers**. Two rows
+sharing a `payment_id` are only a duplicate when every other field agrees; if
+they disagree they are two contradictory versions of one payment, which the
+batch cannot adjudicate, and the case is escalated rather than collapsed. The
+same rule applies to settlements. Bank entries carry no identifier that survives
+the trip between systems, so they are matched on content alone. The distinction
+matters because `DUPLICATE_RECORD` is one of only three exception types the
+safety gate closes without a human — it closes on the strength of the copies
+being the same record, so "the same record" has to be something that was
+actually checked.
+
 `exceptions.py` splits the taxonomy into `DETERMINISTICALLY_PROVEN` (never
 reaches the model) and `NEEDS_INVESTIGATION`. On the frozen holdout, 16 of the
 31 exceptions are proven outright and never cost a model call.
@@ -99,7 +110,17 @@ reaches the model) and `NEEDS_INVESTIGATION`. On the frozen holdout, 16 of the
 (`ai/provider.py`) is the entire surface the rest of the system depends on, so
 the controller is model independent. `investigate_case(ledger, case, provider)`
 in `ai/investigator.py` is the only caller: it builds the context, enforces the
-timeout, and strips any evidence id the model did not receive as a candidate.
+timeout, type-checks whatever comes back, and strips any evidence id the model
+did not receive as a candidate. A provider that raises, and a provider that
+returns the wrong type, both become `unavailable` rather than an exception the
+batch has to survive.
+
+`ai/errors.py` carries one distinction the chain builder depends on:
+`ProviderNotConfigured` means "no key, or the endpoint is not reachable", which
+is a documented way to run on a subset and stays silent. Every other
+construction failure is a defect, is recorded in `CHAIN_BUILD_ERRORS`, and is
+announced on stderr — a run that silently used two providers when four were
+configured is not the run it claims to be.
 
 The wire schema (`InvestigatorOutput`) is separate from the runtime type
 (`InvestigationResult`) so the runtime-only fields — `source`, `model_name`,
@@ -179,6 +200,15 @@ Maps a verification outcome onto four states. `AUTO_RESOLVED` requires every
 check to pass, the ledger to balance, and the investigator to have asked for
 resolution. `REJECTED` and `UNVERIFIED` both escalate.
 
+Three guards sit ahead of the deterministic close, each for the same reason — a
+proven cause is not a fully explained case:
+
+| Guard | Refuses to close when |
+|---|---|
+| `residual_paise` | correcting the proven fee variance still leaves money unattributed |
+| `window_undecidable` | there is no capture timestamp, so the timing check never ran |
+| `content_conflict` | the "duplicate" rows disagree, so no content match was proved |
+
 Note that `MISSING_SETTLEMENT` escalates even though it is fully proven: the
 cause is known, but closing it is not within the system's authority. Proof and
 authority are separate questions.
@@ -194,7 +224,11 @@ makes the comparison fair.
   investigator, one deterministic engine, one independent gate. A verification
   agent would be a second model asked to grade the first; the gate re-derives
   from records instead, which is strictly stronger.
-- **No calibrated confidence.** A Verification Score is a count of named checks.
-  Empirical calibration was out of scope and is listed as such.
+- **No calibrated confidence.** A Verification Score is a count of named checks,
+  and that is what the user is shown. Calibration was later *measured*
+  (`evaluation/calibration.py`, on the dev split under the offline stub) to ask
+  whether the score means anything, but nothing in the system is tuned from it
+  and no threshold is derived from it. Measuring a score is not the same as
+  turning it into a probability, and the score is never rendered as one.
 - **No database.** SQLite would add a persistence layer nothing in the demo
   needs; the controller is a pure function of a batch.

@@ -47,8 +47,8 @@ tops the table, headline accuracy on this data is close to meaningless — which
 why false auto resolutions and rupee exposure are the reported headline instead.
 
 **Cost was not measured.** All providers used here were free tiers, which is
-also why the latency figures (p50 10.8s, p95 19.7s, with rate-limit retries
-included) are not representative of a paid tier. No cost-per-100-records figure
+also why the latency figures (p50 10.8s, p95 12.8s in the committed benchmark,
+with rate-limit retries included) are not representative of a paid tier. No cost-per-100-records figure
 is claimed.
 
 **Free tiers only, by design — so no paid frontier model is measured here.**
@@ -181,9 +181,9 @@ ceiling.
   ablation and measured on 40 of 85 cases; see the P2 section above for what it
   does and does not settle.
 - **The two throughput figures measure different things.** The rules-only column
-  (~25,000 cases/s) is the deterministic engine with no network call. The hybrid
-  column (0.6 cases/s) is dominated entirely by 15 sequential model calls on a
-  rate-limited free tier. Neither is a production throughput number, and the
+  (22,395 cases/s in the committed run) is the deterministic engine with no
+  network call. The hybrid column (0.7 cases/s) is dominated entirely by 15
+  sequential model calls on a rate-limited free tier. Neither is a production throughput number, and the
   investigations are not batched or parallelised.
 
 ## Integration

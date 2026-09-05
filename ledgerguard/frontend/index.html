@@ -121,6 +121,8 @@
              font-variant-numeric: var(--num); white-space: nowrap;
              overflow: hidden; text-overflow: ellipsis; }
   .stat .v.good { color: var(--ok); } .stat .v.warn { color: var(--warn); }
+  .stat .statnote { color: var(--muted); font-size: 10.5px; line-height: 1.35;
+                    margin-top: 5px; }
 
   /* ---- tables ------------------------------------------------------------ */
   table { border-collapse: collapse; width: 100%; font-size: 13px; }
@@ -251,6 +253,67 @@
   .sk-card { height: 92px; }
   .sk-line { height: 12px; margin-bottom: 9px; }
   .sk-big { height: 340px; }
+  /* Presentation layer only: no remote assets or changes to financial state. */
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  :root { --bg:#f2f5fa; --muted:#596782; --muted-2:#65728b; --r:16px; }
+  .wrap { max-width:1360px; padding:0 32px 64px; }
+  .masthead { padding:24px 0; }
+  .logo { border-radius:12px; width:44px; height:44px; line-height:44px; }
+  .nav { position:sticky; top:0; z-index:10; display:flex; gap:6px; padding:10px;
+    background:rgba(255,255,255,.95); backdrop-filter:blur(16px); border:1px solid var(--line);
+    border-radius:14px; margin:0 0 24px; box-shadow:0 8px 28px #10204a08; overflow:auto; }
+  .nav a { padding:7px 15px; border-radius:8px; white-space:nowrap; text-decoration:none; color:var(--muted); font-size:12px; font-weight:650; }
+  .nav a:hover,.nav a:focus-visible { background:var(--tint); color:var(--accent-dk); }
+  :focus-visible { outline:3px solid #3395ff; outline-offset:4px; }
+  .hero { position:relative; overflow:hidden; display:grid; grid-template-columns:1.1fr 1fr; gap:40px;
+    padding:44px; margin-bottom:24px; border-radius:22px; color:#fff;
+    background:radial-gradient(ellipse at 95% 0%,#244d8b,transparent 65%),#101f40; }
+  .eyebrow { font:650 10px/1.5 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:#99bcff; }
+  .hero h2 { display:block; color:white; font-size:clamp(30px,3.4vw,48px); text-transform:none; letter-spacing:-.045em; line-height:1.12; margin:16px 0; font-weight:650; }
+  .hero h2::before { display:none; }
+  .hero p { color:#bdcbe3; max-width:48ch; font-size:14px; }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+  .btn { cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 17px; border:1px solid var(--line); border-radius:9px;
+    background:white; color:var(--navy); font:650 12px var(--sans); text-decoration:none; transition:transform .2s,box-shadow .2s,background .2s; }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px #0002; }
+  .btn.primary { background:#458fff; border-color:#458fff; color:white; }
+  .hero .btn.secondary { background:#ffffff0a; color:#e2ecff; border-color:#ffffff30; }
+  .proof { background:#07142b70; border:1px solid #ffffff20; border-radius:16px; padding:22px; align-self:center; }
+  .proof-head { display:flex; justify-content:space-between; gap:12px; color:#cbd9ee; font:11px var(--mono); }
+  .proof-row { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 0; border-bottom:1px solid #ffffff15; }
+  .proof-row small { color:#9eb1cf; display:block; font-size:11px; }
+  .proof-row strong { font-size:14px; font-weight:550; }
+  .proof-row b { font:13px var(--mono); color:#a9caff; }
+  .proof-foot { color:#a9caff; font-size:12px; padding-top:16px; }
+  .proof-row { animation:rise .55s var(--ease) both; }
+  .proof-row:nth-child(2) { animation-delay:.12s; }
+  .proof-row:nth-child(3) { animation-delay:.24s; }
+  .proof-row:nth-child(4) { animation-delay:.36s; }
+  .stat { padding:21px; box-shadow:0 4px 18px #10204a04; }
+  .stat .v { font-size:26px; }
+  .stat::after { top:auto; bottom:0; height:2px; }
+  section { margin-bottom:36px; }
+  .tour { margin-bottom:32px; padding:26px; }
+  .tour-top { display:flex; justify-content:space-between; gap:20px; align-items:center; flex-wrap:wrap; }
+  .tour-top p { margin:4px 0 0; font-size:12px; color:var(--muted); }
+  .steps { display:flex; gap:8px; margin:22px 0; }
+  .step { flex:1; border:1px solid var(--line); background:var(--bg-2); border-radius:10px; text-align:left; padding:12px; cursor:pointer; color:var(--muted); font:600 12px var(--sans); }
+  .step[aria-current="step"] { color:var(--accent-dk); border-color:var(--accent); background:var(--tint); }
+  .tour-result { min-height:145px; }
+  .tour-result > div { animation:rise .35s var(--ease) both; }
+  .tour-result .check { border:1px solid var(--line); border-radius:9px; }
+  .tour-result .check.fail { border-color:#f7d2ce; }
+  .tour-result h3 { margin:0 0 8px; font-size:19px; letter-spacing:-.025em; }
+  .tour-result p { color:var(--muted); margin:8px 0; max-width:85ch; }
+  .caseitem { width:100%; text-align:left; font:inherit; background:transparent; border:0; border-bottom:1px solid var(--line); }
+  .detail,.box,.explorer { min-width:0; }
+  .case-tools { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+  .case-tools input { padding:11px 14px; border:1px solid var(--line-2); border-radius:9px; font:inherit; min-width:0; width:min(100%,360px); }
+  .case-tools span { color:var(--muted); font-size:12px; }
+  .caseitem[hidden] { display:none; }
+  .kv span { overflow-wrap:anywhere; min-width:0; }
+  @media(max-width:900px) { .hero { grid-template-columns:1fr; gap:24px; padding:28px; } }
+  @media(max-width:540px) { .wrap { padding:0 14px 40px; } .hero { padding:24px; } .steps { flex-wrap:wrap; } .step { flex-basis:40%; } .tour { padding:18px; } .stat .v { font-size:24px; } .detail { padding:16px; } }
 </style>
 </head>
 <body>
@@ -279,8 +342,21 @@ let STATE = null, SELECTED = null;
 const SHORT = { MATCHED: 'matched', AUTO_RESOLVED: 'auto', RECOMMEND_REVIEW: 'confirm',
                 HUMAN_REVIEW_REQUIRED: 'review', UNRESOLVED: 'open' };
 
-function stat(k, v, cls) {
-  return `<div class="card stat"><div class="k">${esc(k)}</div><div class="v ${cls||''}">${esc(v)}</div></div>`;
+function stat(k, v, cls, note) {
+  return `<div class="card stat"><div class="k">${esc(k)}</div><div class="v ${cls||''}">${esc(v)}</div>${
+    note ? `<div class="statnote">${esc(note)}</div>` : ''}</div>`;
+}
+
+// End-to-end wall clock for this run. It is dominated by whichever side is
+// slower, and those differ by four orders of magnitude: with no model the
+// deterministic engine runs at tens of thousands of cases a second, and with a
+// live investigator the number is sequential model calls on a free tier.
+// Neither is a production throughput figure, so the tile says which one it is
+// rather than leaving a bare number to be misread.
+function throughputNote(s) {
+  return s.overview.investigations && s.provider_is_model
+    ? `${s.overview.investigations} sequential model calls, free tier`
+    : 'deterministic path; no model calls in this run';
 }
 
 function overview(s) {
@@ -300,9 +376,19 @@ function overview(s) {
         <span class="pill mono">${esc(s.provider)}</span>
       </div>
     </header>
-    <p class="lede">Deterministic reconciliation and an independent Shadow Ledger do the proving;
-      AI investigates only what could not be proved; every AI hypothesis has to pass an Evidence
-      Gate before a case can be closed.</p>
+    <div class="hero">
+      <div><div class="eyebrow">Finance operations / evidence-first reconciliation</div>
+        <h2>Every rupee accounted for.<br>Every decision explained.</h2>
+        <p>AI investigates the ambiguity. Independent checks decide what can close. Your team gets the exceptions that still need a human.</p>
+        <div class="actions"><a class="btn primary" href="#walkthrough">Explore the evidence <span aria-hidden="true">↗</span></a><a class="btn secondary" href="#exceptions">View exception queue</a></div>
+      </div>
+      <div class="proof"><div class="proof-head"><span>CONTROLLER / THIS RUN</span><span>Synthetic holdout</span></div>
+        <div class="proof-row"><div><small>01 / RECONCILE</small><strong>Expected vs. observed</strong></div><b>${esc(o.records_processed)} records</b></div>
+        <div class="proof-row"><div><small>02 / VERIFY</small><strong>Evidence before closure</strong></div><b>${esc(o.auto_resolved)} auto resolved</b></div>
+        <div class="proof-row"><div><small>03 / HAND OFF</small><strong>Keep uncertainty visible</strong></div><b>${esc(o.unresolved)} for review</b></div>
+        <div class="proof-foot">Reconciliation decisions only. No money is moved.</div>
+      </div>
+    </div>
     ${s.provider_is_model ? '' : `<div class="banner" style="margin-bottom:16px">
       Investigator: <code>${esc(s.provider)}</code> — the offline stand-in, not a model.
       It is deliberately naive (it matches on amount and asks to resolve), so the Evidence Gate
@@ -317,7 +403,7 @@ function overview(s) {
       ${stat('Sent to human', o.unresolved, 'warn')}
       ${stat('Unresolved value', inr(o.unresolved_value_inr), 'warn')}
       ${stat('False auto resolutions', o.false_auto_resolutions, o.false_auto_resolutions === 0 ? 'good' : 'warn')}
-      ${stat('Throughput', o.throughput_per_second + '/s')}
+      ${stat('Throughput', o.throughput_per_second + '/s', '', throughputNote(s))}
     </div>
   </section>`;
 }
@@ -384,7 +470,7 @@ function investigationBox(c) {
     ${i.controller_note ? `<div style="margin-top:9px;font-size:12px;color:var(--bad)">
       Controller flagged this response: ${esc(i.controller_note)}</div>` : ""}
     <div class="neutral" style="margin-top:9px;font-size:12px">The investigator proposes. It cannot
-      do arithmetic, edit a record, or close a case.</div></div>`;
+      supply trusted arithmetic, edit a record, or close a case.</div></div>`;
 }
 
 function gateBox(c) {
@@ -441,14 +527,15 @@ function explorer(s) {
     if (ra !== rb) return ra - rb;
     return a.case_id.localeCompare(b.case_id);
   });
-  const items = ordered.map(c => `<div class="caseitem" data-id="${esc(c.case_id)}">
+  const items = ordered.map(c => `<button type="button" class="caseitem" data-id="${esc(c.case_id)}">
       <div><div class="id">${esc(c.case_id)}</div>
            <div class="fc">${demo.has(c.case_id) ? '★ ' : ''}${esc(c.fault_class)}</div></div>
-      <span class="tag ${esc(c.state)}">${esc(SHORT[c.state] || c.state)}</span></div>`).join('');
+      <span class="tag ${esc(c.state)}">${esc(SHORT[c.state] || c.state)}</span></button>`).join('');
   return `<section><h2>Case explorer</h2>
     <p class="lede">Starred cases are the prepared demo path: a clean reconciliation, a fee
       mismatch the arithmetic proves outright, an ambiguous refund the Evidence Gate verifies,
       the wrong-linkage case it rejects, and a missing settlement nobody can close.</p>
+    <div class="case-tools"><label for="case-search">Find a case</label><input id="case-search" type="search" placeholder="Payment ID, fault or status…" aria-controls="caselist"><span id="case-count" role="status">${s.cases.length} of ${s.cases.length} cases</span></div>
     <div class="explorer">
       <div class="card caselist" id="caselist">${items}</div>
       <div class="card detail" id="detail"></div>
@@ -581,20 +668,21 @@ function benchmark(s) {
         <td class="num ${r[3]==='win'?'win':''}">${esc(r[2])}</td></tr>`).join('')}</tbody>
     </table></div>
     ${perFaultChart(s)}
-    <p class="lede" style="margin-top:12px">The hybrid closes the ambiguous refund cases the
-      baseline had to escalate, and gives up none of the baseline's safety: false auto
-      resolutions stay at zero and every wrong-linkage case stays escalated.</p>
+    <p class="lede" style="margin-top:12px">This run records ${esc(s.benchmark.hybrid.false_auto_resolutions)} false automatic closures.
+      The table shows where investigation changed the final disposition compared with rules alone.
+      These synthetic results do not establish production safety or model uplift over a heuristic.</p>
     ${s.provider_is_model ? `<p class="lede">These figures come from <em>this server's own run</em>
       at startup. Model output is not reproducible — repeated runs on the identical frozen holdout
       resolve different numbers of ambiguous cases, so this table will not match
-      <code>evaluation/outputs/benchmark.md</code> figure for figure. What does not move between
-      runs: false auto resolutions stay at zero, and every wrong-linkage case stays escalated. The
-      deterministic layer is the reproducible part; the model only moves recall.</p>` : ''}
+      <code>evaluation/outputs/benchmark.md</code> figure for figure. The checks are deterministic,
+      but their correctness and coverage still need validation. Inspect false closures and
+      unresolved cases in each run; a past zero is not a guarantee.</p>` : ''}
   </section>`;
 }
 
 function unresolved(s) {
   return `<section><h2>What LedgerGuard could not close</h2>
+    <div class="case-tools"><a class="btn primary" href="/api/evidence-download" download>Download this run's evidence ↓</a><span>JSON · all cases, named checks, metrics, provider and unresolved actions. No new model call.</span></div>
     <p class="lede">${s.unresolved.length} of ${s.overview.records_processed} cases, INR
       ${esc(s.overview.unresolved_value_inr)} of exposure. Abstention is a designed outcome, not
       a failure — every row says exactly what evidence was missing.</p>
@@ -610,17 +698,56 @@ function unresolved(s) {
     </table></div></section>`;
 }
 
-fetch('/api/state').then(r => r.json()).then(s => {
+function walkthrough(s) {
+  return `<section class="card tour" id="walkthrough"><div class="tour-top"><div>
+    <h2 style="margin-bottom:0">The evidence walkthrough</h2>
+    <p>A guided reading of the computed adversarial case. No new model call or financial action.</p>
+    </div><span class="pill mono">${esc(s.adversarial.investigator || s.provider)}</span></div>
+    <div class="steps" aria-label="Evidence walkthrough steps">${['The shortfall','The hypothesis','The checks','The decision'].map((t,i)=>
+      `<button type="button" class="step" data-step="${i}" aria-current="${i===0?'step':'false'}">0${i+1} / ${t}</button>`).join('')}</div>
+    <div class="tour-result" id="tour-result" aria-live="polite" aria-atomic="true"></div>
+    <button type="button" class="btn" id="tour-next">Next: the hypothesis →</button></section>`;
+}
+
+function showStep(index) {
+  const d = STATE.adversarial.victim;
+  const content = [
+    `<h3>A shortfall is not an explanation.</h3><p>Payment A belongs to <strong>${esc(d.customer)}</strong> and has a shortfall of <strong>${esc(inr(d.shortfall_inr))}</strong>. A candidate refund must be linked to the right payment—not just the right amount.</p>`,
+    `<h3>The investigator proposes. It does not close.</h3><p><code>${esc(d.hypothesis)}</code> → requests <code>${esc(d.recommended_action)}</code></p><p>${esc(d.ai_reason)}</p>`,
+    `<h3>Inspect what the evidence actually proves.</h3><div class="grid2">${d.checks.map(c=>`<div class="check ${c.passed?'pass':'fail'}"><span class="mark">${c.passed?'✓':'✕'}</span><span class="name">${esc(c.name)}</span><span class="why">${esc(c.detail)}</span></div>`).join('') || '<p>No checks were possible for this response.</p>'}</div>`,
+    `<h3>Uncertainty stays visible.</h3><span class="tag ${esc(d.state)}">${esc(d.state)}</span><p>${esc(d.decision_reason)}</p><p>This is the actual result for the displayed investigator, not a staged success.</p>`
+  ];
+  document.getElementById('tour-result').innerHTML = `<div>${content[index]}</div>`;
+  document.querySelectorAll('.step').forEach((b,i)=>b.setAttribute('aria-current',i===index?'step':'false'));
+  const next=document.getElementById('tour-next');
+  next.textContent=['Next: the hypothesis →','Next: inspect the checks →','Next: the decision →','Restart walkthrough ↺'][index];
+  next.onclick=()=>showStep((index+1)%4);
+}
+
+fetch('/api/state').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then(s => {
   STATE = s;
   SELECTED = s.demo_cases[0] || (s.cases[0] && s.cases[0].case_id);
   document.getElementById('app').innerHTML =
-    overview(s) + explorer(s) + adversarial(s) + benchmark(s) + unresolved(s) +
+    overview(s) + `<nav class="nav" aria-label="Dashboard sections"><a href="#walkthrough">Evidence walkthrough</a><a href="#cases">Case explorer</a><a href="#adversarial">Adversarial test</a><a href="#benchmark">Benchmark</a><a href="#exceptions">Exception queue</a></nav>` + walkthrough(s) + explorer(s) + adversarial(s) + benchmark(s) + unresolved(s) +
     `<footer>Dataset: seed <code>${esc(s.dataset.seed)}</code>, generator
       <code>${esc(s.dataset.generator_version)}</code>, ${esc(s.dataset.split)},
       ${esc(s.dataset.lifecycles)} lifecycles, batch SHA-256 <code>${esc(s.dataset.batch_sha256)}</code>.
       Investigator: <code>${esc(s.provider)}</code>. Ground truth is hidden from the controller and
       used only for scoring. Auto resolved means a reconciliation exception was classified and
       closed inside LedgerGuard; no money is ever moved.</footer>`;
+  const sections = document.querySelectorAll('#app > section');
+  ['overview','walkthrough','cases','adversarial','benchmark','exceptions'].forEach((id,i)=>{ if(sections[i]) sections[i].id=id; });
+  document.querySelectorAll('.step').forEach(b=>b.addEventListener('click',()=>showStep(Number(b.dataset.step))));
+  showStep(0);
+  document.getElementById('case-search').addEventListener('input', e => {
+    const query = e.target.value.trim().toLowerCase();
+    let count = 0;
+    document.querySelectorAll('.caseitem').forEach(item => {
+      item.hidden = !item.textContent.toLowerCase().includes(query);
+      if (!item.hidden) count++;
+    });
+    document.getElementById('case-count').textContent = `${count} of ${STATE.cases.length} cases${count ? '' : ' — try a different search'}`;
+  });
   document.getElementById('caselist').addEventListener('click', e => {
     const item = e.target.closest('.caseitem');
     if (!item) return;

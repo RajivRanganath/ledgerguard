@@ -123,6 +123,15 @@ def investigate_case(
         result = provider.investigate(context)
     except Exception as exc:                      # a provider that raises, not returns
         result = InvestigationResult.unavailable(f"{type(exc).__name__}: {exc}")
+    if not isinstance(result, InvestigationResult):
+        # A provider that returns the wrong shape is just an unusable provider.
+        # Without this the admissibility filter below would raise on it and take
+        # the whole batch down, which is the one thing no provider is allowed to
+        # do. FallbackProvider makes the same check; a single provider used
+        # directly does not go through it.
+        result = InvestigationResult.unavailable(
+            f"provider returned {type(result).__name__}, expected InvestigationResult"
+        )
     latency_ms = (time.perf_counter() - started) * 1000
 
     # Only records that were offered as candidate evidence (or are already

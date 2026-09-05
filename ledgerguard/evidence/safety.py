@@ -90,6 +90,27 @@ def decide(
             ),
         )
 
+    conflict = exc.evidence.get("content_conflict")
+    if conflict:
+        # Two records share an identifier and disagree on content. "Duplicate"
+        # is the one classification that closes on the strength of the copies
+        # being the same record -- and here they demonstrably are not. Which
+        # version is real is not derivable from the batch.
+        return Decision(
+            case_id=case.case_id,
+            state=HUMAN_REVIEW_REQUIRED,
+            reason=(
+                f"Two {conflict} records share an identifier but disagree on content, "
+                "so they are not copies of one another. Suppressing one would pick a "
+                "version the batch does not prove."
+            ),
+            missing_evidence=[f"authoritative version of the {conflict} record"],
+            suggested_action=(
+                f"Re-fetch the {conflict} from the source system and re-ingest, then "
+                "re-run reconciliation for this payment."
+            ),
+        )
+
     residual = exc.evidence.get("residual_paise") or 0
     secondary = exc.evidence.get("secondary_findings") or []
 

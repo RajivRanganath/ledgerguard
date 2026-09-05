@@ -51,22 +51,84 @@ class BatchDuplicates:
     payment_ids: set[str] = field(default_factory=set)
     settlement_ids: set[str] = field(default_factory=set)
     bank_signatures: dict[tuple, list[str]] = field(default_factory=dict)
+    #: Ids that appear more than once carrying *different* content. Sharing an
+    #: identifier is not the same finding as being the same record, and the two
+    #: must not resolve the same way -- see ``_id_groups``.
+    payment_conflicts: set[str] = field(default_factory=set)
+    settlement_conflicts: set[str] = field(default_factory=set)
+
+
+def _payment_signature(p: Payment) -> tuple:
+    """Everything about a payment except its identifier."""
+    return (
+        p.order_id,
+        p.amount,
+        p.currency,
+        p.status,
+        p.method,
+        p.captured_at,
+        p.fee,
+        p.tax,
+        p.reference,
+    )
+
+
+def _settlement_signature(s: Settlement) -> tuple:
+    """Everything about a settlement except its identifier."""
+    return (
+        s.merchant_id,
+        s.gross_amount,
+        s.fees,
+        s.tax,
+        s.refund_adjustments,
+        s.other_adjustments,
+        s.net_amount,
+        s.settlement_date,
+        s.status,
+        s.reference,
+        tuple(s.payment_ids),
+    )
+
+
+def _id_groups(records, key, signature) -> tuple[set[str], set[str]]:
+    """Split repeated identifiers into true duplicates and content conflicts.
+
+    A record ingested twice is a duplicate: the identifier and every other
+    field agree, so suppressing the second copy is provable. Two records that
+    share an identifier but disagree on content are *not* a duplicate -- they
+    are two contradictory versions of the same entity, and which one is real
+    cannot be proved from the batch. Collapsing them would close a case on a
+    content match that never happened.
+    """
+    by_id: dict[str, list[tuple]] = {}
+    for record in records:
+        by_id.setdefault(key(record), []).append(signature(record))
+    duplicates, conflicts = set(), set()
+    for record_id, signatures in by_id.items():
+        if len(signatures) < 2:
+            continue
+        if len(set(signatures)) == 1:
+            duplicates.add(record_id)
+        else:
+            conflicts.add(record_id)
+    return duplicates, conflicts
 
 
 def find_duplicates(batch: Batch) -> BatchDuplicates:
-    """Pre-pass: identifier and content level duplicate detection."""
-    dup = BatchDuplicates()
-    seen: set[str] = set()
-    for p in batch.payments:
-        if p.payment_id in seen:
-            dup.payment_ids.add(p.payment_id)
-        seen.add(p.payment_id)
+    """Pre-pass: identifier and content level duplicate detection.
 
-    seen = set()
-    for s in batch.settlements:
-        if s.settlement_id in seen:
-            dup.settlement_ids.add(s.settlement_id)
-        seen.add(s.settlement_id)
+    Every record type is compared on content, not only on identifier. Payments
+    and settlements are grouped by id and then split by signature; bank entries
+    carry no reliable identifier across systems, so they are matched on content
+    alone.
+    """
+    dup = BatchDuplicates()
+    dup.payment_ids, dup.payment_conflicts = _id_groups(
+        batch.payments, lambda p: p.payment_id, _payment_signature
+    )
+    dup.settlement_ids, dup.settlement_conflicts = _id_groups(
+        batch.settlements, lambda s: s.settlement_id, _settlement_signature
+    )
 
     for e in batch.bank_entries:
         sig = (e.reference, e.amount, e.date, e.credit_or_debit)
@@ -159,7 +221,28 @@ def reconcile_payment(
             exception=exc,
         )
 
-    # 1. Duplicate ingestion of the payment itself.
+    # 1a. The same payment_id ingested twice with *different* content. Not a
+    # duplicate: two contradictory versions of one payment, and the batch does
+    # not say which is real. Closing it would assert a content match that
+    # failed.
+    if payment.payment_id in duplicates.payment_conflicts:
+        return build(
+            ExceptionType.DUPLICATE_RECORD,
+            payment.amount,
+            0,                       # which row is real is unproven, so all of it is exposed
+            {
+                "reason": (
+                    "payment_id appears more than once with conflicting content; "
+                    "the rows are not copies of each other"
+                ),
+                "content_conflict": "payment",
+                "expected_shadow_net": expected.as_dict(),
+            },
+            settlements[0] if settlements else None,
+            [],
+        )
+
+    # 1b. Duplicate ingestion of the payment itself: same id, same content.
     if payment.payment_id in duplicates.payment_ids:
         return build(
             ExceptionType.DUPLICATE_RECORD,
@@ -191,14 +274,28 @@ def reconcile_payment(
 
     # 3. More than one settlement claims the same payment.
     if len(settlements) > 1:
+        # Identical copies are a provable re-ingestion. Settlements that differ
+        # in content, or that share an id while disagreeing, are contradictory
+        # statements about the same money and cannot be collapsed.
+        signatures = {_settlement_signature(s) for s in settlements}
+        conflicting = len(signatures) > 1 or any(
+            s.settlement_id in duplicates.settlement_conflicts for s in settlements
+        )
+        evidence = {
+            "reason": (
+                "multiple settlements reference the same payment with conflicting content"
+                if conflicting
+                else "multiple settlements reference the same payment"
+            ),
+            "settlement_ids": [s.settlement_id for s in settlements],
+        }
+        if conflicting:
+            evidence["content_conflict"] = "settlement"
         return build(
             ExceptionType.DUPLICATE_RECORD,
             expected.net_amount,
             sum(s.net_amount for s in settlements),
-            {
-                "reason": "multiple settlements reference the same payment",
-                "settlement_ids": [s.settlement_id for s in settlements],
-            },
+            evidence,
             settlements[0],
             [],
         )

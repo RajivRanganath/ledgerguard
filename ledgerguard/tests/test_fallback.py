@@ -211,3 +211,29 @@ def test_a_missing_key_stays_quiet(monkeypatch):
     monkeypatch.setenv("GROQ_API_KEY", "")
     assert prov.build_chain(["groq"]) == []
     assert prov.CHAIN_BUILD_ERRORS == []
+
+
+def test_a_valueerror_defect_is_not_mistaken_for_an_absent_key(monkeypatch):
+    """Only ProviderNotConfigured is allowed to be silent.
+
+    "No key" and "this provider is broken" both used to raise plain ValueError,
+    so the chain builder could not tell them apart and dropped a defective
+    provider as though the user had chosen not to configure it. A degraded run
+    must never be indistinguishable from the intended one.
+    """
+    from ledgerguard.ai import provider as prov
+
+    def _broken(kind):
+        raise ValueError("a defect that happens to be a ValueError")
+
+    monkeypatch.setattr(prov, "_build", _broken)
+    assert prov.build_chain(["groq"]) == []
+    assert [e["provider"] for e in prov.CHAIN_BUILD_ERRORS] == ["groq"]
+    assert "a defect that happens to be a ValueError" in prov.CHAIN_BUILD_ERRORS[0]["error"]
+
+    def _absent(kind):
+        raise prov.ProviderNotConfigured("GROQ_API_KEY is not set")
+
+    monkeypatch.setattr(prov, "_build", _absent)
+    assert prov.build_chain(["groq"]) == []
+    assert prov.CHAIN_BUILD_ERRORS == []

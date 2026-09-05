@@ -23,6 +23,7 @@ import sys
 from pathlib import Path
 from typing import Protocol
 
+from .errors import ProviderNotConfigured
 from .schemas import InvestigationResult, InvestigatorOutput, RequiredEvidence
 
 def _load_dotenv() -> None:
@@ -239,7 +240,7 @@ AUTO_ORDER = ["groq", "gemini", "nvidia", "omniroute"]
 def _build(kind: str) -> InvestigatorProvider:
     if kind == "anthropic":
         if not os.environ.get("ANTHROPIC_API_KEY"):
-            raise ValueError("ANTHROPIC_API_KEY is not set")
+            raise ProviderNotConfigured("ANTHROPIC_API_KEY is not set")
         return AnthropicProvider(model=os.environ.get("LEDGERGUARD_MODEL", DEFAULT_MODEL))
     if kind == "gemini":
         from .openai_compatible import GeminiProvider
@@ -257,7 +258,9 @@ def _build(kind: str) -> InvestigatorProvider:
         try:
             httpx.get("http://localhost:20128/v1/models", timeout=3.0).raise_for_status()
         except Exception as exc:
-            raise ValueError(f"omniroute is not reachable on localhost:20128 ({exc})")
+            raise ProviderNotConfigured(
+                f"omniroute is not reachable on localhost:20128 ({exc})"
+            )
 
     if kind in PRESETS:
         return OpenAICompatibleProvider(
@@ -294,7 +297,7 @@ def build_chain(order: list[str] | None = None) -> list[InvestigatorProvider]:
     for candidate in order or AUTO_ORDER:
         try:
             providers.append(_build(candidate))
-        except ValueError:
+        except ProviderNotConfigured:
             continue                              # not configured, or unreachable
         except Exception as exc:                  # a real defect in this provider
             detail = f"{type(exc).__name__}: {exc}"
